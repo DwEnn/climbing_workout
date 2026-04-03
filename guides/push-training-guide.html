@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라이머를 위한 푸쉬 세션 — 대항근 훈련 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #141418;
+    --surface-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #e8e6e3;
+    --text-dim: #8a8a95;
+    --accent: #e94560;
+    --accent-glow: rgba(233, 69, 96, 0.15);
+    --tier1: #4ecdc4;
+    --tier2: #118ab2;
+    --tier3: #a855f7;
+    --tier4: #8a8a95;
+    --green: #4ecdc4;
+    --yellow: #ffd166;
+    --red: #ef476f;
+    --blue: #118ab2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(233, 69, 96, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%);
+    animation: heroPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroPulse {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(3deg) scale(1.05); }
+  }
+
+  .hero-badge {
+    position: relative;
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    background: var(--accent-glow);
+  }
+
+  .hero h1 {
+    position: relative;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0.05em; left: 0;
+    width: 100%; height: 0.12em;
+    background: var(--accent);
+    opacity: 0.3;
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    position: relative;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .hero-why {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2.5rem;
+    max-width: 700px;
+    text-align: left;
+  }
+
+  .hero-why h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-why p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-why p:last-child { margin-bottom: 0; }
+  .hero-why strong { color: var(--text); font-weight: 500; }
+
+  .disclaimer {
+    position: relative;
+    background: rgba(233, 69, 96, 0.06);
+    border: 1px solid rgba(233, 69, 96, 0.2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+    max-width: 700px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .disclaimer strong { color: var(--accent); }
+
+  /* ── NAV ── */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .toc-inner {
+    display: flex;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .toc a {
+    display: block;
+    padding: 1rem 1.2rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+    background: rgba(233, 69, 96, 0.05);
+    text-decoration: none;
+  }
+
+  .toc .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-right: 0.4rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-header { margin-bottom: 3rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-tagline {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .badge-tier1 { background: rgba(78, 205, 196, 0.12); color: var(--tier1); }
+  .badge-tier2 { background: rgba(17, 138, 178, 0.12); color: var(--tier2); }
+  .badge-tier3 { background: rgba(168, 85, 247, 0.12); color: var(--tier3); }
+  .badge-tier4 { background: rgba(138, 138, 149, 0.12); color: var(--tier4); }
+  .badge-principle { background: rgba(255, 209, 102, 0.12); color: var(--yellow); }
+
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  /* ── CONTENT BLOCKS ── */
+  .block { margin-bottom: 2.5rem; }
+
+  .block h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .block h3 .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .icon-source { background: rgba(17, 138, 178, 0.15); color: var(--blue); }
+  .icon-climb { background: rgba(78, 205, 196, 0.15); color: var(--green); }
+  .icon-verify { background: rgba(168, 85, 247, 0.15); color: var(--tier3); }
+  .icon-tip { background: rgba(255, 209, 102, 0.15); color: var(--yellow); }
+  .icon-warn { background: rgba(239, 71, 111, 0.15); color: var(--red); }
+
+  .block p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .block p strong { color: var(--text); font-weight: 500; }
+  .block p:last-child { margin-bottom: 0; }
+
+  .ref-link {
+    color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* ── MEDIA ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .video-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .video-wrap a {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.3s;
+  }
+
+  .video-wrap a:hover img { filter: brightness(0.85); }
+
+  .video-play-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    background: rgba(233, 69, 96, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    pointer-events: none;
+  }
+
+  .video-wrap a:hover .video-play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(233, 69, 96, 1);
+  }
+
+  .video-play-btn svg {
+    width: 28px; height: 28px;
+    fill: white;
+    margin-left: 3px;
+  }
+
+  .video-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .callout.green { border-left-color: var(--green); }
+  .callout.red { border-left-color: var(--red); }
+  .callout.blue { border-left-color: var(--blue); }
+  .callout.amber { border-left-color: var(--yellow); }
+
+  .callout-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .callout .callout-title { color: var(--accent); }
+  .callout.green .callout-title { color: var(--green); }
+  .callout.red .callout-title { color: var(--red); }
+  .callout.blue .callout-title { color: var(--blue); }
+  .callout.amber .callout-title { color: var(--yellow); }
+
+  .callout p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .callout p strong { color: var(--text); font-weight: 500; }
+
+  /* ── ACCORDION (Source Tiers) ── */
+  .accordion {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .accordion-header {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    user-select: none;
+  }
+
+  .accordion-header:hover { background: rgba(255,255,255,.03); }
+
+  .accordion-arrow {
+    transition: transform .3s;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+    padding: 0 1.5rem;
+  }
+
+  .accordion.open .accordion-body { max-height: 3000px; padding: 0 1.5rem 1.5rem; }
+  .accordion.open .accordion-arrow { transform: rotate(180deg); }
+
+  .tier-item { margin-bottom: 1.2rem; }
+  .tier-item:last-child { margin-bottom: 0; }
+
+  .tier-item h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .tier-item p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+  }
+
+  .tier-item p strong { color: var(--text); font-weight: 500; }
+
+  /* ── PRINCIPLES TABLE ── */
+  .prog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .prog-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .prog-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  .prog-table tr:last-child td { border-bottom: none; }
+
+  .prog-table .principle-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .prog-table .lv { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600; color: #fff; }
+  .lv-1 { background: var(--green); color: #0a0a0c !important; }
+  .lv-2 { background: var(--blue); }
+  .lv-3 { background: var(--yellow); color: #0a0a0c !important; }
+  .lv-4 { background: var(--accent); }
+
+  /* ── SET & REST CARD ── */
+  .set-rest-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .set-rest-item {
+    background: var(--surface);
+    padding: 1.2rem 1.4rem;
+    text-align: center;
+  }
+
+  .set-rest-item .label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .set-rest-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .set-rest-item .value .unit {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 0.15rem;
+  }
+
+  .set-rest-note {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: -0.8rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  /* ── ORDER SECTION ── */
+  .order-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+  }
+
+  .order-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .order-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .order-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .order-item .num-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .order-arrow { color: var(--text-dim); font-size: 1.2rem; }
+
+  /* ── EQUIPMENT ── */
+  .equip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .equip-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── REFERENCES ── */
+  .ref-list { list-style: none; }
+
+  .ref-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 12px;
+  }
+
+  .ref-list li:last-child { border-bottom: none; }
+
+  .ref-num {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 28px;
+  }
+
+  .ref-list li a { word-break: break-all; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .set-rest-card { grid-template-columns: 1fr; }
+    .order-flow { flex-direction: column; }
+    .order-arrow { transform: rotate(90deg); }
+    .hero-why { padding: 1.2rem 1.5rem; }
+    .section { padding: 3rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-badge">Climbing x Antagonist Training</div>
+  <h1>
+    당기기만 하는 몸에<br>
+    <span class="highlight">푸쉬 세션</span> 처방전
+  </h1>
+  <p class="hero-sub">
+    V6+ 볼더러를 위한 가슴·삼두·어깨 대항근 훈련 10가지.<br>
+    검증된 출처 기반. 직접 검증(✅)과 원칙 적용(🔶)을 구분 표기.
+  </p>
+  <div class="hero-why">
+    <h3>왜 대항근 훈련이 필요한가?</h3>
+    <p>
+      클라이밍은 <strong>당김(pulling) 우세</strong> 운동이다. 세션마다 내회전근, 굴곡근, 광배근이 반복적으로 동원되지만,
+      그 반대편 근육 — 삼두, 외회전근, 전거근, 손목 신전근 — 은 거의 훈련되지 않는다.
+    </p>
+    <p>
+      이 불균형은 두 가지 문제를 만든다. 첫째, <strong>부상 위험</strong> — Wong & Ng(2009)에 따르면
+      클라이머의 어깨 외회전 대 내회전 작업비는 비클라이머보다 약 <strong>19% 낮다</strong> <a href="#ref-1" class="ref-link">[1]</a>.
+      둘째, <strong>신경 억제</strong> — Bechtel에 따르면
+      "근본적으로 불균형한 몸이면 신경 억제가 더 강해지는 것을 막지 못한다" <a href="#ref-2" class="ref-link">[2]</a>.
+    </p>
+  </div>
+  <div class="disclaimer">
+    <strong>면책 고지:</strong> 개별 운동의 클라이밍 특화 효과에 대한 RCT(무작위 대조 시험)는 현재 존재하지 않는다.
+    아래 운동 추천은 전문가들의 코칭 경험, 운동생리학 원리, 제한적 학술 근거를 종합한 것이다.
+    "이 운동이 V등급을 올린다"는 직접적 연구는 없다.
+  </div>
+</section>
+
+<!-- ══════════ TOC ══════════ -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#session"><span class="num">▶</span>세션 구성</a>
+    <a href="#ex1"><span class="num">01</span>오버헤드 프레스</a>
+    <a href="#ex2"><span class="num">02</span>링 딥스</a>
+    <a href="#ex3"><span class="num">03</span>푸쉬업 변형</a>
+    <a href="#ex4"><span class="num">04</span>외회전근 훈련</a>
+    <a href="#ex5"><span class="num">05</span>견갑골 푸쉬업</a>
+    <a href="#ex6"><span class="num">06</span>손목 신전근</a>
+    <a href="#ex7"><span class="num">07</span>파이크 푸쉬업</a>
+    <a href="#ex8"><span class="num">08</span>페이스 풀</a>
+    <a href="#ex9"><span class="num">09</span>터키시 겟업</a>
+    <a href="#ex10"><span class="num">10</span>손가락 신전근</a>
+    <a href="#sources"><span class="num">i</span>출처 기준</a>
+    <a href="#principles"><span class="num">▶</span>원칙</a>
+  </div>
+</nav>
+
+<!-- ══════════ SESSION ORDER ══════════ -->
+<section class="section fade-in" id="session">
+  <div class="section-header">
+    <div class="section-number">RECOMMENDED SESSION</div>
+    <h2>추천 세션 구성</h2>
+    <p class="section-tagline">Lattice Training의 "주 2회 짧은 세션" 원칙 기반 <a href="#ref-4" class="ref-link">[4]</a></p>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-title">훈련 타이밍</div>
+    <p><strong>클라이밍 세션 직후</strong>에 붙여서 하는 게 가장 효율적이다. 대항근이 이미 "쉬어 있는" 상태라 별도 워밍업이 덜 필요하고, Procter에 따르면 대항근 훈련은 모든 클라이밍 세션에 포함되어야 한다 <a href="#ref-5" class="ref-link">[5]</a>. 클라이밍 없는 날 단독 세션으로 해도 괜찮다.</p>
+  </div>
+
+  <div class="order-section">
+    <h3>세션 순서</h3>
+    <div class="order-flow">
+      <div class="order-item"><span class="num-circle">1</span>Y-T-W (활성화)</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">2</span>견갑골 푸쉬업</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">3</span>파이크 푸쉬업</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">4</span>링 푸쉬업</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">5</span>링 딥스</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">6</span>KB 오버헤드 프레스</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">7</span>터키시 겟업</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">8</span>페이스 풀</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">9</span>손목+손가락 신전근</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">10</span>Y-T-W (쿨다운)</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">순서 이유</div>
+    <p>활성화/안정화(Y-T-W, 견갑골) → 메인 컴파운드(파이크 → 링 푸쉬업 → 링 딥스 → KB 프레스 → 터키시 겟업) → 후인+외회전 통합(페이스 풀) → 프리햅 마무리(손목+손가락 신전근 + Y-T-W 쿨다운). 운동 전환 시 <strong>60초</strong> 휴식.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 사용 장비</h3>
+    <div class="equip-row">
+      <span class="equip-tag">케틀벨 8kg &times; 1</span>
+      <span class="equip-tag">짐링</span>
+      <span class="equip-tag">푸쉬업 바</span>
+      <span class="equip-tag">풀업바</span>
+      <span class="equip-tag">저항 밴드</span>
+      <span class="equip-tag">고무밴드 (손가락용)</span>
+      <span class="equip-tag">손가락 행보드</span>
+    </div>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">총 소요 시간</div>
+      <div class="value">45~55<span class="unit">분</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">주간 빈도</div>
+      <div class="value">2<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">시기</div>
+      <div class="value" style="font-size:1rem;">연중 유지</div>
+    </div>
+  </div>
+  <p class="set-rest-note">Torr: "주 2회 짧은 세션이면 건강한 근력 균형 유지에 충분" <a href="#ref-4" class="ref-link">[4]</a></p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>순서</th><th>운동</th><th>세트 &times; 반복</th><th>휴식</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">01</td>
+        <td class="principle-name">Y-T-W (활성화)</td>
+        <td>2 &times; 8~12</td>
+        <td>45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">02</td>
+        <td class="principle-name">견갑골 푸쉬업 (활성화)</td>
+        <td>2 &times; 10~15</td>
+        <td>30~45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">03</td>
+        <td class="principle-name">파이크 푸쉬업</td>
+        <td>3~4 &times; 5~8</td>
+        <td>2~3분</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">04</td>
+        <td class="principle-name">링 푸쉬업</td>
+        <td>3 &times; 10~15</td>
+        <td>2분</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">05</td>
+        <td class="principle-name">링 딥스</td>
+        <td>3 &times; 6~10</td>
+        <td>60~90초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">06</td>
+        <td class="principle-name">KB 오버헤드 프레스</td>
+        <td>3 &times; 5~8/팔</td>
+        <td>60~90초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">07</td>
+        <td class="principle-name">터키시 겟업</td>
+        <td>3 &times; 1~3/팔</td>
+        <td>60~90초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">08</td>
+        <td class="principle-name">페이스 풀</td>
+        <td>3 &times; 12~15</td>
+        <td>45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">09</td>
+        <td class="principle-name">손목+손가락 신전근</td>
+        <td>2~3 &times; 15~20</td>
+        <td>30초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">10</td>
+        <td class="principle-name">Y-T-W (쿨다운)</td>
+        <td>2 &times; 8~12</td>
+        <td>45초</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">4주 후 체크포인트</div>
+    <p>
+      &bull; 딥스 편심 4초 하강이 10회 가능하면 &rarr; 자세 유지하며 가동범위 확대<br>
+      &bull; 바 딥스 10회 가능 &rarr; 링 딥스로 전환<br>
+      &bull; 링 푸쉬업 안정적 10회 &rarr; 링 다이아몬드 푸쉬업 시도<br>
+      &bull; 오버헤드 프레스 8회&times;3이 가능하면 &rarr; 무게 증량 고려<br>
+      &bull; 터키시 겟업 3회/팔이 안정적이면 &rarr; 무게 증량 또는 각 단계에서 2초 정지 추가<br>
+      &bull; 페이스 풀 15회&times;3이 쉬워지면 &rarr; 외회전 홀드 2초 추가<br>
+      &bull; Bechtel 벤치마크: 남성 체중, 여성 3/4 체중 프레스가 장기 목표 <a href="#ref-3" class="ref-link">[3]</a>
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 01. OVERHEAD PRESS ══════════ -->
+<section class="section fade-in" id="ex1">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 01</div>
+    <h2>오버헤드 프레스</h2>
+    <p class="section-tagline">Single-Arm Kettlebell Press — Bechtel이 클라이머에게 가장 선호하는 대항근 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=OHo4GZHem7U" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/OHo4GZHem7U/maxresdefault.jpg" alt="케틀벨 오버헤드 프레스 가이드" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/OHo4GZHem7U/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · 케틀벨 오버헤드 프레스 초보 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Bechtel은 오버헤드 프레스를 클라이머에게 <strong>가장 선호하는 대항근 운동</strong>으로 언급했다. 이유: "클라이머의 어깨 가동성이 너무 안 좋아서, 이 동작이 일반 푸쉬업보다 움직임 패턴을 더 잘 활성화시킨다." <a href="#ref-2" class="ref-link">[2]</a></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>클라이밍으로 인한 어깨 가동성 저하를 직접 개선하고, 오버헤드 안정성을 강화한다. 케틀벨의 비대칭 하중이 <strong>코어 반회전을 동시에 훈련</strong>한다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">5~8<span class="unit">회/팔</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">60~90<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">8kg 케틀벨 사용. 무게보다 오버헤드 가동범위 확보가 우선.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">양손 KB 프레스 (바닥에서)</td><td>3 &times; 8~10</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">단팔 KB 프레스 8kg</td><td>3 &times; 5~8/팔</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">단팔 KB 프레스 — 하강 3초 편심</td><td>3 &times; 5~6/팔</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">무게 증량 (12~16kg)</td><td>3 &times; 5~8/팔</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> 전문 코치(Bechtel, CSCS) 권장. 클라이머 대상 직접적 학술 연구는 없음.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 02. DIPS ══════════ -->
+<section class="section fade-in" id="ex2">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 02</div>
+    <h2>링 딥스</h2>
+    <p class="section-tagline">Ring Dips — 벤치프레스보다 클라이머에게 더 적합한 프레스 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+    <span class="badge badge-tier3">Tier 3 — Hooper's Beta</span>
+    <span class="badge badge-tier4">Tier 4 — 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=CrbIq-T-h8I" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/CrbIq-T-h8I/maxresdefault.jpg" alt="링 딥스 자세 배우기" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/CrbIq-T-h8I/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Ring Dips 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Climbing Magazine의 대항근 워크아웃 가이드에 포함 <a href="#ref-9" class="ref-link">[9]</a>. Vagy는 맨틀 동작에서 <strong>삼두가 주동근</strong>이 되고, 삼두의 편심 기능이 락오프 제어에 핵심적이라 설명했다 <a href="#ref-7" class="ref-link">[7]</a>.</p>
+    <p style="margin-top:0.8rem;">Hooper's Beta(Dr. Jason Hooper, DPT)는 <strong>"링에서의 삼두 딥스가 대부분의 클라이머에게 벤치프레스보다 나은 대안"</strong>이라 설명했다. 닫힌 사슬 운동이면서 맨틀, 스테밍 등 벽에서 만나는 동작과 더 유사하고 어깨 안정성 훈련까지 동시에 된다 <a href="#ref-13" class="ref-link">[13]</a>. improve-climbing.com에서도 "링의 불안정성 때문에 어깨/견갑골 안정근, 체간 긴장도까지 동시 훈련"된다고 수록하고 있다 <a href="#ref-14" class="ref-link">[14]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>맨틀 무브의 "아래로 밀기" 국면을 직접 훈련한다. 삼두 근력 강화를 통한 <strong>팔꿈치 건병증(climber's elbow) 예방</strong>. 링의 불안정성이 회전근개와 견갑골 안정근을 강제 동원 → <strong>프레싱하면서 어깨 안정성 동시 훈련</strong>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 편심 훈련 팁</h3>
+    <p>Vagy에 따르면 삼두는 <strong>편심 운동으로 타겟팅</strong>해야 한다 <a href="#ref-7" class="ref-link">[7]</a>. 내려가는 구간을 <strong>3~4초</strong> 천천히 컨트롤하며 내려간다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">6~10<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">60~90<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">짐링 사용. 바 딥스보다 불안정면에서의 프레싱이 어깨 안정근 추가 동원. 밴드 보조로 난이도 조절 가능. 편심 템포 3~4초 하강 권장.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">바 딥스 — 편심 4초 하강만</td><td>3 &times; 5~8</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">바 딥스 — 풀 ROM</td><td>3 &times; 6~10</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">링 딥스 — 밴드 보조</td><td>3 &times; 6~8</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">링 딥스 — 풀 ROM, 편심 3초</td><td>3 &times; 6~10</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier3">Tier 3</span> &times; 2 + <span class="badge badge-tier4">Tier 4</span> Vagy(DPT) + Hooper's Beta(DPT) + Climbing Magazine + improve-climbing.com에서 복수 직접 추천.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 03. PUSH-UP VARIATIONS ══════════ -->
+<section class="section fade-in" id="ex3">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 03</div>
+    <h2>푸쉬업 변형</h2>
+    <p class="section-tagline">Push-Up Variations (링 포함) — 불안정면 프레싱으로 V6+ 수준의 자극 확보</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치</span>
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+    <span class="badge badge-tier4">Tier 4 — 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=kGhDnFwMY3E" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/kGhDnFwMY3E/maxresdefault.jpg" alt="다이아몬드 푸쉬업 올바른 자세 & 프로그레션" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/kGhDnFwMY3E/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Diamond Push Ups — 올바른 자세 & 단계별 프로그레션</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Lattice의 Procter는 모든 클라이밍 세션에 대항근 운동을 포함시킬 것을 권장하며, 저강도 워밍업의 일부로 푸쉬업을 언급했다 <a href="#ref-5" class="ref-link">[5]</a>. Smith는 삼두, 중·하부 승모근, 회전근개를 <strong>"약한 클라이머 근육"</strong>으로 지목하고 이를 강화해야 한다고 강조했다 <a href="#ref-9" class="ref-link">[9]</a>. 다이아몬드 푸쉬업은 삼두를 고립시키는 변형이다.</p>
+    <p style="margin-top:0.8rem;">UKClimbing 대항근 기사에서는 <strong>"푸쉬업은 초보자의 무릎 푸쉬업부터 고급자의 링 푸쉬업까지 조절 가능"</strong>하다고 설명한다 <a href="#ref-15" class="ref-link">[15]</a>. Hörst는 푸쉬업이 <strong>대항근 운동이자 컴프레션/맨틀 기술 향상에 이중 가치</strong>가 있다고 설명했다 <a href="#ref-17" class="ref-link">[17]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>클라이밍의 당김 우세로 인한 근육 불균형 교정. Smith에 따르면 <strong>해당 근막 시스템 전체를 강화해야</strong> 팔꿈치 통증을 해결할 수 있다 <a href="#ref-9" class="ref-link">[9]</a>. V6+ 클라이머에게 일반 푸쉬업은 자극 부족 → <strong>링 푸쉬업으로 불안정면 추가 시 어깨/견갑골 안정근까지 동시 훈련</strong>.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">10~15<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45~60<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">짐링 또는 푸쉬업 바. 진행: 일반 → 다이아몬드 → 링 푸쉬업 → 링 다이아몬드.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">무릎 푸쉬업</td><td>3 &times; 10~15</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">일반 푸쉬업 (푸쉬업 바)</td><td>3 &times; 10~15</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">다이아몬드 푸쉬업 / 링 푸쉬업</td><td>3 &times; 8~12</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">링 다이아몬드 푸쉬업</td><td>3 &times; 8~12</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> + <span class="badge badge-tier3">Tier 3</span> + <span class="badge badge-tier4">Tier 4</span> 복수 전문가 합의 (Lattice, Smith, Climbing Magazine).</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 04. EXTERNAL ROTATION ══════════ -->
+<section class="section fade-in" id="ex4">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 04</div>
+    <h2>외회전근 훈련</h2>
+    <p class="section-tagline">Y-T-W Raises (바닥 또는 링) — 이 목록에서 가장 강한 학술적 근거를 가진 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier1">Tier 1 — 학술 연구</span>
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=QdGTI4Lshg4" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/QdGTI4Lshg4/maxresdefault.jpg" alt="Prone Y-T-W 어깨 운동" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/QdGTI4Lshg4/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Prone Y-T-W 어깨 외회전 운동</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Wong & Ng 연구에서 클라이머의 편심 외회전 대 구심 내회전 작업비가 비클라이머 대비 약 <strong>19% 낮은 것으로 확인</strong>됨 (1.05 vs 1.30, P=.005) <a href="#ref-1" class="ref-link">[1]</a>. Vagy는 어깨 외회전근과 견갑골 근육을 대항근 훈련의 핵심 타겟으로 지목했다 <a href="#ref-7" class="ref-link">[7]</a>. Smith는 회전근개 근육을 "약한 클라이머 근육" 중 하나로 명시했다 <a href="#ref-9" class="ref-link">[9]</a>.</p>
+    <p style="margin-top:0.8rem;">FlashPumped, improve-climbing.com에서 <strong>링으로 하는 Y-T 레이즈</strong>를 구체적 실행 방법과 함께 클라이밍 대항근 가이드에 수록. 발 위치로 부하 조절 가능 <a href="#ref-14" class="ref-link">[14]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>학술적으로 입증된 클라이머 특유의 <strong>어깨 회전근 불균형을 직접 교정</strong>한다. 어깨 충돌증후군 예방. 동적 어깨 안정성 향상.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">2~3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">8~12<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">맨손(바닥) 또는 짐링(서서). 링 버전은 발 위치로 부하 조절 — 바닥 Y-T-W가 쉬워지면 링으로 전환. Y→T→W 순서로 각 자세 유지 2~3초.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">바닥 엎드려 Y-T-W (맨손)</td><td>2 &times; 8~12</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">바닥 Y-T-W + 경량 밴드</td><td>2 &times; 10~15</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">링 Y-T (서서, 발 위치로 부하 조절)</td><td>2 &times; 8~12</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">링 Y-T — 발을 앞으로 더 전진</td><td>2~3 &times; 8~12</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout" style="border-left-color: var(--tier1);">
+    <div class="callout-title" style="color: var(--tier1);">검증 수준 — 가장 강한 근거</div>
+    <p><span class="badge badge-tier1">Tier 1</span> peer-reviewed 논문 <a href="#ref-1" class="ref-link">[1]</a> + <span class="badge badge-tier3">Tier 3</span> 전문 PT(Vagy, Smith) 권장. <strong style="color:var(--tier1)">이 목록에서 유일하게 학술적 근거가 있는 운동.</strong></p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 05. SCAPULAR PUSH-UP ══════════ -->
+<section class="section fade-in" id="ex5">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 05</div>
+    <h2>견갑골 푸쉬업</h2>
+    <p class="section-tagline">Scapular Push-Up — 견갑골 안정성 확보를 위한 전거근 활성화 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=3TsOKiUDzw0" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/3TsOKiUDzw0/maxresdefault.jpg" alt="견갑골 푸쉬업 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/3TsOKiUDzw0/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Scapula Push Ups TUTORIAL</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Vagy는 견갑골 안정근(특히 전거근)이 클라이밍 중 등척성 수축으로 움직임을 안정시키는 대항근 역할을 한다고 설명했다 <a href="#ref-7" class="ref-link">[7]</a>. 전거근이 약하면 견갑골이 흉곽에서 들뜨는 <strong>"윙잉" 현상</strong>이 발생한다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>견갑골 안정성 확보 → 효율적 힘 전달. 피로 시 팔꿈치가 올라가는 <strong>"치킨윙" 패턴 예방</strong>. Vagy에 따르면 이런 안정근은 편심/등척 기능으로 훈련해야 한다 <a href="#ref-7" class="ref-link">[7]</a>.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">2~3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">10~15<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">30~45<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">전거근 수축 최상단에서 2초 유지. 팔을 구부리지 않는다.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">벽 견갑골 푸쉬업 (서서)</td><td>2 &times; 12~15</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">바닥 견갑골 푸쉬업</td><td>2 &times; 10~15</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">바닥 견갑골 푸쉬업 — 상단 3초 홀드</td><td>2 &times; 10~12</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">링 견갑골 푸쉬업</td><td>2 &times; 10~15</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier3">Tier 3</span> Vagy(DPT, CSCS)의 임상 경험 및 생체역학적 분석 기반.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 06. WRIST EXTENSORS ══════════ -->
+<section class="section fade-in" id="ex6">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 06</div>
+    <h2>손목 신전근 훈련</h2>
+    <p class="section-tagline">Wrist Extensor Exercise — 그립 근력 해제와 클라이머스 엘보우 예방</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+    <span class="badge badge-tier4">Tier 4 — 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=wi_157G7vBk" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/wi_157G7vBk/maxresdefault.jpg" alt="손목 신전근 등척성 운동" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/wi_157G7vBk/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · 손목 & 전완 신전근 등척성 운동</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Climbing Magazine의 대항근 가이드에서 첫 번째 운동으로 수록 <a href="#ref-9" class="ref-link">[9]</a>. Vagy에 따르면 손목 신전근 강화가 그립 근력과 안정성을 높이고 손가락 부상 위험을 줄인다 <a href="#ref-7" class="ref-link">[7]</a>. Bechtel도 전완 신전근 강화가 <strong>"그립 근력을 다시 점프스타트시킬 수 있다"</strong>고 언급했다 <a href="#ref-2" class="ref-link">[2]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>그립 근력 향상 (신전근 강화 → 굴곡근 출력 해제). <strong>클라이머스 엘보우(내/외측 상과염) 예방</strong>.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">2~3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">15~20<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">30<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">고무밴드 또는 맨손. 매 세션 마무리에 포함.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">손목 신전 — 맨손 펴기</td><td>2 &times; 15~20</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">고무밴드 손목 신전</td><td>2~3 &times; 15~20</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">역 손목 컬 (경량 KB/덤벨)</td><td>2~3 &times; 12~15</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">역 손목 컬 + 손가락 신전 밴드 슈퍼세트</td><td>3 &times; 12~15</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier3">Tier 3</span> + <span class="badge badge-tier4">Tier 4</span> 복수 전문가 합의 (Vagy, Smith, Bechtel) + Climbing Magazine 추천.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 07. PIKE PUSH-UP ══════════ -->
+<section class="section fade-in" id="ex7">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 07</div>
+    <h2>파이크 푸쉬업</h2>
+    <p class="section-tagline">Pike Push-Up — 클라이머를 위한 수직 프레스 패턴</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치</span>
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=sposDXWEB0A" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/sposDXWEB0A/maxresdefault.jpg" alt="파이크 푸쉬업 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/sposDXWEB0A/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Pike Push-Up 프로그레션 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>The Climbing Doctor × Hörst 종합 가이드에서 <strong>어깨 대항근 강화로 파이크 푸쉬업을 직접 추천</strong>했다 <a href="#ref-16" class="ref-link">[16]</a>. Bechtel이 클라이머에게 오버헤드 프레스를 가장 선호하는 원칙 <a href="#ref-2" class="ref-link">[2]</a>의 바디웨이트 확장으로, 장비 없이도 수직 프레스 패턴을 훈련할 수 있다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>탑아웃/맨틀의 상승 국면에서 필요한 <strong>수직 프레스 근력</strong>. 오버헤드 리치 시 어깨 안정성. 케틀벨 없이도 어깨 대항근을 효과적으로 자극할 수 있는 바디웨이트 대안.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3~4<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">5~8<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">2~3<span class="unit">분</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">푸쉬업 바 + 의자/침대(발 올림). 진행: 바닥 파이크 → 발 올린 파이크 → 월 핸드스탠드 푸쉬업.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">바닥 파이크 푸쉬업</td><td>3 &times; 8~10</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">발 올린 파이크 푸쉬업 (의자/침대)</td><td>3 &times; 6~8</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">발 올린 파이크 — 하강 3초 편심</td><td>3~4 &times; 5~8</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">월 핸드스탠드 푸쉬업 (벽 보조)</td><td>3 &times; 3~5</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> + <span class="badge badge-tier3">Tier 3</span> Bechtel 오버헤드 프레스 원칙 + Climbing Doctor × Hörst 가이드에서 직접 추천.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 08. FACE PULL / BAND PULL APART ══════════ -->
+<section class="section fade-in" id="ex8">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 08</div>
+    <h2>페이스 풀 / 밴드 풀어파트</h2>
+    <p class="section-tagline">Face Pull / Band Pull Apart — 견갑골 후인 + 외회전 결합 패턴</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치</span>
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=HSoHeSjvIdY" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/HSoHeSjvIdY/maxresdefault.jpg" alt="페이스 풀 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/HSoHeSjvIdY/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Face Pull 튜토리얼</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Bechtel은 클라이머의 견갑골 후인과 외회전을 결합한 패턴의 중요성을 강조했다 <a href="#ref-2" class="ref-link">[2]</a>. Vagy는 "360° 코어 파워"와 견갑골 안정성 프레임워크에서 회전근개 강화 운동으로 페이스 풀 계열을 포함시켰다 <a href="#ref-7" class="ref-link">[7]</a><a href="#ref-8" class="ref-link">[8]</a>. Y-T-W와 병행하면 시너지 효과 — Y-T-W가 개별 방향을 격리 훈련하고, 페이스 풀이 후인+외회전을 통합 훈련한다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>클라이밍의 반복적 당김(내회전+전인)에 대한 직접적 대항 패턴. 어깨를 뒤로 당기며(후인) 동시에 바깥으로 돌리는(외회전) 결합 움직임은 Y-T-W의 격리 훈련보다 실제 자세 교정에 더 가깝다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">12~15<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">밴드 또는 케이블. 가벼운 저항으로 견갑골 수축을 확실히 느낄 것. 빠른 속도 금지.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">밴드 풀어파트 (가슴 높이)</td><td>3 &times; 15</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">밴드 페이스 풀 (풀업바에 밴드 걸기)</td><td>3 &times; 12~15</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">페이스 풀 + 외회전 홀드 2초</td><td>3 &times; 10~12</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">페이스 풀 + 오버헤드 프레스 아웃</td><td>3 &times; 8~10</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p>Tier 2(Bechtel) + Tier 3(Vagy) 복수 출처 직접 추천. 아처 푸쉬업의 편측 프레스 자극은 링 불안정성으로 이미 커버됨.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 09. TURKISH GET-UP ══════════ -->
+<section class="section fade-in" id="ex9">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 09</div>
+    <h2>터키시 겟업</h2>
+    <p class="section-tagline">Turkish Get-Up — 전신 통합 어깨 안정성 + 코어 훈련</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치</span>
+    <span class="badge badge-tier4">Tier 4 — 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=0bWRPC49-KI" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/0bWRPC49-KI/maxresdefault.jpg" alt="터키시 겟업 케틀벨 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/0bWRPC49-KI/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · 케틀벨 터키시 겟업 단계별 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Bechtel(SFG Level 2 케틀벨 인스트럭터)은 Pavel Tsatsouline의 <strong>Simple &amp; Sinister</strong> 프로그램(스윙 + 겟업)을 클라이머에게 권장한다. 겟업은 바닥에서 일어서는 7단계 전 과정에서 오버헤드 어깨 안정성, 코어 반회전, 힙 모빌리티를 동시에 훈련하는 <strong>"자기 제한적(self-limiting) 운동"</strong>이다. <a href="#ref-2" class="ref-link">[2]</a></p>
+    <p>Climbing Magazine에서 Connie Sciolino(Alpine Training Center, 볼더 소재)는 가이드 체력 프로그램의 핵심 운동으로 <strong>"5 TGU &times; 3세트"</strong>를 처방했다. <a href="#ref-18" class="ref-link">[18]</a></p>
+    <p>Power Company Climbing 팟캐스트에서 Paul Corsaro(Crux Conditioning, SFG Level 1)는 겟업을 이렇게 설명했다: <strong>"프레스와 겟업을 지능적으로 하면… 어깨, 코어, 힙에 필요한 모든 방향을 커버하는 최고의 운동이다."</strong> 코어 관점에서는 첫 번째 단계(roll to elbow)가 핵심이며, "모든 것을 곧고 길게 유지한 채 피벗하는 법을 가르친다"고 했다. <a href="#ref-19" class="ref-link">[19]</a></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>바닥에서 완전히 일어서는 과정에서 <strong>오버헤드 안정성</strong>(어깨 위 팔 잠금), <strong>코어 반회전</strong>(전면·측면 코어 동시), <strong>힙 모빌리티</strong>(하이스텝·록오프 자세)를 통합 훈련한다. 클라이밍 중 불안정한 자세에서 어깨를 안정시키는 능력을 직접 강화하며, 각 단계가 다음 단계를 준비하는 연쇄 구조가 벽 위 시퀀스 읽기와 유사하다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">1~3<span class="unit">회/팔</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">60~90<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">8kg 케틀벨 사용. 속도보다 각 단계의 정확한 자세 유지가 핵심. 초보자는 맨손 또는 신발을 머리 위에 올려 연습.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">맨손 / 신발 올려 겟업 (자세 학습)</td><td>3 &times; 2~3/팔</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">KB 8kg 풀 겟업</td><td>3 &times; 1~3/팔</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">KB 8kg — 각 단계 2초 정지</td><td>3 &times; 1~2/팔</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">무게 증량 (12~16kg)</td><td>3 &times; 1~3/팔</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> <span class="badge badge-tier4">Tier 4</span> 전문 코치(Bechtel, SFG II) 및 클라이밍 미디어(Climbing Magazine, Power Company Climbing) 복수 출처에서 클라이머에게 직접 추천.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 10. FINGER EXTENSORS ══════════ -->
+<section class="section fade-in" id="ex10">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 10</div>
+    <h2>손가락 신전근</h2>
+    <p class="section-tagline">Finger Extensors (Rubber Band Spread) — Vagy 탑 5 대항근 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=wMVuB6MjKBM" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/wMVuB6MjKBM/maxresdefault.jpg" alt="손가락 신전근 운동 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/wMVuB6MjKBM/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · 손가락 신전근 운동</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Vagy는 손가락 신전근 훈련을 클라이머 탑 5 대항근 운동에 포함시켰다 <a href="#ref-7" class="ref-link">[7]</a><a href="#ref-8" class="ref-link">[8]</a><a href="#ref-10" class="ref-link">[10]</a>. 클라이밍은 굴곡근(손가락 구부리기)만 반복적으로 사용하므로 신전근이 약해지고 불균형이 누적된다. 고무밴드를 손가락에 감고 펼치는 동작으로 간단히 훈련 가능.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>손가락 힘줄 건강과 부상 예방에 직결. 특히 크림프 그립을 많이 사용하는 볼더러에게 필수. 손목 신전근 훈련과 병행하면 전완 전체 균형 확보.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">15~20<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">30<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">고무밴드를 손가락 끝에 감고 펼친다. 세션 마무리에 손목 신전근과 함께 수행.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">얇은 고무밴드</td><td>3 &times; 15</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">중간 고무밴드</td><td>3 &times; 15~20</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">두꺼운 고무밴드</td><td>3 &times; 15~20</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">밴드 2개 겹쳐서</td><td>3 &times; 12~15</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p>Tier 3(Vagy, DPT) 직접 추천. 탑 5 대항근 운동 포함.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ PRINCIPLES ══════════ -->
+<section class="section fade-in" id="principles">
+  <div class="section-header">
+    <div class="section-number">PROGRAMMING PRINCIPLES</div>
+    <h2>프로그래밍 원칙</h2>
+    <p class="section-tagline">검증된 출처에서 확인된 세션 구성 가이드라인</p>
+  </div>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>원칙</th><th>출처</th><th>원문 요약</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="principle-name">주 2회 짧은 세션이면 충분</td>
+        <td>Lattice (Ollie Torr) <a href="#ref-4" class="ref-link">[4]</a></td>
+        <td>"주 2회 짧은 세션이면 대부분의 클라이머에게 건강한 근력 균형을 유지하기에 충분하며, 이 정도 양은 클라이밍에 해로운 피로를 유발할 가능성이 매우 낮다."</td>
+      </tr>
+      <tr>
+        <td class="principle-name">대항근 훈련은 연중 포함</td>
+        <td>Lattice (Jon Procter) <a href="#ref-5" class="ref-link">[5]</a></td>
+        <td>"대항근 훈련은 모든 클라이머의 훈련 프로그램에 포함되어야 하며, 연중 유지해야 한다. 이를 무시하면 불균형이 발생하여 부상으로 이어질 수 있다."</td>
+      </tr>
+      <tr>
+        <td class="principle-name">퍼포먼스 단계에서도 유지</td>
+        <td>Lattice (Ollie Torr) <a href="#ref-4" class="ref-link">[4]</a></td>
+        <td>"클라이밍에 집중하고 보충 컨디셔닝을 줄이면 몸이 더 전문화되는데, 이를 너무 오래 지속하면 역효과가 난다. 대항근 훈련을 추가하면 더 긴 피크 퍼포먼스 유지와 부상 예방이 가능하다."</td>
+      </tr>
+      <tr>
+        <td class="principle-name">신경 억제로 인한 근력 제한</td>
+        <td>Steve Bechtel (PCC Ep.2) <a href="#ref-2" class="ref-link">[2]</a></td>
+        <td>"근본적으로 불균형한 몸이면 신경 억제가 더 강해지는 것을 막지 못한다." 벤치프레스 정체 시 풀업으로 돌파하는 예시를 들어 대항근 강화가 주동근 출력을 해제함을 설명. <em>(코칭 관찰 기반)</em></td>
+      </tr>
+      <tr>
+        <td class="principle-name">프레스 근력 벤치마크</td>
+        <td>Steve Bechtel (TrainingBeta Ep.80) <a href="#ref-3" class="ref-link">[3]</a></td>
+        <td>대항근 프레스 근력 목표: 남성 체중만큼, 여성 3/4 체중 벤치프레스.</td>
+      </tr>
+      <tr>
+        <td class="principle-name">삼두는 편심 훈련으로 타겟팅</td>
+        <td>Dr. Jared Vagy <a href="#ref-7" class="ref-link">[7]</a></td>
+        <td>"근육이 클라이밍 중 어떻게 사용되는지에 따라 훈련 방법이 결정되어야 한다. 삼두는 편심 운동으로 타겟팅해야 한다."</td>
+      </tr>
+      <tr>
+        <td class="principle-name">약한 클라이머 근육</td>
+        <td>Dr. Esther Smith <a href="#ref-9" class="ref-link">[9]</a></td>
+        <td>"해당 근막 시스템의 약한 클라이머 근육들 — 삼두, 중·하부 승모근, 회전근개 — 을 강화해야 한다."</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ SOURCE TIERS ══════════ -->
+<section class="section fade-in" id="sources">
+  <div class="section-header">
+    <div class="section-number">SOURCE CRITERIA</div>
+    <h2>출처 기준</h2>
+    <p class="section-tagline">이 페이지의 모든 정보는 아래 다섯 가지 계층의 출처에서 검증되었다.</p>
+  </div>
+
+  <div class="accordion open">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span>출처 계층 (Tier 1 ~ 4)</span>
+      <span class="accordion-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="tier-item">
+        <h4><span class="badge badge-tier1">Tier 1</span> Peer-reviewed 학술 연구</h4>
+        <p><strong>Wong &amp; Ng (2009)</strong> — 클라이머 31명 vs 비클라이머 27명 단면 연구. 클라이머의 기능적 작업비(편심 외회전 : 구심 내회전)가 비클라이머보다 유의미하게 낮음 (1.05 vs 1.30, P=.005). 한계: 소표본, 인과관계 증명 불가. <a href="#ref-1" class="ref-link">[1]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tier2">Tier 2</span> 공인 자격 클라이밍 전문 코치/저자</h4>
+        <p><strong>Steve Bechtel (Climb Strong)</strong> — CSCS, 운동생리학 학위(University of Wyoming), SFG II, USA Weightlifting 공인 코치. 저서: <em>Strength</em>, <em>Logical Progression</em>, <em>Unstoppable Force</em>(공저). <a href="#ref-2" class="ref-link">[2]</a> <a href="#ref-3" class="ref-link">[3]</a></p>
+        <p><strong>Lattice Training (Ollie Torr, Tom Randall, Jon Procter)</strong> — 영국 기반 데이터 드리븐 클라이밍 코칭 회사. 수천 명의 클라이머 데이터 기반 운영. Crimpd 앱 개발. <a href="#ref-4" class="ref-link">[4]</a> <a href="#ref-5" class="ref-link">[5]</a> <a href="#ref-6" class="ref-link">[6]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tier3">Tier 3</span> 클라이밍 전문 의료 전문가</h4>
+        <p><strong>Dr. Jared Vagy, DPT (The Climbing Doctor)</strong> — USC 임상 부교수, 정형 임상 전문가(board-certified), CSCS, 15년+ 클라이밍 경험. 저서: <em>Climb Injury-Free</em>. <a href="#ref-7" class="ref-link">[7]</a> <a href="#ref-8" class="ref-link">[8]</a></p>
+        <p><strong>Dr. Esther Smith, DPT (Grassroots Physical Therapy)</strong> — 클라이밍 부상 전문 물리치료사. <a href="#ref-9" class="ref-link">[9]</a></p>
+        <p><strong>Dr. Jason Hooper, DPT (Hooper's Beta)</strong> — 클라이밍 전문 물리치료사. 클라이머 대상 운동 추천 및 부상 예방 콘텐츠. <a href="#ref-13" class="ref-link">[13]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tier4">Tier 4</span> 클라이밍 전문 미디어</h4>
+        <p><strong>Climbing Magazine</strong> — 대항근 훈련 종합 가이드 (2019). <strong>Power Company Climbing Podcast</strong> — Ep.2. <strong>TrainingBeta Podcast</strong> — Ep.80. <a href="#ref-9" class="ref-link">[9]</a> <a href="#ref-2" class="ref-link">[2]</a> <a href="#ref-3" class="ref-link">[3]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-principle">🔶 원칙 적용</span> 검증된 원칙에서 도출</h4>
+        <p>위 Tier 1~4에서 원칙은 확인되었으나, 해당 특정 운동의 직접 추천은 미확인. 일반 운동과학에서는 검증된 운동이며, 클라이밍 전문 소스의 원칙을 논리적으로 확장 적용한 것이다. 직접 검증(✅)과 시각적으로 구분하여 표기.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ REFERENCES ══════════ -->
+<section class="section fade-in" id="references">
+  <div class="section-header">
+    <div class="section-number">REFERENCES</div>
+    <h2>레퍼런스</h2>
+  </div>
+
+  <ol class="ref-list">
+    <li id="ref-1">
+      <span class="ref-num">[1]</span>
+      <div>Wong, E.K.L. &amp; Ng, G.Y.F. (2009). "Strength Profiles of Shoulder Rotators in Healthy Sport Climbers and Nonclimbers." <em>Journal of Athletic Training</em>, 44(5), 527–530. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2742463/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov</a></div>
+    </li>
+    <li id="ref-2">
+      <span class="ref-num">[2]</span>
+      <div>Bechtel, S. (2016). "Resistance Training for Climbers." <em>Power Company Climbing Podcast</em>, Episode 2. 인터뷰어: Kris Hampton. <a href="https://www.powercompanyclimbing.com/blog/2016/01/episode-2-resistance-training-with.html" target="_blank" rel="noopener">powercompanyclimbing.com</a></div>
+    </li>
+    <li id="ref-3">
+      <span class="ref-num">[3]</span>
+      <div>Bechtel, S. (2017). "How to Create Your Own Training Plan." <em>TrainingBeta Podcast</em>, Episode 80. 인터뷰어: Neely Quinn. <a href="https://www.trainingbeta.com/media/steve-bechtel-3/" target="_blank" rel="noopener">trainingbeta.com</a></div>
+    </li>
+    <li id="ref-4">
+      <span class="ref-num">[4]</span>
+      <div>Torr, O. (2023). "The Importance of Antagonist Training During Performance Phase." <em>Lattice Training Blog</em>. <a href="https://latticetraining.com/blog/training-tips-for-climbers-the-importance-of-antagonist-training-during-performance-phase/" target="_blank" rel="noopener">latticetraining.com</a></div>
+    </li>
+    <li id="ref-5">
+      <span class="ref-num">[5]</span>
+      <div>Procter, J. (2025). "How to: Structure Your Training." <em>Lattice Training Blog</em>. <a href="https://latticetraining.com/blog/how-to-structure-your-training/" target="_blank" rel="noopener">latticetraining.com</a></div>
+    </li>
+    <li id="ref-6">
+      <span class="ref-num">[6]</span>
+      <div>Randall, T. "Lattice Training Series with Tom Randall — Part 4: Conditioning &amp; Mobility." <em>UKClimbing</em>. <a href="https://www.ukclimbing.com/articles/skills/series/lattice_training_series_with_tom_randall/part_4_conditioning+mobility-11396" target="_blank" rel="noopener">ukclimbing.com</a></div>
+    </li>
+    <li id="ref-7">
+      <span class="ref-num">[7]</span>
+      <div>Vagy, J. (2015). "How to Train Antagonist Muscle Strength for Climbing." <em>The Climbing Doctor</em>. <a href="https://theclimbingdoctor.com/how-to-train-antagonist-muscle-strength-for-climbing/" target="_blank" rel="noopener">theclimbingdoctor.com</a></div>
+    </li>
+    <li id="ref-8">
+      <span class="ref-num">[8]</span>
+      <div>Vagy, J. "Rock Climbing Injury Tips: Antagonist Strength Exercises." <em>The Climbing Doctor</em>. <a href="https://theclimbingdoctor.com/rock-climbing-injury-tips-antagonist-strength-exercises/" target="_blank" rel="noopener">theclimbingdoctor.com</a></div>
+    </li>
+    <li id="ref-9">
+      <span class="ref-num">[9]</span>
+      <div>Schulte, C. (2019). "Antagonist Workouts for Climbers: Improve Performance and Prevent Injury." <em>Climbing Magazine</em>. (Dr. Esther Smith, Dr. Jared Vagy 인터뷰 포함) <a href="https://www.climbing.com/skills/antagonist-workouts-for-climbers-improve-performance-and-prevent-injury/" target="_blank" rel="noopener">climbing.com</a></div>
+    </li>
+    <li id="ref-10">
+      <span class="ref-num">[10]</span>
+      <div>Vagy, J. <em>Climb Injury-Free: A Proven Injury Prevention and Rehabilitation System.</em> (서적) <a href="https://www.amazon.com/Climb-Injury-Free-Dr-Jared-Vagy/dp/0692831894" target="_blank" rel="noopener">amazon.com</a></div>
+    </li>
+    <li id="ref-11">
+      <span class="ref-num">[11]</span>
+      <div>Bechtel, S. &amp; Manganiello, C. <em>Unstoppable Force: Strength Training for Climbing.</em> (서적)</div>
+    </li>
+    <li id="ref-12">
+      <span class="ref-num">[12]</span>
+      <div>REI Expert Advice. "How to Prevent Climbing Injuries." (Dr. Vagy 기고/인용) <a href="https://www.rei.com/blog/climb/how-to-climb-injury-free" target="_blank" rel="noopener">rei.com</a></div>
+    </li>
+    <li id="ref-13">
+      <span class="ref-num">[13]</span>
+      <div>Hooper's Beta. "Top 12 WORST Exercises for Climbers." <em>hoopersbeta.com</em>. — 링 딥스를 벤치프레스 대안으로 클라이머에게 추천.</div>
+    </li>
+    <li id="ref-14">
+      <span class="ref-num">[14]</span>
+      <div>improve-climbing.com. "Antagonist Training Climbing: 20 Best Exercises." — 링 딥스, 링 푸쉬업, 링 Y-T 레이즈를 클라이밍 대항근 운동으로 수록.</div>
+    </li>
+    <li id="ref-15">
+      <span class="ref-num">[15]</span>
+      <div>UKClimbing. "The Importance of Antagonistic Training for Climbers." — 링 푸쉬업과 링 딥스의 난이도 조절 및 클라이밍 적합성 설명.</div>
+    </li>
+    <li id="ref-16">
+      <span class="ref-num">[16]</span>
+      <div>The Climbing Doctor &times; Hörst. "Optimal Training and Injury Prevention Techniques for Climbers with a Full-time Schedule." — 파이크 푸쉬업을 어깨 대항근 운동으로 직접 추천.</div>
+    </li>
+    <li id="ref-17">
+      <span class="ref-num">[17]</span>
+      <div>Hörst, E. "6 Plyometric Exercises to Boost Climbing Power." <em>Training for Climbing</em>. — 푸쉬업의 대항근 + 맨틀/컴프레션 이중 가치 설명.</div>
+    </li>
+    <li id="ref-18">
+      <span class="ref-num">[18]</span>
+      <div>Sciolino, C. "Train Like A Guide." <em>Climbing Magazine</em>. — Alpine Training Center 코치. 터키시 겟업 5회 &times; 3세트 처방 (오프시즌 주 2~3회, 시즌 주 1~2회). <a href="https://www.climbing.com/skills/freaky-fit/" target="_blank" rel="noopener">climbing.com</a></div>
+    </li>
+    <li id="ref-19">
+      <span class="ref-num">[19]</span>
+      <div>Corsaro, P. "Kettlebells for Climbers." <em>Power Company Climbing Podcast</em>. — Crux Conditioning, SFG Level 1. 겟업을 "어깨·코어·힙 모든 방향을 커버하는 최고의 운동"으로 추천. <a href="https://www.powercompanyclimbing.com/blog/2016/3/21/episode" target="_blank" rel="noopener">powercompanyclimbing.com</a></div>
+    </li>
+  </ol>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <p>클라이머를 위한 푸쉬 세션 — 검증된 출처 기반 대항근 훈련 가이드</p>
+  <p style="margin-top: 0.5rem; opacity: 0.5;">마지막 업데이트 2026-03</p>
+</footer>
+
+<script>
+  function toggleAccordion(header) {
+    header.parentElement.classList.toggle('open');
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

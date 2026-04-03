@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라이머를 위한 코어 근지구력 훈련 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #141418;
+    --surface-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #e8e6e3;
+    --text-dim: #8a8a95;
+    --accent: #ff6b35;
+    --accent-glow: rgba(255, 107, 53, 0.15);
+    --tier1: #4ecdc4;
+    --tier2: #118ab2;
+    --tier3: #a855f7;
+    --tier4: #8a8a95;
+    --green: #4ecdc4;
+    --yellow: #ffd166;
+    --red: #ef476f;
+    --blue: #118ab2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%);
+    animation: heroPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroPulse {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(3deg) scale(1.05); }
+  }
+
+  .hero-badge {
+    position: relative;
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    background: var(--accent-glow);
+  }
+
+  .hero h1 {
+    position: relative;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0.05em;
+    left: 0;
+    width: 100%;
+    height: 0.12em;
+    background: var(--accent);
+    opacity: 0.3;
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    position: relative;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .hero-timing {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2.5rem;
+    max-width: 640px;
+    text-align: left;
+  }
+
+  .hero-timing h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-timing p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .hero-timing strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .disclaimer {
+    position: relative;
+    background: rgba(255, 107, 53, 0.06);
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+    max-width: 640px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .disclaimer strong { color: var(--accent); }
+
+  /* ── NAV ── */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  .toc-inner {
+    display: flex;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .toc a {
+    display: block;
+    padding: 1rem 1.4rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+    background: rgba(255, 107, 53, 0.05);
+    text-decoration: none;
+  }
+
+  .toc .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-right: 0.4rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-tagline {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .badge-tier1 { background: rgba(78, 205, 196, 0.12); color: var(--tier1); }
+  .badge-tier2 { background: rgba(17, 138, 178, 0.12); color: var(--tier2); }
+  .badge-tier3 { background: rgba(168, 85, 247, 0.12); color: var(--tier3); }
+  .badge-tier4 { background: rgba(138, 138, 149, 0.12); color: var(--tier4); }
+  .badge-principle { background: rgba(255, 209, 102, 0.12); color: var(--yellow); }
+
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  /* ── CONTENT BLOCKS ── */
+  .block {
+    margin-bottom: 2.5rem;
+  }
+
+  .block h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .block h3 .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .icon-setup  { background: rgba(78, 205, 196, 0.15); color: var(--green); }
+  .icon-breath { background: rgba(17, 138, 178, 0.15); color: var(--blue); }
+  .icon-warn   { background: rgba(239, 71, 111, 0.15); color: var(--red); }
+  .icon-tip    { background: rgba(255, 209, 102, 0.15); color: var(--yellow); }
+  .icon-prog   { background: rgba(255, 107, 53, 0.15); color: var(--accent); }
+  .icon-source { background: rgba(17, 138, 178, 0.15); color: var(--blue); }
+  .icon-climb  { background: rgba(78, 205, 196, 0.15); color: var(--green); }
+
+  .block p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .block p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .block p:last-child { margin-bottom: 0; }
+
+  /* ── REF LINK ── */
+  .ref-link {
+    color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* ── MEDIA ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .media-grid { grid-template-columns: 1fr; }
+  }
+
+  .video-wrap {
+    grid-column: 1 / -1;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .video-wrap a {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.3s;
+  }
+
+  .video-wrap a:hover img {
+    filter: brightness(0.85);
+  }
+
+  .video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    background: rgba(255, 107, 53, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    pointer-events: none;
+  }
+
+  .video-wrap a:hover .video-play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(255, 107, 53, 1);
+  }
+
+  .video-play-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+    margin-left: 3px;
+  }
+
+  .video-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  /* ── PROGRESSION TABLE ── */
+  .prog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .prog-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .prog-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  .prog-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .prog-table .principle-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── LEVEL BADGES (push-page system) ── */
+  .prog-table .lv {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .lv-1 { background: var(--green); color: #0a0a0c !important; }
+  .lv-2 { background: var(--blue); }
+  .lv-3 { background: var(--yellow); color: #0a0a0c !important; }
+  .lv-4 { background: var(--accent); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .callout.green { border-left-color: var(--green); }
+  .callout.red   { border-left-color: var(--red); }
+  .callout.blue  { border-left-color: var(--blue); }
+  .callout.amber { border-left-color: var(--yellow); }
+
+  .callout-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .callout .callout-title        { color: var(--accent); }
+  .callout.green .callout-title  { color: var(--green); }
+  .callout.red .callout-title    { color: var(--red); }
+  .callout.blue .callout-title   { color: var(--blue); }
+  .callout.amber .callout-title  { color: var(--yellow); }
+
+  .callout p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .callout p strong { color: var(--text); font-weight: 500; }
+
+  /* ── ACCORDION (Source Tiers) ── */
+  .accordion {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .accordion-header {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    user-select: none;
+  }
+
+  .accordion-header:hover { background: rgba(255,255,255,.03); }
+
+  .accordion-arrow {
+    transition: transform .3s;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+    padding: 0 1.5rem;
+  }
+
+  .accordion.open .accordion-body { max-height: 3000px; padding: 0 1.5rem 1.5rem; }
+  .accordion.open .accordion-arrow { transform: rotate(180deg); }
+
+  .tier-item { margin-bottom: 1.2rem; }
+  .tier-item:last-child { margin-bottom: 0; }
+
+  .tier-item h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .tier-item p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+  }
+
+  .tier-item p strong { color: var(--text); font-weight: 500; }
+
+  /* ── ORDER SECTION ── */
+  .order-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+  }
+
+  .order-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .order-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .order-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .order-item .num-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .order-arrow { color: var(--text-dim); font-size: 1.2rem; }
+
+  /* ── EQUIPMENT ── */
+  .equip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .equip-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── REFERENCES ── */
+  .ref-list { list-style: none; }
+
+  .ref-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 12px;
+  }
+
+  .ref-list li:last-child { border-bottom: none; }
+
+  .ref-num {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 28px;
+  }
+
+  .ref-list li a { word-break: break-all; }
+
+  /* ── SET & REST CARD ── */
+  .set-rest-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .set-rest-card { grid-template-columns: 1fr; }
+  }
+
+  .set-rest-item {
+    background: var(--surface);
+    padding: 1.2rem 1.4rem;
+    text-align: center;
+  }
+
+  .set-rest-item .label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .set-rest-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .set-rest-item .value .unit {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 0.15rem;
+  }
+
+  .set-rest-note {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: -0.8rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .set-rest-card { grid-template-columns: 1fr; }
+    .order-flow { flex-direction: column; }
+    .order-arrow { transform: rotate(90deg); }
+    .hero-timing { padding: 1.2rem 1.5rem; }
+    .section { padding: 3rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-badge">Climbing &times; Core Training</div>
+  <h1>
+    오버행에서 쥐 안 나는<br>
+    <span class="highlight">코어 근지구력</span> 만들기
+  </h1>
+  <p class="hero-sub">
+    복직근 상부 경련의 원인을 해결하는 8가지 핵심 운동.<br>
+    자세 셋업 &rarr; 호흡법 &rarr; 흔한 실수 &rarr; 프로그레션까지.
+  </p>
+  <div class="hero-timing">
+    <h3>&#9201; 훈련 타이밍</h3>
+    <p>
+      <strong>클라이밍 세션 직후</strong>에 붙여서 하는 게 가장 좋다.
+      코어가 이미 활성화된 상태라 워밍업이 덜 필요하고, 별도 날을 빼지 않아도 된다.<br>
+      단, 클라이밍에서 쥐가 심하게 났던 날은 스킵하고 <strong>다음날 단독</strong>으로 해도 괜찮다.
+    </p>
+  </div>
+  <div class="disclaimer">
+    <strong>면책 고지:</strong> 개별 운동의 클라이밍 특화 효과에 대한 RCT(무작위 대조 시험)는 현재 존재하지 않는다.
+    아래 운동 추천은 전문가들의 코칭 경험, 운동생리학 원리, 제한적 학술 근거를 종합한 것이다.
+  </div>
+</section>
+
+<!-- ══════════ TOC ══════════ -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#order"><span class="num">&#9654;</span>세션 순서</a>
+    <a href="#ex1"><span class="num">01</span>할로우 바디 홀드</a>
+    <a href="#ex2"><span class="num">02</span>데드버그</a>
+    <a href="#ex3"><span class="num">03</span>행잉 니/레그레이즈</a>
+    <a href="#ex4"><span class="num">04</span>앱 롤아웃</a>
+    <a href="#ex5"><span class="num">05</span>팔로프 프레스</a>
+    <a href="#ex6"><span class="num">06</span>사이드 플랭크</a>
+    <a href="#ex7"><span class="num">07</span>글루트 브릿지</a>
+    <a href="#ex8"><span class="num">08</span>프론트 레버</a>
+    <a href="#sources"><span class="num">i</span>출처 기준</a>
+    <a href="#references"><span class="num">REF</span>레퍼런스</a>
+  </div>
+</nav>
+
+<!-- ══════════ SESSION ORDER ══════════ -->
+<section class="section fade-in" id="order">
+  <div class="section-header">
+    <div class="section-number">RECOMMENDED SESSION</div>
+    <h2>클라이밍 후 세션 권장 순서</h2>
+    <p class="section-tagline">Lattice Training의 "주 2회 짧은 세션" 원칙 기반 <a href="#ref-4" class="ref-link">[4]</a></p>
+  </div>
+
+  <div class="order-section">
+    <h3>세션 순서</h3>
+    <div class="order-flow">
+      <div class="order-item"><span class="num-circle">1</span>할로우 바디</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">2</span>데드버그</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">3</span>행잉 레이즈</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">4</span>앱 롤아웃</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">5</span>팔로프 프레스</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">6</span>사이드 플랭크</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">7</span>글루트 브릿지</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">8</span>프론트 레버</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">순서 이유</div>
+    <p>바닥 항신전으로 코어 활성화(할로우) &rarr; 항회전/운동 제어(데드버그) &rarr; 매달리기 강도 상승(행잉 레이즈) &rarr; 링 항신전(앱 롤아웃) &rarr; 항회전(팔로프) &rarr; 항측굴(사이드 플랭크) &rarr; 후면 체인(글루트 브릿지) &rarr; 최고 강도 당김+코어 통합(프론트 레버) 마무리. 운동 전환 시에는 <strong>60~90초</strong> 휴식 후 다음 운동으로 넘어간다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 사용 장비</h3>
+    <div class="equip-row">
+      <span class="equip-tag">풀업바</span>
+      <span class="equip-tag">짐링</span>
+      <span class="equip-tag">앱휠 (또는 링으로 대체)</span>
+      <span class="equip-tag">저항 밴드 (팔로프 프레스용)</span>
+    </div>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">총 소요 시간</div>
+      <div class="value">35~45<span class="unit">분</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">주간 빈도</div>
+      <div class="value">2<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">시기</div>
+      <div class="value" style="font-size:1rem;">연중 유지</div>
+    </div>
+  </div>
+  <p class="set-rest-note">Torr: "주 2회 짧은 세션이면 건강한 근력 균형 유지에 충분" <a href="#ref-4" class="ref-link">[4]</a></p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>순서</th><th>운동</th><th>세트 &times; 반복</th><th>휴식</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">01</td>
+        <td class="principle-name">할로우 바디 홀드</td>
+        <td>3 &times; 20~45초</td>
+        <td>60초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">02</td>
+        <td class="principle-name">데드버그</td>
+        <td>3 &times; 8회(좌우)</td>
+        <td>45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">03</td>
+        <td class="principle-name">행잉 니/레그레이즈</td>
+        <td>3 &times; 8~12회</td>
+        <td>45~60초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">04</td>
+        <td class="principle-name">앱 롤아웃 (링)</td>
+        <td>3 &times; 6~10회</td>
+        <td>45~60초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">05</td>
+        <td class="principle-name">팔로프 프레스</td>
+        <td>3 &times; 8~10회/방향</td>
+        <td>45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">06</td>
+        <td class="principle-name">사이드 플랭크</td>
+        <td>3 &times; 20~45초/방향</td>
+        <td>45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">07</td>
+        <td class="principle-name">글루트 브릿지</td>
+        <td>3 &times; 10~15회</td>
+        <td>45초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">08</td>
+        <td class="principle-name">프론트 레버 프로그레션</td>
+        <td>3 &times; 10~15초</td>
+        <td>60~90초</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">4주 후 업그레이드</div>
+    <p>
+      &bull; 주 2회 &rarr; 3회로 확장 (가벼운 코어 A 세션 추가)<br>
+      &bull; 할로우 바디 홀드 시간 점진 증가: 20초 &rarr; 30초 &rarr; 45초<br>
+      &bull; 니레이즈 &rarr; 레그레이즈 전환<br>
+      &bull; 팔로프 프레스 홀드 &rarr; 프레스 &rarr; 반무릎 자세 전환<br>
+      &bull; 사이드 플랭크 30초 안정적이면 &rarr; 힙 딥 추가<br>
+      &bull; 글루트 브릿지 양다리 15회 쉬우면 &rarr; 싱글레그 전환<br>
+      &bull; 프론트 레버 턱 &rarr; 어드밴스드 턱 (다리 점점 펴기)
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 01. HOLLOW BODY HOLD ══════════ -->
+<section class="section fade-in" id="ex1">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 01</div>
+    <h2>할로우 바디 홀드</h2>
+    <p class="section-tagline">Hollow Body Hold — 코어 훈련의 기본기이자 오버행 바디 텐션의 시작점</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 &mdash; 전문 코치</span>
+    <span class="badge badge-tier4">Tier 4 &mdash; 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=uZqTUwq96iU" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/uZqTUwq96iU/maxresdefault.jpg" alt="The BEST HOLLOW BODY Progressions — 초급부터 고급까지 단계별 가이드" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/uZqTUwq96iU/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; The BEST HOLLOW BODY Progressions — 초급부터 고급까지 단계별 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 할로우 바디를 클라이머 코어 5대 운동에 포함시켰다 <a href="#ref-8" class="ref-link">[8]</a><a href="#ref-9" class="ref-link">[9]</a>. Lattice Training(Hadley)에서도 클라이머 코어 기초 운동으로 권장한다 <a href="#ref-11" class="ref-link">[11]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-setup">&#128208;</span> 자세 셋업</h3>
+    <p>바닥에 눕고, 양팔은 귀 옆으로 쭉 뻗고, 다리도 쭉 편다. 여기서 <strong>허리(요추)가 바닥에 완전히 밀착</strong>되도록 골반을 후방경사(포스테리어 틸트) 시킨다. 이 상태에서 팔과 다리를 바닥에서 살짝 들어올린다.</p>
+    <p>핵심은 <strong>허리와 바닥 사이에 손이 들어가면 안 된다</strong>는 것. 밴드나 수건을 등 아래에 넣고 당겨보는 테스트로 확인할 수 있다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-breath">&#128168;</span> 호흡법</h3>
+    <p>대부분 숨을 참는데, 이게 오버행에서 쥐 나는 원인 중 하나다. 홀드 중에 <strong>입으로 짧게 "후-후-후-" 내쉬면서 복압은 유지</strong>하는 연습을 해야 한다. 복압을 유지하면서 호흡하는 능력 자체가 이 운동의 핵심 목적이다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-warn">&#9888;&#65039;</span> 흔한 실수</h3>
+    <p><strong>허리가 뜨는 것</strong> — 다리를 너무 낮게 내리려고 하면 발생. 다리 높이를 올려서라도 허리 밀착 우선.</p>
+    <p><strong>목에 힘 들어가는 것</strong> — 턱을 살짝 당기되 머리를 억지로 드는 게 아님. 시선은 천장이 아니라 발끝 방향.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>오버행에서 바디 텐션을 유지하는 가장 기본적인 능력. <strong>복압을 유지하면서 호흡하는 능력 자체</strong>가 등반 중 코어 컨트롤의 핵심이다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">60<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">등척성 홀드</div>
+    </div>
+  </div>
+  <p class="set-rest-note">홀드 중 폼이 무너지면 그 세트는 종료. 다음 세트 시작 시 첫 5초가 깔끔하면 충분히 회복된 것.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">무릎 구부린 할로우 (팔은 몸 옆)</td>
+        <td>15초 홀드</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">무릎 구부린 할로우 (팔 귀 옆)</td>
+        <td>20초 홀드</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">다리 편 할로우</td>
+        <td>20~30초 홀드</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">할로우 락 (앞뒤 흔들기)</td>
+        <td>20초 유지</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span>(Hörst) + <span class="badge badge-tier4">Tier 4</span>(Lattice) 복수 출처 직접 추천. 45초 유지하면서 호흡이 안정적으로 가능하면 충분. 이 상태면 오버행에서의 코어 텐션 기반이 완성된 것.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 02. DEAD BUG ══════════ -->
+<section class="section fade-in" id="ex2">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 02</div>
+    <h2>데드버그</h2>
+    <p class="section-tagline">Dead Bug — 움직임 중 코어가 흐트러지지 않는 "항회전" 능력의 정수</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=4XLEnwUr1d8" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/4XLEnwUr1d8/maxresdefault.jpg" alt="Dead Bug — 복부/코어 운동 가이드 (올바른 자세 및 호흡)" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/4XLEnwUr1d8/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; Dead Bug — 복부/코어 운동 가이드 (올바른 자세 및 호흡)</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Dr. Jared Vagy(DPT)는 볼더러 요통 예방 프로토콜에서 데드버그를 직접 처방했다: <strong>"Dead Bug — 고관절과 어깨 관절이 능동적 가동범위를 거치는 동안 코어 안정성을 훈련하는 훌륭한 운동"</strong> <a href="#ref-7" class="ref-link">[7]</a><a href="#ref-15" class="ref-link">[15]</a>. Lattice Training의 바닥 코어 훈련 및 항회전 훈련 원칙과도 부합한다 <a href="#ref-11" class="ref-link">[11]</a><a href="#ref-6" class="ref-link">[6]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-setup">&#128208;</span> 자세 셋업</h3>
+    <p>바닥에 눕고, 양팔 천장으로 뻗고, 무릎 90도로 들어올린다. 할로우 바디와 마찬가지로 <strong>허리 바닥 밀착이 전제</strong>.</p>
+    <p>여기서 오른팔과 왼다리를 동시에 천천히 바닥 쪽으로 내린다. 바닥에 닿기 직전에 멈추고 돌아온다. 반대쪽 반복.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-warn">&#9888;&#65039;</span> 흔한 실수</h3>
+    <p><strong>속도가 너무 빠름</strong> — 1회에 최소 4~5초 써야 한다. 빠르게 하면 관성으로 넘기게 됨.</p>
+    <p><strong>팔다리에만 집중</strong> — 핵심은 <strong>움직이지 않는 쪽</strong> 팔다리와 허리가 흔들리지 않는 것. 움직이는 쪽은 그냥 도구일 뿐.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>오버행에서 오른손을 다음 홀드로 뻗을 때, 왼발과 코어가 몸을 잡아줘야 한다. 데드버그는 정확히 이 <strong>대각선 패턴(contralateral)</strong>을 훈련시킨다. 단순 복직근 강화가 아니라 <strong>항회전(anti-rotation) 능력</strong>을 만들어주는 것.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">동적 반복</div>
+    </div>
+  </div>
+  <p class="set-rest-note">1회 4~5초 템포. 허리가 바닥에서 뜨기 시작하면 그 세트는 종료.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">팔만 / 다리만 개별 수행</td>
+        <td>3 &times; 8회 (좌우)</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">기본 데드버그 (팔+다리 동시)</td>
+        <td>3 &times; 8회 (좌우)</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">밴드 저항 데드버그 (항회전 강화)</td>
+        <td>3 &times; 8회 (좌우)</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">슬로우 데드버그 (1회 8초 템포)</td>
+        <td>3 &times; 6회 (좌우)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier3">Tier 3</span> 클라이밍 전문 의료 전문가(Dr. Vagy, DPT)가 볼더러 요통 예방 프로토콜에서 직접 처방. Lattice의 항회전 코어 원칙과도 부합.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 03. HANGING LEG RAISE ══════════ -->
+<section class="section fade-in" id="ex3">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 03</div>
+    <h2>행잉 니레이즈 / 레그레이즈</h2>
+    <p class="section-tagline">Hanging Knee/Leg Raise — 오버행에서 발을 홀드로 가져가는 동작 그 자체</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 &mdash; 전문 코치</span>
+    <span class="badge badge-tier4">Tier 4 &mdash; 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=Pr1ieGZ5atk" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/Pr1ieGZ5atk/hqdefault.jpg" alt="Hanging Leg Raise HOW-TO — 올바른 자세 및 프로그레션" loading="lazy">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; 행잉 레그레이즈 올바른 자세 및 프로그레션 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Lattice Training이 클라이머 코어 훈련의 핵심 동작으로 포함 <a href="#ref-11" class="ref-link">[11]</a>. Gripped Magazine에서 클라이머 코어 루틴에 수록 <a href="#ref-13" class="ref-link">[13]</a>. Metolius 트레이닝 가이드에서도 권장.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-setup">&#128208;</span> 니레이즈 자세</h3>
+    <p>풀업바에 매달리고, 어깨를 살짝 아래로 내린다(어깨 패킹). 여기서 <strong>골반을 말아올리면서</strong> 무릎을 가슴 쪽으로 당긴다.</p>
+    <p>중요한 건 단순히 무릎을 올리는 게 아니라 <strong>골반이 후방경사 되면서 올라오는 느낌</strong>이다. 골반이 안 움직이면 고관절 굴근(장요근)만 쓰고 복직근은 거의 안 쓰게 된다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 레그레이즈로 넘어가는 기준</h3>
+    <p>니레이즈 <strong>10회 &times; 3세트를 반동 없이</strong> 깔끔하게 할 수 있으면 다리를 펴고 하는 레그레이즈로 전환. 레그레이즈는 레버암이 길어지면서 복직근 상부 부하가 확 올라간다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>매달린 상태에서 <strong>몸이 흔들리지 않게 컨트롤</strong>하는 것 자체가 코어 안정성 훈련. 반동으로 올리면 의미 없다.</p>
+    <p>내릴 때 <strong>3초 이상 천천히</strong> 내린다. 이 네거티브 구간이 오버행에서 발을 천천히 이동시킬 때의 텐션 유지와 직결된다.</p>
+    <p>토(발가락)를 약간 포인트하면 체인 전체 텐션이 올라가서 실전 감각에 더 가까워진다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45~60<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">동적 반복</div>
+    </div>
+  </div>
+  <p class="set-rest-note">반동 없이 컨트롤된 1~2회를 못 하면 30초 더 쉬기. 그립이 먼저 풀리면 스트랩 사용 OK.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">니레이즈 (템포 2초&#8593; 3초&#8595;)</td>
+        <td>3 &times; 8회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">니레이즈</td>
+        <td>3 &times; 12회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">레그레이즈 (다리 완전히 펴기)</td>
+        <td>3 &times; 6~8회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">토투바 (발끝 &rarr; 바)</td>
+        <td>3 &times; 5회</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> + <span class="badge badge-tier4">Tier 4</span> 복수 출처 직접 추천. Lattice Training <a href="#ref-11" class="ref-link">[11]</a> + Gripped Magazine <a href="#ref-13" class="ref-link">[13]</a> + Metolius 가이드 수록.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 04. AB ROLLOUT ══════════ -->
+<section class="section fade-in" id="ex4">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 04</div>
+    <h2>앱 롤아웃</h2>
+    <p class="section-tagline">Ab Wheel Rollout — 최대 신장 상태에서 코어가 풀리지 않는 능력</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 &mdash; 전문 코치</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=9ZCoAbI7uX0" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/9ZCoAbI7uX0/maxresdefault.jpg" alt="Ab Wheel For Beginners — 롤아웃 프로그레션 및 보조 운동" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/9ZCoAbI7uX0/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; Ab Wheel For Beginners — 롤아웃 프로그레션 및 보조 운동</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 앱 롤아웃(TRX/링 버전 포함)을 코어 5대 운동에 포함 <a href="#ref-8" class="ref-link">[8]</a><a href="#ref-9" class="ref-link">[9]</a>. 짐링을 이용한 롤아웃은 Hörst가 직접 시연.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-setup">&#128208;</span> 무릎 롤아웃 자세</h3>
+    <p>무릎 꿇고 앱휠 잡고 천천히 앞으로 밀어나간다. <strong>엉덩이가 앞으로 같이 나가야</strong> 한다. 엉덩이를 뒤에 두고 팔만 뻗으면 어깨만 쓰게 된다.</p>
+    <p>돌아올 때는 팔로 당기는 게 아니라 <strong>복부가 수축하면서 몸이 말려 들어오는 느낌</strong>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-breath">&#127925;</span> 핵심 큐</h3>
+    <p><strong>골반 후방경사 유지</strong> — 허리 꺾이면 즉시 중단.</p>
+    <p>나갈 수 있는 만큼만 나가되, <strong>돌아올 수 있는 범위</strong> 안에서만.</p>
+    <p>템포: <strong>나가는 3초, 돌아오는 2초.</strong></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-warn">&#9888;&#65039;</span> 흔한 실수</h3>
+    <p><strong>허리 과신전(꺾임)</strong> — 가장 위험한 실수. 범위를 줄여서라도 허리 중립~약간 둥근 상태 유지.</p>
+    <p><strong>팔로 당겨서 복귀</strong> — 광배/삼두가 메인이 되면 코어 훈련 효과 없음.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>오버행에서 먼 홀드를 잡으러 몸이 쭉 늘어날 때, 그 상태에서도 코어가 풀리지 않게 해주는 능력이 바로 이 운동에서 온다. <strong>복직근을 최대 신장 상태에서 수축 유지</strong>하는 훈련.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45~60<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">동적 반복</div>
+    </div>
+  </div>
+  <p class="set-rest-note">나가는 3초 &middot; 돌아오는 2초 템포. 허리가 꺾이면 범위를 줄여서라도 즉시 중단.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">벽 앞 롤아웃 (벽이 스토퍼)</td>
+        <td>3 &times; 8회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">무릎 롤아웃 하프레인지</td>
+        <td>3 &times; 8회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">무릎 롤아웃 풀레인지</td>
+        <td>3 &times; 8~10회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">스탠딩 롤아웃</td>
+        <td>3 &times; 3~5회</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span>(Hörst) 직접 추천. 코어 5대 운동 중 신장성 코어 제어의 대표. TRX/링 롤아웃은 Hörst가 직접 시연 <a href="#ref-8" class="ref-link">[8]</a>.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 05. PALLOF PRESS ══════════ -->
+<section class="section fade-in" id="ex5">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 05</div>
+    <h2>팔로프 프레스</h2>
+    <p class="section-tagline">Pallof Press — 오버행 한 손 뻗기의 항회전 능력</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 &mdash; 전문 코치</span>
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=AH_QZLm_0-s" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/AH_QZLm_0-s/maxresdefault.jpg" alt="Pallof Press — 팔로프 프레스 항회전 코어 운동 가이드" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/AH_QZLm_0-s/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; Pallof Press — 항회전 코어 운동 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Bechtel은 코어 훈련을 안정성/항신전, 동적 안정성, 항회전, 고관절 굴곡의 네 카테고리로 분류하며, <strong>"급경사 등반의 거의 모든 움직임은 교차 텐션(cross-body tension)을 포함한다"</strong>고 설명했다 <a href="#ref-2" class="ref-link">[2]</a><a href="#ref-3" class="ref-link">[3]</a>. Vagy는 "360° 코어 파워"에서 팔로프 프레스 계열을 기초 회전 운동으로 포함 <a href="#ref-7" class="ref-link">[7]</a><a href="#ref-10" class="ref-link">[10]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>오버행에서 오른손을 다음 홀드로 뻗을 때, 코어가 몸의 회전을 막아야 한다. 팔로프 프레스는 정확히 이 항회전(anti-rotation) 패턴을 훈련한다. 밴드/케이블이 옆에서 당기는 힘에 저항하며 팔을 앞으로 뻗는 동작.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">동적 반복</div>
+    </div>
+  </div>
+  <p class="set-rest-note">밴드를 풀업바나 기둥에 걸고 수행. 팔이 아니라 코어가 저항하는 느낌에 집중. 빠르게 하지 않는다.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">팔로프 홀드 (팔 뻗고 유지)</td>
+        <td>3 &times; 15초/방향</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">팔로프 프레스 (뻗고 당기기 반복)</td>
+        <td>3 &times; 8~10회/방향</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">반무릎 자세(half-kneeling) 팔로프 프레스</td>
+        <td>3 &times; 8~10회/방향</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">팔로프 프레스 + 오버헤드 리프트</td>
+        <td>3 &times; 6~8회/방향</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p>Tier 2(Bechtel) + Tier 3(Vagy) 직접 추천. 코어 4패턴 중 항회전 담당.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 06. SIDE PLANK ══════════ -->
+<section class="section fade-in" id="ex6">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 06</div>
+    <h2>사이드 플랭크 프로그레션</h2>
+    <p class="section-tagline">Side Plank Progression — Lattice 벤치마크 항목, 등급과 상관관계 확인</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 1.5 — 실무 데이터</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=K2VljzCC16g" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/K2VljzCC16g/maxresdefault.jpg" alt="Side Plank Progression — 사이드 플랭크 프로그레션 가이드" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/K2VljzCC16g/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; Side Plank Progression — 사이드 플랭크 프로그레션 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Lattice Training은 사이드 플랭크 홀드 시간을 클라이머 평가 벤치마크 항목으로 사용한다 — 등급과의 상관관계가 확인된 몇 안 되는 코어 지표 중 하나 <a href="#ref-6" class="ref-link">[6]</a><a href="#ref-11" class="ref-link">[11]</a>. 코펜하겐 플랭크 변형은 내전근도 동시 훈련하여 스테밍과 하이스텝에 직결.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>항측굴(anti-lateral flexion) — 벽에서 옆으로 움직일 때 몸이 측면으로 무너지지 않게 잡아주는 능력. 특히 사이드풀이나 개스턴 동작에서 몸 전체가 한쪽으로 쏠리는 것을 코어가 막아야 한다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">등척성 홀드</div>
+    </div>
+  </div>
+  <p class="set-rest-note">어깨 바로 아래에 팔꿈치. 엉덩이가 처지면 세트 종료. 좌우 밸런스를 확인할 것.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">무릎 사이드 플랭크</td>
+        <td>3 &times; 20초/방향</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">풀 사이드 플랭크</td>
+        <td>3 &times; 30초/방향</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">사이드 플랭크 + 힙 딥</td>
+        <td>3 &times; 8~10회/방향</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">코펜하겐 플랭크 (발 올림)</td>
+        <td>3 &times; 15~20초/방향</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p>Tier 1.5(Lattice 데이터) 등급 상관관계 확인. 항측굴 패턴 담당.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 07. GLUTE BRIDGE ══════════ -->
+<section class="section fade-in" id="ex7">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 07</div>
+    <h2>글루트 브릿지</h2>
+    <p class="section-tagline">Glute Bridge / Hip Thrust Progression — 후면 체인 대표 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=OUgsJ8-Vi0E" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/OUgsJ8-Vi0E/maxresdefault.jpg" alt="Glute Bridge Progression — 글루트 브릿지 프로그레션 가이드" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/OUgsJ8-Vi0E/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; Glute Bridge Progression — 글루트 브릿지 프로그레션 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Vagy는 클라이밍에서 강한 둔근의 중요성을 직접 강조했다 <a href="#ref-7" class="ref-link">[7]</a><a href="#ref-14" class="ref-link">[14]</a>. 둔근 대근은 하이스텝, 컴프레션, 벽에 엉덩이 붙이기를 담당하고, 둔근 중근은 한 다리 자세에서 골반을 안정시킨다. 기존 수퍼맨(Hörst 코어 5대)은 후면 코어 대표였으나, 둔근 활성화가 낮고 요추 과신전 위험이 있어 글루트 브릿지로 대체한다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-setup">&#128208;</span> 자세 셋업</h3>
+    <p>바닥에 눕고 무릎을 구부려 발을 엉덩이 너비로 바닥에 놓는다. 발뒤꿈치로 밀며 엉덩이를 천장으로 들어올린다. 상단에서 둔근을 2초간 강하게 수축. 허리가 과신전되지 않도록 코어를 잠근 상태에서 올린다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-warn">&#9888;&#65039;</span> 흔한 실수</h3>
+    <p><strong>허리를 과도하게 젖히는 것</strong> — 둔근이 아닌 요추 기립근이 주동근이 되면 안 됨.</p>
+    <p><strong>발이 너무 멀거나 가까운 것</strong> — 엉덩이가 가장 강하게 수축되는 위치를 찾을 것.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>하이스텝에서 발로 밀어 올라가는 동작(hip extension)의 직접적 근력 기반. 스테밍에서 양발로 벽을 밀어 고정하는 컴프레션 동작에도 둔근 필수. 싱글레그 변형은 한 발 자세(클라이밍의 거의 모든 동작)에서 골반이 무너지지 않게 잡아주는 둔근 중근 강화.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">동적 반복</div>
+    </div>
+  </div>
+  <p class="set-rest-note">상단에서 둔근 수축 2초 유지. 싱글레그 변형은 골반이 기울지 않게 유지하는 것이 핵심.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">양다리 글루트 브릿지</td>
+        <td>3 &times; 15회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">양다리 글루트 브릿지 + 상단 3초 홀드</td>
+        <td>3 &times; 12회</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">싱글레그 글루트 브릿지</td>
+        <td>3 &times; 8~10회/다리</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">싱글레그 힙 쓰러스트 (벤치에 등 기대기)</td>
+        <td>3 &times; 8회/다리</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p>Tier 3(Vagy, DPT) 직접 추천. 수퍼맨 대체 — 더 높은 둔근 활성화, 요추 과신전 위험 없음.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 08. FRONT LEVER ══════════ -->
+<section class="section fade-in" id="ex8">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 08</div>
+    <h2>프론트 레버 프로그레션</h2>
+    <p class="section-tagline">Front Lever Progression — 오버행 바디 텐션과 가장 직접적으로 대응되는 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 &mdash; 전문 코치</span>
+    <span class="badge badge-tier4">Tier 4 &mdash; 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=-90lX4_fMoU" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/-90lX4_fMoU/maxresdefault.jpg" alt="Master the Front Lever in 7 Steps — 단계별 프론트 레버 프로그레션" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/-90lX4_fMoU/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 &middot; Master the Front Lever in 7 Steps — 단계별 프론트 레버 프로그레션</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 프론트 레버를 코어 5대 운동에 포함 <a href="#ref-8" class="ref-link">[8]</a><a href="#ref-9" class="ref-link">[9]</a><a href="#ref-10" class="ref-link">[10]</a>. Lattice의 Tom Randall은 프론트 레버 전용 훈련 가이드를 작성 <a href="#ref-12" class="ref-link">[12]</a>. Gripped Magazine에서 클라이머를 위한 프론트 레버 가이드를 수록 <a href="#ref-13" class="ref-link">[13]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 왜 복직근 상부 쥐에 효과적인가</h3>
+    <p>프론트 레버는 매달린 상태에서 몸 전체를 수평으로 유지하는 동작. 이때 복직근 상부가 강하게 <strong>등척성(isometric) 수축</strong>한다. 오버행에서 쥐가 나는 그 상황을 점진적으로 강화할 수 있다.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-setup">&#128208;</span> 턱 프론트 레버 (시작점)</h3>
+    <p>바에 매달리고, 무릎을 가슴에 바짝 당긴 상태에서 몸통을 수평으로 만든다. <strong>팔은 쭉 편 상태</strong>, 어깨 패킹.</p>
+    <p>이 자세에서 <strong>등(광배근)과 코어가 동시에</strong> 일해야 한다. 팔로 버티는 느낌이면 잘못된 것.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>매 세트 시작 전에 <strong>"어깨 내리고 &rarr; 광배 잡고 &rarr; 코어 잠그고 &rarr; 자세 진입"</strong> 순서를 의식적으로 따라간다. 이 시퀀스가 오버행 진입 시 바디 텐션 잡는 루틴과 동일하다.</p>
+    <p>홀드 중에 엉덩이가 처지기 시작하면 그 세트는 끝. <strong>무너진 자세에서 버티는 건 허리만 다친다.</strong></p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">60~90<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">유형</div>
+      <div class="value" style="font-size:1rem;">등척성 홀드</div>
+    </div>
+  </div>
+  <p class="set-rest-note">고강도 등척성 수축이라 회복 시간이 길어야 함. 세션 마지막 운동이므로 넉넉히 쉴 것.</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>레벨</th><th>운동</th><th>목표</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lv lv-1">Lv.1</span></td>
+        <td class="principle-name">턱 프론트 레버 홀드</td>
+        <td>3 &times; 10~15초</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-2">Lv.2</span></td>
+        <td class="principle-name">어드밴스드 턱 (정강이 수평)</td>
+        <td>3 &times; 10초</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-3">Lv.3</span></td>
+        <td class="principle-name">원레그 프론트 레버</td>
+        <td>3 &times; 8초</td>
+      </tr>
+      <tr>
+        <td><span class="lv lv-4">Lv.4</span></td>
+        <td class="principle-name">스트래들 프론트 레버</td>
+        <td>3 &times; 5~8초</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout red">
+    <div class="callout-title">주의</div>
+    <p>풀 프론트 레버가 목표가 아니다. 프로그레션 과정 자체가 훈련이며, 현재 레벨에서 깨끗한 자세로 홀드하는 것이 핵심.</p>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span>(Hörst, Lattice) + <span class="badge badge-tier4">Tier 4</span>(Gripped) 복수 출처 직접 추천 <a href="#ref-8" class="ref-link">[8]</a><a href="#ref-12" class="ref-link">[12]</a><a href="#ref-13" class="ref-link">[13]</a>.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ SOURCE TIERS ══════════ -->
+<section class="section fade-in" id="sources">
+  <div class="section-header">
+    <div class="section-number">SOURCE CRITERIA</div>
+    <h2>출처 기준</h2>
+    <p class="section-tagline">이 페이지의 모든 정보는 아래 다섯 가지 계층의 출처에서 검증되었다.</p>
+  </div>
+
+  <div class="accordion open">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span>출처 계층 (Tier 1 ~ 4)</span>
+      <span class="accordion-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="tier-item">
+        <h4><span class="badge badge-tier1">Tier 1</span> Peer-reviewed 학술 연구</h4>
+        <p><strong>Wong &amp; Ng (2009)</strong> — 클라이머 31명 vs 비클라이머 27명 단면 연구. 클라이머의 기능적 작업비(편심 외회전 : 구심 내회전)가 비클라이머보다 유의미하게 낮음. 한계: 소표본, 인과관계 증명 불가. <a href="#ref-1" class="ref-link">[1]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tier2">Tier 2</span> 공인 자격 클라이밍 전문 코치/저자</h4>
+        <p><strong>Eric Hörst (Training for Climbing)</strong> — 클라이밍 트레이닝 분야 30년 이상 저자. 코어 5대 운동(할로우 바디, 행잉 레이즈, 앱 롤아웃, 프론트 레버, 수퍼맨)을 체계적으로 정리. <a href="#ref-8" class="ref-link">[8]</a> <a href="#ref-9" class="ref-link">[9]</a> <a href="#ref-10" class="ref-link">[10]</a></p>
+        <p><strong>Lattice Training (Tom Randall, Ollie Torr, Jon Procter)</strong> — 영국 기반 데이터 드리븐 클라이밍 코칭 회사. 프론트 레버 전용 가이드, 홈 트레이닝 시리즈 운영. <a href="#ref-4" class="ref-link">[4]</a> <a href="#ref-5" class="ref-link">[5]</a> <a href="#ref-11" class="ref-link">[11]</a> <a href="#ref-12" class="ref-link">[12]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tier3">Tier 3</span> 클라이밍 전문 의료 전문가</h4>
+        <p><strong>Dr. Jared Vagy, DPT (The Climbing Doctor)</strong> — USC 임상 부교수, 정형 임상 전문가(board-certified), CSCS, 15년+ 클라이밍 경험. 저서: <em>Climb Injury-Free</em>. <a href="#ref-7" class="ref-link">[7]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tier4">Tier 4</span> 클라이밍 전문 미디어</h4>
+        <p><strong>Gripped Magazine</strong> — 프론트 레버 클라이밍 가이드. <strong>UKClimbing (Lattice 시리즈)</strong> — Tom Randall의 컨디셔닝 & 모빌리티 파트. <a href="#ref-6" class="ref-link">[6]</a> <a href="#ref-13" class="ref-link">[13]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-principle">&#128998; 원칙 적용</span> 검증된 원칙에서 도출</h4>
+        <p>위 Tier 1~4에서 원칙은 확인되었으나, 해당 특정 운동의 직접 추천은 미확인. 일반 운동과학에서는 검증된 운동이며, 클라이밍 전문 소스의 원칙을 논리적으로 확장 적용한 것이다. 직접 검증(&#9989;)과 시각적으로 구분하여 표기.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ REFERENCES ══════════ -->
+<section class="section fade-in" id="references">
+  <div class="section-header">
+    <div class="section-number">REFERENCES</div>
+    <h2>레퍼런스</h2>
+  </div>
+
+  <ol class="ref-list">
+    <li id="ref-1">
+      <span class="ref-num">[1]</span>
+      <div>Wong, E.K.L. &amp; Ng, G.Y.F. (2009). "Strength Profiles of Shoulder Rotators in Healthy Sport Climbers and Nonclimbers." <em>Journal of Athletic Training</em>, 44(5), 527&ndash;530. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2742463/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov</a></div>
+    </li>
+    <li id="ref-2">
+      <span class="ref-num">[2]</span>
+      <div>Bechtel, S. (2016). "Resistance Training for Climbers." <em>Power Company Climbing Podcast</em>, Episode 2. 인터뷰어: Kris Hampton. <a href="https://www.powercompanyclimbing.com/blog/2016/01/episode-2-resistance-training-with.html" target="_blank" rel="noopener">powercompanyclimbing.com</a></div>
+    </li>
+    <li id="ref-3">
+      <span class="ref-num">[3]</span>
+      <div>Bechtel, S. (2017). "How to Create Your Own Training Plan." <em>TrainingBeta Podcast</em>, Episode 80. 인터뷰어: Neely Quinn. <a href="https://www.trainingbeta.com/media/steve-bechtel-3/" target="_blank" rel="noopener">trainingbeta.com</a></div>
+    </li>
+    <li id="ref-4">
+      <span class="ref-num">[4]</span>
+      <div>Torr, O. (2023). "The Importance of Antagonist Training During Performance Phase." <em>Lattice Training Blog</em>. <a href="https://latticetraining.com/blog/training-tips-for-climbers-the-importance-of-antagonist-training-during-performance-phase/" target="_blank" rel="noopener">latticetraining.com</a></div>
+    </li>
+    <li id="ref-5">
+      <span class="ref-num">[5]</span>
+      <div>Procter, J. (2025). "How to: Structure Your Training." <em>Lattice Training Blog</em>. <a href="https://latticetraining.com/blog/how-to-structure-your-training/" target="_blank" rel="noopener">latticetraining.com</a></div>
+    </li>
+    <li id="ref-6">
+      <span class="ref-num">[6]</span>
+      <div>Randall, T. "Lattice Training Series with Tom Randall — Part 4: Conditioning &amp; Mobility." <em>UKClimbing</em>. <a href="https://www.ukclimbing.com/articles/skills/series/lattice_training_series_with_tom_randall/part_4_conditioning+mobility-11396" target="_blank" rel="noopener">ukclimbing.com</a></div>
+    </li>
+    <li id="ref-7">
+      <span class="ref-num">[7]</span>
+      <div>Vagy, J. (2015). "How to Train Antagonist Muscle Strength for Climbing." <em>The Climbing Doctor</em>. <a href="https://theclimbingdoctor.com/how-to-train-antagonist-muscle-strength-for-climbing/" target="_blank" rel="noopener">theclimbingdoctor.com</a></div>
+    </li>
+    <li id="ref-8">
+      <span class="ref-num">[8]</span>
+      <div>Hörst, E. "Complete Core Training for Climbers." <em>EpicTV / TrainingBeta</em>. — 코어 5대 운동(할로우 바디, 행잉 레이즈, 앱 롤아웃, 프론트 레버, 수퍼맨) 직접 시연. <a href="https://trainingforclimbing.com/video-complete-core-training-epic-tv-ep-4/" target="_blank" rel="noopener">trainingforclimbing.com</a> / <a href="https://www.trainingbeta.com/complete-core-training-eric-horst/" target="_blank" rel="noopener">trainingbeta.com</a></div>
+    </li>
+    <li id="ref-9">
+      <span class="ref-num">[9]</span>
+      <div>Hörst, E. <em>Training for Climbing</em>, 3판. (서적) — 코어 훈련 전용 챕터.</div>
+    </li>
+    <li id="ref-10">
+      <span class="ref-num">[10]</span>
+      <div>Hörst, E. <em>Conditioning for Climbers</em>. (서적)</div>
+    </li>
+    <li id="ref-11">
+      <span class="ref-num">[11]</span>
+      <div>Hadley, J. (Lattice Training). "Training the Upper Body at Home." <em>UKClimbing — Lattice Home Training Series</em>. <a href="https://www.ukclimbing.com/articles/skills/series/lattice_home_training/" target="_blank" rel="noopener">ukclimbing.com</a></div>
+    </li>
+    <li id="ref-12">
+      <span class="ref-num">[12]</span>
+      <div>Randall, T. (Lattice Training). "Front Lever Goals." <em>Lattice Training Blog</em>. <a href="https://latticetraining.com/blog/front-lever-goals-tom-randall/" target="_blank" rel="noopener">latticetraining.com</a></div>
+    </li>
+    <li id="ref-13">
+      <span class="ref-num">[13]</span>
+      <div>Gripped Magazine. "Learning How to Front Lever for Climbing." <a href="https://gripped.com/indoor-climbing/learning-how-to-front-lever-for-climbing/" target="_blank" rel="noopener">gripped.com</a></div>
+    </li>
+    <li id="ref-14">
+      <span class="ref-num">[14]</span>
+      <div>Vagy, J. &amp; Hörst, E. "Optimal Training and Injury Prevention Techniques for Climbers with a Full-time Schedule." <em>The Climbing Doctor</em>. <a href="https://theclimbingdoctor.com/optimal-training-and-injury-prevention-techniques-for-climbers-with-a-full-time-schedule/" target="_blank" rel="noopener">theclimbingdoctor.com</a></div>
+    </li>
+    <li id="ref-15">
+      <span class="ref-num">[15]</span>
+      <div>Vagy, J. "Low Back Injuries in Boulderers: Preventative Measures for Chronic Low Back Pain." <em>The Climbing Doctor</em>. — 데드버그를 볼더러 코어 안정성/운동 제어 프로토콜에 직접 처방. <a href="https://theclimbingdoctor.com/low-back-injuries-in-boulderers-preventative-measures-for-chronic-low-back-pain/" target="_blank" rel="noopener">theclimbingdoctor.com</a></div>
+    </li>
+  </ol>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <p>클라이머를 위한 코어 세션 — 검증된 출처 기반 근지구력 훈련 가이드</p>
+  <p style="margin-top: 0.5rem; opacity: 0.5;">마지막 업데이트 2026-03</p>
+</footer>
+
+<script>
+  function toggleAccordion(header) {
+    header.parentElement.classList.toggle('open');
+  }
+
+  // Intersection Observer for fade-in animations
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
