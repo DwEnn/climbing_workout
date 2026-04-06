@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사무실에서 매일 — 손가락 신전근 훈련</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #141418;
+    --surface-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #e8e6e3;
+    --text-dim: #8a8a95;
+    --accent: #4ecdc4;
+    --accent-glow: rgba(78, 205, 196, 0.15);
+    --tier1: #4ecdc4;
+    --tier2: #118ab2;
+    --tier3: #a855f7;
+    --tier4: #8a8a95;
+    --green: #4ecdc4;
+    --yellow: #ffd166;
+    --red: #ef476f;
+    --blue: #118ab2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%);
+    animation: heroPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroPulse {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(3deg) scale(1.05); }
+  }
+
+  .hero-badge {
+    position: relative;
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    background: var(--accent-glow);
+  }
+
+  .hero h1 {
+    position: relative;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0.05em; left: 0;
+    width: 100%; height: 0.12em;
+    background: var(--accent);
+    opacity: 0.3;
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    position: relative;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .hero-why {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2.5rem;
+    max-width: 700px;
+    text-align: left;
+  }
+
+  .hero-why h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-why p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-why p:last-child { margin-bottom: 0; }
+  .hero-why strong { color: var(--text); font-weight: 500; }
+
+  .disclaimer {
+    position: relative;
+    background: rgba(233, 69, 96, 0.06);
+    border: 1px solid rgba(233, 69, 96, 0.2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+    max-width: 700px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .disclaimer strong { color: var(--accent); }
+
+  /* ── NAV ── */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .toc-inner {
+    display: flex;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .toc a {
+    display: block;
+    padding: 1rem 1.2rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+    background: rgba(233, 69, 96, 0.05);
+    text-decoration: none;
+  }
+
+  .toc .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-right: 0.4rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-header { margin-bottom: 3rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-tagline {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .badge-tier1 { background: rgba(78, 205, 196, 0.12); color: var(--tier1); }
+  .badge-tier2 { background: rgba(17, 138, 178, 0.12); color: var(--tier2); }
+  .badge-tier3 { background: rgba(168, 85, 247, 0.12); color: var(--tier3); }
+  .badge-tier4 { background: rgba(138, 138, 149, 0.12); color: var(--tier4); }
+  .badge-principle { background: rgba(255, 209, 102, 0.12); color: var(--yellow); }
+
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  /* ── CONTENT BLOCKS ── */
+  .block { margin-bottom: 2.5rem; }
+
+  .block h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .block h3 .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .icon-source { background: rgba(17, 138, 178, 0.15); color: var(--blue); }
+  .icon-climb { background: rgba(78, 205, 196, 0.15); color: var(--green); }
+  .icon-verify { background: rgba(168, 85, 247, 0.15); color: var(--tier3); }
+  .icon-tip { background: rgba(255, 209, 102, 0.15); color: var(--yellow); }
+  .icon-warn { background: rgba(239, 71, 111, 0.15); color: var(--red); }
+
+  .block p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .block p strong { color: var(--text); font-weight: 500; }
+  .block p:last-child { margin-bottom: 0; }
+
+  .ref-link {
+    color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* ── MEDIA ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .video-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .video-wrap a {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.3s;
+  }
+
+  .video-wrap a:hover img { filter: brightness(0.85); }
+
+  .video-play-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    background: rgba(233, 69, 96, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    pointer-events: none;
+  }
+
+  .video-wrap a:hover .video-play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(233, 69, 96, 1);
+  }
+
+  .video-play-btn svg {
+    width: 28px; height: 28px;
+    fill: white;
+    margin-left: 3px;
+  }
+
+  .video-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .callout.green { border-left-color: var(--green); }
+  .callout.red { border-left-color: var(--red); }
+  .callout.blue { border-left-color: var(--blue); }
+  .callout.amber { border-left-color: var(--yellow); }
+
+  .callout-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .callout .callout-title { color: var(--accent); }
+  .callout.green .callout-title { color: var(--green); }
+  .callout.red .callout-title { color: var(--red); }
+  .callout.blue .callout-title { color: var(--blue); }
+  .callout.amber .callout-title { color: var(--yellow); }
+
+  .callout p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .callout p strong { color: var(--text); font-weight: 500; }
+
+  /* ── ACCORDION (Source Tiers) ── */
+  .accordion {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .accordion-header {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    user-select: none;
+  }
+
+  .accordion-header:hover { background: rgba(255,255,255,.03); }
+
+  .accordion-arrow {
+    transition: transform .3s;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+    padding: 0 1.5rem;
+  }
+
+  .accordion.open .accordion-body { max-height: 3000px; padding: 0 1.5rem 1.5rem; }
+  .accordion.open .accordion-arrow { transform: rotate(180deg); }
+
+  .tier-item { margin-bottom: 1.2rem; }
+  .tier-item:last-child { margin-bottom: 0; }
+
+  .tier-item h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .tier-item p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+  }
+
+  .tier-item p strong { color: var(--text); font-weight: 500; }
+
+  /* ── PRINCIPLES TABLE ── */
+  .prog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .prog-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .prog-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  .prog-table tr:last-child td { border-bottom: none; }
+
+  .prog-table .principle-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .prog-table .lv { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600; color: #fff; }
+  .lv-1 { background: var(--green); color: #0a0a0c !important; }
+  .lv-2 { background: var(--blue); }
+  .lv-3 { background: var(--yellow); color: #0a0a0c !important; }
+  .lv-4 { background: var(--accent); }
+
+  /* ── SET & REST CARD ── */
+  .set-rest-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .set-rest-item {
+    background: var(--surface);
+    padding: 1.2rem 1.4rem;
+    text-align: center;
+  }
+
+  .set-rest-item .label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .set-rest-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .set-rest-item .value .unit {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 0.15rem;
+  }
+
+  .set-rest-note {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: -0.8rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  /* ── ORDER SECTION ── */
+  .order-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+  }
+
+  .order-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .order-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .order-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .order-item .num-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .order-arrow { color: var(--text-dim); font-size: 1.2rem; }
+
+  /* ── EQUIPMENT ── */
+  .equip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .equip-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── REFERENCES ── */
+  .ref-list { list-style: none; }
+
+  .ref-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 12px;
+  }
+
+  .ref-list li:last-child { border-bottom: none; }
+
+  .ref-num {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 28px;
+  }
+
+  .ref-list li a { word-break: break-all; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .set-rest-card { grid-template-columns: 1fr; }
+    .order-flow { flex-direction: column; }
+    .order-arrow { transform: rotate(90deg); }
+    .hero-why { padding: 1.2rem 1.5rem; }
+    .section { padding: 3rem 1.2rem; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-badge">Office × Climbing Prehab</div>
+  <h1>
+    회사에서 매일 하는<br>
+    <span class="highlight">손가락 신전근</span> 훈련
+  </h1>
+  <p class="hero-sub">
+    클라이머의 굴곡근/신전근 불균형을 1분으로 해결.<br>
+    책상 앞에서 도구 하나로 가능한 프리햅 루틴.
+  </p>
+  <div class="hero-why">
+    <h3>왜 손가락 신전근인가?</h3>
+    <p>
+      클라이밍은 손가락을 구부리는 동작(굴곡)만 수천 번 반복한다.
+      <strong>굴곡근(flexors)</strong>은 끝없이 단련되지만,
+      반대편 <strong>신전근(extensors)</strong>은 거의 쓰이지 않는다.
+      이 불균형은 전완 외측 통증, 외측 상과염(테니스 엘보), 손가락 회복 지연의 주요 원인이다.
+    </p>
+    <p>
+      Dr. Jared Vagy(DPT)는 손가락 신전근 훈련을 클라이머가 해야 할
+      <strong>탑 5 대항근 운동</strong>에 포함시켰다 <a href="#ref-1" class="ref-link">[1]</a>.
+      Bechtel 또한 전완 신전근 강화가 <strong>"그립 근력을 다시 점프스타트시킬 수 있다"</strong>고 언급한다 <a href="#ref-2" class="ref-link">[2]</a>.
+    </p>
+  </div>
+  <div class="disclaimer">
+    <strong>왜 사무실에서?</strong> 이 운동은 펌프나 회복이 거의 필요 없고, 1세트가 30~60초 안에 끝난다.
+    클라이밍 세션과 분리해서 일과 중 자투리 시간에 매일 분산하는 게 효율적이다.
+  </div>
+</section>
+
+<!-- ══════════ TOC ══════════ -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#routine"><span class="num">▶</span>일과 루틴</a>
+    <a href="#ex1"><span class="num">01</span>고무밴드 스프레드</a>
+    <a href="#tools"><span class="num">i</span>도구</a>
+    <a href="#references"><span class="num">▶</span>레퍼런스</a>
+  </div>
+</nav>
+
+<!-- ══════════ ROUTINE ══════════ -->
+<section class="section fade-in" id="routine">
+  <div class="section-header">
+    <div class="section-number">DAILY ROUTINE</div>
+    <h2>사무실 루틴</h2>
+    <p class="section-tagline">하루 총 3~5분, 매일. 펌프나 휴식이 필요 없는 저강도 프리햅.</p>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-title">언제 하나</div>
+    <p>커피 마실 때, 슬랙 읽을 때, 회의 시작 전, 빌드 돌릴 때. <strong>키보드에서 손을 떼는 모든 순간</strong>에 1세트씩 끼워 넣는다. 한 번에 몰아서 하지 않는다 — 분산이 핵심.</p>
+  </div>
+
+  <div class="order-section">
+    <h3>권장 분산</h3>
+    <div class="order-flow">
+      <div class="order-item"><span class="num-circle">오전</span>1~2세트</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">점심 전</span>1세트</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">오후</span>1~2세트</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">퇴근 전</span>1세트</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">강도 가이드</div>
+    <p>"가볍게 따끔한 정도"가 정상. <strong>펌프가 오면 강도가 너무 세거나 볼륨이 과하다.</strong> 신전근은 작고 회복이 느린 근육이라 <em>매일 자극 + 저강도</em> 조합이 가장 잘 듣는다. 통증(아릿한 느낌)이 오면 즉시 중단.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">하루 총 볼륨</div>
+      <div class="value">4~6<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트당 시간</div>
+      <div class="value">30~60<span class="unit">초</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">주간 빈도</div>
+      <div class="value">매일</div>
+    </div>
+  </div>
+  <p class="set-rest-note">클라이밍 직후나 푸쉬 세션 마무리에 추가로 1~2세트 더 해도 무방.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 01. RUBBER BAND SPREAD ══════════ -->
+<section class="section fade-in" id="ex1">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 01</div>
+    <h2>고무밴드 손가락 스프레드</h2>
+    <p class="section-tagline">Rubber Band Finger Spread — 가장 기본. 책상 어디서든 가능.</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier3">Tier 3 — 의료 전문가</span>
+    <span class="badge badge-tier4">Tier 4 — 클라이밍 미디어</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.climbing.com/skills/a-simple-exercise-to-strengthen-your-finger-extensors/" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/wMVuB6MjKBM/maxresdefault.jpg" alt="손가락 신전근 운동" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/wMVuB6MjKBM/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; Climbing Magazine — 손가락 신전근 강화 가이드</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 운동 방법</h3>
+    <ol style="margin-left:1.2rem;line-height:2;">
+      <li>얇은 고무밴드(헤어밴드, 머리끈, 작은 고무줄) 1개를 준비한다.</li>
+      <li>한 손의 5개 손가락 끝(엄지 포함)을 모아서 밴드를 손톱 바로 아래에 건다.</li>
+      <li>손목은 중립 상태로 고정. 팔뚝이 흔들리지 않게 책상에 올려도 된다.</li>
+      <li>모든 손가락을 <strong>천천히 활짝 펼친다</strong>. 약 2초에 걸쳐 벌리고, 최대 지점에서 1초 멈춘다.</li>
+      <li>2초에 걸쳐 천천히 닫는다. 반동 금지.</li>
+      <li>15~20회 반복. 한 손이 끝나면 반대 손.</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 자주 틀리는 점</h3>
+    <ul style="margin-left:1.2rem;line-height:2;">
+      <li><strong>속도를 빨리 한다</strong> &rarr; 신전근은 천천히 컨트롤할 때 자극이 들어간다. 빠르면 의미 없음.</li>
+      <li><strong>손목이 같이 펴진다</strong> &rarr; 손목은 고정. 손가락만 움직인다.</li>
+      <li><strong>밴드가 너무 두껍다</strong> &rarr; 처음엔 얇게. 15회가 너무 쉬워질 때만 두껍게.</li>
+      <li><strong>엄지를 빼먹는다</strong> &rarr; 엄지도 외전(벌림) 동작에 포함. 다섯 손가락 모두 함께.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>크림프와 오픈핸드에서 반복 사용된 굴곡근의 대항근을 직접 자극. 손가락 회복 속도, 외측 전완 통증 감소, 외측 상과염 예방에 가장 효과적인 단일 운동.</p>
+  </div>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">얇은 헤어밴드 1개</td><td>2 &times; 15</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">중간 고무밴드 1개</td><td>3 &times; 15~20</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">두꺼운 고무밴드 1개</td><td>3 &times; 15~20</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">밴드 2개 겹쳐서 / 전용 도구</td><td>3 &times; 12~15</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier3">Tier 3</span> Vagy(DPT)가 클라이머 탑 5 대항근 운동에 포함 <a href="#ref-1" class="ref-link">[1]</a>. <span class="badge badge-tier4">Tier 4</span> Climbing Magazine 직접 추천 <a href="#ref-3" class="ref-link">[3]</a>.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ TOOLS ══════════ -->
+<section class="section fade-in" id="tools">
+  <div class="section-header">
+    <div class="section-number">TOOLS</div>
+    <h2>도구 옵션</h2>
+    <p class="section-tagline">밴드 1개부터 전용 제품까지. 사무실 책상 서랍에 1~2개만 있으면 충분.</p>
+  </div>
+
+  <div class="block">
+    <h3>저비용 (0~2,000원)</h3>
+    <ul style="margin-left:1.2rem;line-height:2;">
+      <li><strong>헤어밴드 / 머리끈</strong> — Lv.1 시작점. 편의점에서 즉시 구매.</li>
+      <li><strong>두꺼운 고무줄</strong> (#18, #19 호) — 문구점. 여러 개 겹쳐 강도 조절.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>전용 제품 (10,000~50,000원)</h3>
+    <ul style="margin-left:1.2rem;line-height:2;">
+      <li><strong>Metolius GripSaver Plus</strong> — 클라이머 전용. 신전근 + 그립 + 핀치 동시 자극.</li>
+      <li><strong>Lattice Extensor Bands</strong> — 강도별 색상 구분, 손가락 전용 설계 <a href="#ref-4" class="ref-link">[4]</a>.</li>
+      <li><strong>PowerFingers</strong> — 각 손가락 개별 저항. 손가락별 약점 보강 가능 <a href="#ref-5" class="ref-link">[5]</a>.</li>
+    </ul>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-title">추천</div>
+    <p>일단 <strong>헤어밴드 1개</strong>로 시작해서 2~3주 매일 해보고, 루틴이 습관화되면 전용 제품으로 업그레이드. 도구가 비싸도 안 하면 의미 없음 — 진입 장벽 낮추는 게 우선.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ REFERENCES ══════════ -->
+<section class="section fade-in" id="references">
+  <div class="section-header">
+    <div class="section-number">REFERENCES</div>
+    <h2>레퍼런스</h2>
+  </div>
+
+  <ol class="ref-list">
+    <li id="ref-1">Vagy, J. The Climbing Doctor — Antagonist Strength Exercises (탑 5 포함, 카라비너+밴드 변형 시연).
+      <a href="https://theclimbingdoctor.com/rock-climbing-injury-tips-antagonist-strength-exercises/" target="_blank" rel="noopener noreferrer">theclimbingdoctor.com</a>
+    </li>
+    <li id="ref-2">Bechtel, S. Power Company Climbing Podcast Ep.2 — Resistance Training.
+      <a href="https://www.powercompanyclimbing.com/blog/2016/01/episode-2-resistance-training-with.html" target="_blank" rel="noopener noreferrer">powercompanyclimbing.com</a>
+    </li>
+    <li id="ref-3">Climbing Magazine — A Simple Exercise to Strengthen Your Finger Extensors.
+      <a href="https://www.climbing.com/skills/a-simple-exercise-to-strengthen-your-finger-extensors/" target="_blank" rel="noopener noreferrer">climbing.com</a>
+    </li>
+    <li id="ref-4">Lattice Training — Extensor Bands.
+      <a href="https://latticetraining.com/product/extensor-bands/" target="_blank" rel="noopener noreferrer">latticetraining.com</a>
+    </li>
+    <li id="ref-5">PowerFingers — KletterRetter.
+      <a href="https://www.kletterretter.com/en/product/powerfingers-sport/" target="_blank" rel="noopener noreferrer">kletterretter.com</a>
+    </li>
+  </ol>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <p>사무실에서 매일 — 손가락 신전근 훈련</p>
+  <p style="margin-top: 0.5rem; opacity: 0.5;">마지막 업데이트 2026-04</p>
+</footer>
+
+<script>
+  function toggleAccordion(header) {
+    header.parentElement.classList.toggle('open');
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
