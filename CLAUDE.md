@@ -118,10 +118,13 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 | 점프 런지 | 단측성 하체 파워 | ✅ | Hörst [P-1] |
 | 스케이터 | 측면 파워 | ✅ | Hörst [P-1] |
 | 마운틴 클라이머 | 폭발적 무릎 드라이브 + 코어 | ✅ | Hörst [P-1] |
+| 발목 반사탄력 & 착지 | 발목 강성 + 착지 메커닉스 | ✅ Tier 3 (착지/부상예방) + 🔶 Tier A (반사탄력) | Vagy [P-4], Hooper's Beta [P-5], NSCA [P-3] |
 
 > **타이밍 주의 (다른 세션과 반대):** 푸쉬·코어는 클라이밍 직후에 붙이지만, 파워 훈련은 **신선할 때만** 제대로 된다. Hörst: "피로한 상태에서는 파워를 제대로 훈련할 수 없다." → 워밍업 후 본격 등반 전, 또는 등반 볼륨이 가벼운 날에 배치. 주 1~2회.
 >
 > **장비 주의:** 보유 장비에 박스 없음 → 안정된 플랫폼/벤치 대체 또는 제자리 점프 스쿼트로 대체. 파워 풀업은 당김 계열이라 주간 당김 볼륨(클라이밍 + 프론트 레버)에 합산됨에 유의.
+>
+> **발목 반사탄력 & 착지 (7번째 운동) 근거 구분:** Hörst 플라이오 글에는 발목 특화 내용이 없고, "발목탄력=파워"를 추천한 클라이밍 출처는 없음 → 반사탄력(포고 홉) 부분은 🔶 Tier A(NSCA)로만 표기. 반면 **착지 메커닉스·발목 반응 훈련**은 볼더링 발목 염좌(클라이머 하체 부상 1위) 예방으로 Vagy·Hooper's Beta(Tier 3)가 직접 추천 → 이 부분은 ✅. 한 카드에 ✅/🔶를 함께 달되 어느 부분이 어느 근거인지 명시. 주 가치는 파워가 아니라 부상예방·풋워크 지지 (고관절 가동성이 더 높은 우선순위).
 
 ---
 
@@ -201,6 +204,12 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 [P-2] Hörst, E. Training for Climbing 3판. (서적) — 파워/파워 지구력 훈련 챕터.
 [P-3] Haff, G.G. & Triplett, N.T. (eds.) Essentials of Strength Training and Conditioning
       (4th ed.). NSCA / Human Kinetics. — 플라이오메트릭 원리 (Tier A: SSC, 근력 기반, 회복).
+[P-4] Vagy, J. "The Gym Boulder's Guide to Preventing Lower Body Injuries While
+      Jumping/Landing/Falling." The Climbing Doctor. (Tier 3) — 착지 메커닉스, 발목 부상 예방.
+      https://theclimbingdoctor.com/the-gym-boulders-guide-to-preventing-lower-body-injuries-while-jumping-landing-falling/
+[P-5] Hooper, J. "How to Fix Ankle Pain for Climbers." Hooper's Beta. (Tier 3) — 염좌 후
+      고유수용성 저하, 점진적 플라이오 진행의 재발 예방.
+      https://www.hoopersbeta.com/library/how-to-heal-ankle-injury-back-to-100-climbing
 ```
 
 ---
