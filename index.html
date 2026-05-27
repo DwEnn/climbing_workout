@@ -15,6 +15,7 @@
     --text-dim: #8a8a95;
     --push: #e94560;
     --core: #ff6b35;
+    --power: #6366f1;
     --green: #4ecdc4;
     --blue: #118ab2;
   }
@@ -151,6 +152,7 @@
 
   .card--push::before { background: var(--push); }
   .card--core::before { background: var(--core); }
+  .card--power::before { background: var(--power); }
   .card--finger::before { background: var(--green); }
 
   .card:hover {
@@ -167,6 +169,11 @@
   .card--core:hover {
     box-shadow: 0 8px 40px rgba(255, 107, 53, 0.15);
     border-color: rgba(255, 107, 53, 0.3);
+  }
+
+  .card--power:hover {
+    box-shadow: 0 8px 40px rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
   }
 
   .card--finger:hover {
@@ -190,6 +197,7 @@
 
   .card--push .card-title { color: var(--push); }
   .card--core .card-title { color: var(--core); }
+  .card--power .card-title { color: var(--power); }
   .card--finger .card-title { color: var(--green); }
 
   .card-desc {
@@ -229,6 +237,7 @@
   .card:hover .card-arrow { transform: translateX(4px); }
   .card--push:hover .card-arrow { color: var(--push); }
   .card--core:hover .card-arrow { color: var(--core); }
+  .card--power:hover .card-arrow { color: var(--power); }
   .card--finger:hover .card-arrow { color: var(--green); }
 
   /* ── EQUIP ── */
@@ -307,7 +316,7 @@
 <div class="hero">
   <div class="hero-badge">V6+ Boulderer Training Guide</div>
   <h1>보조 훈련 가이드</h1>
-  <p class="hero-sub">검증된 출처 기반 &middot; 푸쉬 세션 &amp; 코어 세션</p>
+  <p class="hero-sub">검증된 출처 기반 &middot; 푸쉬 &middot; 코어 &middot; 파워 세션</p>
   <div class="disclaimer">
     <strong>면책 고지:</strong> 개별 운동의 클라이밍 특화 효과에 대한 RCT(무작위 대조 시험)는 현재 존재하지 않는다.
     아래 운동 추천은 전문가들의 코칭 경험, 운동생리학 원리, 제한적 학술 근거를 종합한 것이다.
@@ -334,6 +343,17 @@
       <span class="card-tag">8개 운동</span>
       <span class="card-tag">35~45분</span>
       <span class="card-tag">주 2회</span>
+    </div>
+    <span class="card-arrow">&rarr;</span>
+  </a>
+  <a href="guides/power-training-guide.html" class="card card--power">
+    <div class="card-icon">&#9889;</div>
+    <div class="card-title">파워 세션</div>
+    <div class="card-desc">플라이오메트릭 — 폭발적 파워<br>다이노&middot;데드포인트&middot;컴프레션의 출력을 키운다</div>
+    <div class="card-meta">
+      <span class="card-tag">6개 운동</span>
+      <span class="card-tag">30~40분</span>
+      <span class="card-tag">주 1~2회</span>
     </div>
     <span class="card-arrow">&rarr;</span>
   </a>

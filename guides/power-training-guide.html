@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라이머를 위한 파워 세션 — 플라이오메트릭 훈련 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #141418;
+    --surface-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #e8e6e3;
+    --text-dim: #8a8a95;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --tier1: #4ecdc4;
+    --tier2: #118ab2;
+    --tier3: #a855f7;
+    --tier4: #8a8a95;
+    --tierA: #f4a261;
+    --green: #4ecdc4;
+    --yellow: #ffd166;
+    --red: #ef476f;
+    --blue: #118ab2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.09) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%);
+    animation: heroPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroPulse {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(3deg) scale(1.05); }
+  }
+
+  .hero-badge {
+    position: relative;
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    background: var(--accent-glow);
+  }
+
+  .hero h1 {
+    position: relative;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0.05em; left: 0;
+    width: 100%; height: 0.12em;
+    background: var(--accent);
+    opacity: 0.3;
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    position: relative;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .hero-why {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2.5rem;
+    max-width: 700px;
+    text-align: left;
+  }
+
+  .hero-why h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-why p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-why p:last-child { margin-bottom: 0; }
+  .hero-why strong { color: var(--text); font-weight: 500; }
+
+  /* ── NAV ── */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .toc-inner {
+    display: flex;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .toc a {
+    display: block;
+    padding: 1rem 1.2rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+    background: rgba(99, 102, 241, 0.05);
+    text-decoration: none;
+  }
+
+  .toc a.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+    background: rgba(99, 102, 241, 0.08);
+  }
+
+  .toc .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-right: 0.4rem;
+  }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s, visibility 0.25s, transform 0.25s;
+    z-index: 200;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .back-to-top:hover {
+    transform: translateY(-3px);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-header { margin-bottom: 3rem; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-tagline {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .badge-tier1 { background: rgba(78, 205, 196, 0.12); color: var(--tier1); }
+  .badge-tier2 { background: rgba(17, 138, 178, 0.12); color: var(--tier2); }
+  .badge-tier3 { background: rgba(168, 85, 247, 0.12); color: var(--tier3); }
+  .badge-tier4 { background: rgba(138, 138, 149, 0.12); color: var(--tier4); }
+  .badge-tierA { background: rgba(244, 162, 97, 0.12); color: var(--tierA); }
+  .badge-principle { background: rgba(255, 209, 102, 0.12); color: var(--yellow); }
+
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  /* ── CONTENT BLOCKS ── */
+  .block { margin-bottom: 2.5rem; }
+
+  .block h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .block h3 .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .icon-source { background: rgba(17, 138, 178, 0.15); color: var(--blue); }
+  .icon-climb { background: rgba(78, 205, 196, 0.15); color: var(--green); }
+  .icon-verify { background: rgba(168, 85, 247, 0.15); color: var(--tier3); }
+  .icon-tip { background: rgba(255, 209, 102, 0.15); color: var(--yellow); }
+  .icon-warn { background: rgba(239, 71, 111, 0.15); color: var(--red); }
+
+  .block p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .block p strong { color: var(--text); font-weight: 500; }
+  .block p:last-child { margin-bottom: 0; }
+
+  .ref-link {
+    color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* ── MEDIA ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .video-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .video-wrap a {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.3s;
+  }
+
+  .video-wrap a:hover img { filter: brightness(0.85); }
+
+  .video-play-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    background: rgba(99, 102, 241, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    pointer-events: none;
+  }
+
+  .video-wrap a:hover .video-play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(99, 102, 241, 1);
+  }
+
+  .video-play-btn svg {
+    width: 28px; height: 28px;
+    fill: white;
+    margin-left: 3px;
+  }
+
+  .video-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .callout.green { border-left-color: var(--green); }
+  .callout.red { border-left-color: var(--red); }
+  .callout.blue { border-left-color: var(--blue); }
+  .callout.amber { border-left-color: var(--yellow); }
+
+  .callout-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .callout .callout-title { color: var(--accent); }
+  .callout.green .callout-title { color: var(--green); }
+  .callout.red .callout-title { color: var(--red); }
+  .callout.blue .callout-title { color: var(--blue); }
+  .callout.amber .callout-title { color: var(--yellow); }
+
+  .callout p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .callout p strong { color: var(--text); font-weight: 500; }
+
+  /* ── ACCORDION (Source Tiers) ── */
+  .accordion {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .accordion-header {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    user-select: none;
+  }
+
+  .accordion-header:hover { background: rgba(255,255,255,.03); }
+
+  .accordion-arrow {
+    transition: transform .3s;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+    padding: 0 1.5rem;
+  }
+
+  .accordion.open .accordion-body { max-height: 3000px; padding: 0 1.5rem 1.5rem; }
+  .accordion.open .accordion-arrow { transform: rotate(180deg); }
+
+  .tier-item { margin-bottom: 1.2rem; }
+  .tier-item:last-child { margin-bottom: 0; }
+
+  .tier-item h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .tier-item p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+  }
+
+  .tier-item p strong { color: var(--text); font-weight: 500; }
+
+  /* ── PRINCIPLES TABLE ── */
+  .prog-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .prog-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .prog-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  .prog-table tr:last-child td { border-bottom: none; }
+
+  .prog-table .principle-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .prog-table .lv { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600; color: #fff; }
+  .lv-1 { background: var(--green); color: #0a0a0c !important; }
+  .lv-2 { background: var(--blue); }
+  .lv-3 { background: var(--yellow); color: #0a0a0c !important; }
+  .lv-4 { background: var(--accent); }
+
+  /* ── SET & REST CARD ── */
+  .set-rest-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .set-rest-item {
+    background: var(--surface);
+    padding: 1.2rem 1.4rem;
+    text-align: center;
+  }
+
+  .set-rest-item .label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .set-rest-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .set-rest-item .value .unit {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 0.15rem;
+  }
+
+  .set-rest-note {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: -0.8rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  /* ── ORDER SECTION ── */
+  .order-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+  }
+
+  .order-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .order-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .order-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .order-item .num-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .order-arrow { color: var(--text-dim); font-size: 1.2rem; }
+
+  /* ── EQUIPMENT ── */
+  .equip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .equip-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .equip-tag.note { border-style: dashed; border-color: var(--yellow); color: var(--yellow); }
+
+  /* ── REFERENCES ── */
+  .ref-list { list-style: none; }
+
+  .ref-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(42, 42, 51, 0.5);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 12px;
+  }
+
+  .ref-list li:last-child { border-bottom: none; }
+
+  .ref-num {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 28px;
+  }
+
+  .ref-list li a { word-break: break-all; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .set-rest-card { grid-template-columns: 1fr; }
+    .order-flow { flex-direction: column; }
+    .order-arrow { transform: rotate(90deg); }
+    .hero-why { padding: 1.2rem 1.5rem; }
+    .section { padding: 3rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-badge">Climbing &times; Plyometric Power</div>
+  <h1>
+    벽에서 터뜨리는 힘,<br>
+    <span class="highlight">파워 세션</span> 처방전
+  </h1>
+  <p class="hero-sub">
+    V6+ 볼더러를 위한 플라이오메트릭 파워 훈련 6가지.<br>
+    Eric Hörst의 클라이밍 파워 가이드 기반. 직접 검증(✅)과 원칙 적용(🔶)을 구분 표기.
+  </p>
+  <div class="hero-why">
+    <h3>왜 플라이오메트릭인가?</h3>
+    <p>
+      클라이밍의 어려운 동작은 단순한 최대 근력이 아니라 <strong>파워</strong> — 짧은 시간에 큰 힘을 폭발적으로
+      내는 능력 — 을 요구한다. 다이노, 데드포인트, 컴프레션, 빠른 발 배치가 모두 여기에 속한다.
+    </p>
+    <p>
+      Hörst는 플라이오메트릭이 <strong>손가락 부하를 아끼면서</strong> 벽 밖에서 파워를 기르는 데 적합하다고 본다.
+      "특정 신체 부위에서 파워를 생성하고, 그 출력의 방향과 강도를 제어하는 법"을 가르친다는 것이다 <a href="#ref-1" class="ref-link">[1]</a>.
+    </p>
+    <p>
+      단, 핵심 원칙은 <strong>품질 &gt; 양</strong>이다. Hörst: <strong>"피로한 상태에서는 파워를 제대로 훈련할 수 없다."</strong>
+      파워가 떨어지는 즉시 멈춰야 하며, 훈련의 대부분은 여전히 벽에서 이뤄져야 한다 <a href="#ref-1" class="ref-link">[1]</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════ TOC ══════════ -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#session"><span class="num">▶</span>세션 구성</a>
+    <a href="#ex1"><span class="num">01</span>파워 풀업</a>
+    <a href="#ex2"><span class="num">02</span>파워 푸쉬업</a>
+    <a href="#ex3"><span class="num">03</span>박스 점프</a>
+    <a href="#ex4"><span class="num">04</span>점프 런지</a>
+    <a href="#ex5"><span class="num">05</span>스케이터</a>
+    <a href="#ex6"><span class="num">06</span>마운틴 클라이머</a>
+    <a href="#principles"><span class="num">▶</span>원칙</a>
+    <a href="#sources"><span class="num">i</span>출처 기준</a>
+  </div>
+</nav>
+
+<!-- ══════════ SESSION ORDER ══════════ -->
+<section class="section fade-in" id="session">
+  <div class="section-header">
+    <div class="section-number">RECOMMENDED SESSION</div>
+    <h2>추천 세션 구성</h2>
+    <p class="section-tagline">Hörst의 "6대 플라이오메트릭 운동" 기반 <a href="#ref-1" class="ref-link">[1]</a></p>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">⚠ 타이밍 — 다른 세션과 반대다</div>
+    <p>푸쉬·코어 세션은 클라이밍 <strong>직후</strong>에 붙이지만, 파워 훈련은 정반대다. 파워는 <strong>신선할 때만</strong> 제대로 훈련된다. Hörst: "피로한 상태에서는 파워를 제대로 훈련할 수 없다" <a href="#ref-1" class="ref-link">[1]</a>. 따라서 충분한 워밍업 후 <strong>본격 클라이밍 전</strong>(가벼운 등반 직후, 펌핑 전)이나 <strong>등반 볼륨이 가벼운 날</strong>에 배치한다. 지친 세션 끝에 붙이지 않는다.</p>
+  </div>
+
+  <div class="order-section">
+    <h3>세션 순서</h3>
+    <div class="order-flow">
+      <div class="order-item"><span class="num-circle">1</span>파워 풀업</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">2</span>파워 푸쉬업</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">3</span>박스 점프</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">4</span>점프 런지</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">5</span>스케이터</div>
+      <span class="order-arrow">&rarr;</span>
+      <div class="order-item"><span class="num-circle">6</span>마운틴 클라이머</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">순서 이유</div>
+    <p>신경 부하가 가장 큰 폭발적 동작을 <strong>신선할 때 먼저</strong> 한다. 상체 파워 페어(파워 풀업 ↔ 파워 푸쉬업) — Hörst가 균형을 위해 짝지은 조합 <a href="#ref-1" class="ref-link">[1]</a> — 을 앞에 두고, 양측성 하체 파워(박스 점프) → 단측성 하체 파워(점프 런지) → 측면 파워(스케이터) → 코어·발 속도 마무리(마운틴 클라이머) 순으로 진행. 마운틴 클라이머만 지구력 성격이라 마지막에 배치.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-tip">&#127919;</span> 사용 장비</h3>
+    <div class="equip-row">
+      <span class="equip-tag">풀업바</span>
+      <span class="equip-tag">짐링</span>
+      <span class="equip-tag">푸쉬업 바</span>
+      <span class="equip-tag note">안정된 박스/플랫폼 (별도 필요)</span>
+      <span class="equip-tag note">운동 매트 (권장)</span>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">박스가 없다면</div>
+    <p>보유 장비에 박스가 없다. <strong>흔들리지 않는</strong> 벤치·계단참·플라이오 박스로 대체하고, 미끄러지거나 흔들리는 것은 절대 사용하지 않는다. 마땅한 게 없으면 박스 점프 대신 <strong>제자리 점프 스쿼트</strong>로 대체해도 동일한 양측성 파워 패턴을 훈련할 수 있다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">총 소요 시간</div>
+      <div class="value">30~40<span class="unit">분</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">주간 빈도</div>
+      <div class="value">1~2<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">강도</div>
+      <div class="value" style="font-size:1rem;">최대 (신선할 때)</div>
+    </div>
+  </div>
+  <p class="set-rest-note">세트 간 휴식은 넉넉히. 파워 운동은 완전한 신경 회복 후 다음 세트를 해야 출력이 유지된다 (NSCA 플라이오 원리 <a href="#ref-3" class="ref-link">[3]</a>).</p>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>순서</th><th>운동</th><th>세트 &times; 반복</th><th>휴식</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">01</td>
+        <td class="principle-name">파워 풀업</td>
+        <td>3 &times; 3~5</td>
+        <td>2~3분</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">02</td>
+        <td class="principle-name">파워 푸쉬업</td>
+        <td>3 &times; 3~5</td>
+        <td>2~3분</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">03</td>
+        <td class="principle-name">박스 점프</td>
+        <td>3 &times; 5~10</td>
+        <td>2분</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">04</td>
+        <td class="principle-name">점프 런지</td>
+        <td>3 &times; 5~10/다리</td>
+        <td>90초~2분</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">05</td>
+        <td class="principle-name">스케이터</td>
+        <td>3 &times; 5~10/방향</td>
+        <td>90초</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;">06</td>
+        <td class="principle-name">마운틴 클라이머</td>
+        <td>3 &times; 10~20/다리</td>
+        <td>45~60초</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout red">
+    <div class="callout-title">안전 — 플라이오메트릭 전제 조건</div>
+    <p>
+      &bull; <strong>워밍업 필수</strong> — 동적 워밍업 없이 폭발 동작 금지<br>
+      &bull; <strong>부드러운 착지</strong> — 무릎-발끝 정렬, 발 앞꿈치로 흡수, 쿵 떨어지지 않기<br>
+      &bull; <strong>근력 기반 선행</strong> — NSCA는 플라이오 전 기본 근력 확보를 권장 <a href="#ref-3" class="ref-link">[3]</a><br>
+      &bull; <strong>급성 부상·관절 통증 시 중단</strong> — 어깨/팔꿈치/무릎/허리 통증이 있으면 하지 않는다<br>
+      &bull; <strong>신경 피로 누적 주의</strong> — 주 1~2회, 파워가 떨어지면 그날은 종료 <a href="#ref-1" class="ref-link">[1]</a>
+    </p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">당김 볼륨 주의</div>
+    <p>파워 풀업은 광배근을 강하게 쓰는 <strong>당김 계열</strong>이다. 클라이밍(주 3~4회) + 코어 세션의 프론트 레버 + 파워 풀업이 모두 같은 당김 볼륨에 합산된다. 굴곡근·팔꿈치 피로가 쌓이면 파워 풀업 빈도를 먼저 줄이고, 푸쉬 볼륨으로 균형을 맞춘다.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 01. POWER PULL-UPS ══════════ -->
+<section class="section fade-in" id="ex1">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 01</div>
+    <h2>파워 풀업</h2>
+    <p class="section-tagline">Power Pull-Ups — 폭발적 당김 파워. Hörst 6대 플라이오의 첫 번째</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치/저자</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=sAsgo1HcVSU" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/sAsgo1HcVSU/maxresdefault.jpg" alt="폭발적 풀업 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/sAsgo1HcVSU/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Hörst 글에 임베드된 시연 영상 · EXPLOSIVE PULL-UPS! BEST TIPS</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 파워 풀업을 6대 플라이오메트릭 운동의 첫 번째로 제시하며, <strong>"핑거 부하가 높은 상태의 벽 등반을 직접 시뮬레이션"</strong>하는 운동으로 설명한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+    <p style="margin-top:0.8rem;">수행: 손바닥을 바깥 방향으로 바에 매달려, 어깨에서 모멘텀을 시작해 <strong>가슴을 바까지 폭발적으로</strong> 끌어올린다. 천천히 직팔까지 내린 뒤 <strong>1초 정지해 에너지를 분산</strong>시킨 다음 다음 렙을 한다. 최대 강도로 3세트 × 3~5회 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>다이노·데드포인트 등 <strong>폭발적으로 당겨 잡는 동작</strong>의 출력을 키운다. Hörst의 설계 의도대로, 손가락을 크림핑으로 혹사시키지 않으면서 벽 밖에서 당김 파워를 훈련한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">3~5<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">2~3<span class="unit">분</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">최대 강도 운동. 속도가 느려지거나 가슴이 바에 닿지 못하면 즉시 중단 — Hörst "피로한 상태에서는 파워를 제대로 훈련할 수 없다" <a href="#ref-1" class="ref-link">[1]</a>. 하강 후 1초 정지로 반동 제거.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">폭발 의도 풀업 (구심 빠르게, 편심 통제)</td><td>3 &times; 5</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">파워 풀업 — 가슴까지 빠르게</td><td>3 &times; 3~5</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">정점 손 떼기(미니 캐치) 또는 짐링 파워 풀업</td><td>3 &times; 3~5</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">밴드 보조 한 손 파워 풀업 / 캠퍼스식 매치</td><td>3 &times; 3/팔</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> Hörst(Training for Climbing)가 클라이밍 파워 향상 운동으로 <a href="#ref-1" class="ref-link">[1]</a>에서 직접 추천. 프로그레션 단계는 일반 플라이오 진행 원리(NSCA <a href="#ref-3" class="ref-link">[3]</a>)를 적용한 것.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 02. POWER PUSH-UPS ══════════ -->
+<section class="section fade-in" id="ex2">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 02</div>
+    <h2>파워 푸쉬업</h2>
+    <p class="section-tagline">Power Push-Ups — 폭발적 미는 파워. 파워 풀업과 짝지은 대항 운동</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치/저자</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=CvgV8W98inA" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/CvgV8W98inA/maxresdefault.jpg" alt="폭발적 푸쉬업 튜토리얼" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/CvgV8W98inA/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Hörst 글에 임베드된 시연 영상 · Explosive Push Up TUTORIAL</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 파워 푸쉬업을 <strong>파워 풀업과 짝지어</strong> 상체 앞뒤 균형을 맞추는 대항 운동으로 제시한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+    <p style="margin-top:0.8rem;">수행: 플랭크 자세에서 <strong>가슴이 바닥에 닿을락 말락</strong> 내린 뒤 <strong>폭발적으로 밀어올린다</strong>. 정점에서 박수를 시도할 수 있다. 바닥을 최대한 강하게 밀어내는 것이 핵심. 최대 강도로 3세트 × 3~5회 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>당김 우세 동작에 미는 파워로 균형을 잡고, <strong>컴프레션과 맨틀</strong> 기술을 향상시킨다 <a href="#ref-1" class="ref-link">[1]</a>. 대항근 발달과 폭발적 미는 출력을 동시에 가져간다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">3~5<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">2~3<span class="unit">분</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">손이 바닥에서 뜰 만큼 폭발적으로. 손목 부담이 크면 푸쉬업 바를 사용하고, 박수는 충분히 익숙해진 뒤 추가한다.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">무릎 폭발 푸쉬업 (손 살짝 뜸)</td><td>3 &times; 5</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">파워 푸쉬업 — 손 뜸</td><td>3 &times; 3~5</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">박수 푸쉬업</td><td>3 &times; 3~5</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">링 파워 푸쉬업 / 디클라인 박수 푸쉬업</td><td>3 &times; 3~5</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> Hörst가 파워 풀업의 대항 운동으로 <a href="#ref-1" class="ref-link">[1]</a>에서 직접 추천. 컴프레션·맨틀 연관성도 원문 명시. 프로그레션은 일반 플라이오 진행 원리 적용.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 03. BOX JUMPS ══════════ -->
+<section class="section fade-in" id="ex3">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 03</div>
+    <h2>박스 점프</h2>
+    <p class="section-tagline">Box Jumps — 양측성 하체 파워. 풀바디 다이노 모사</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치/저자</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=NBY9-kTuHEk" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/NBY9-kTuHEk/maxresdefault.jpg" alt="박스 점프 시연" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/NBY9-kTuHEk/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Hörst 글에 임베드된 시연 영상 · The Box Jump</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 박스 점프를 다리·둔근·코어의 <strong>양측성 파워 생성</strong> 운동으로 제시한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+    <p style="margin-top:0.8rem;">수행: 스쿼트로 내려가며 팔을 뒤로 스윙해 모멘텀을 만들고, 발 앞꿈치로 밀어 <strong>두 발이 동시에</strong> 박스에 착지한다. <strong>가볍게 착지</strong>하고, 똑바로 선 뒤 조심히 내려온다. 박스 높이는 편안히 올라설 수 있는 높이부터 점진적으로 올린다. 3세트 × 5~10회 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>모든 접점이 <strong>동시에 벽을 떠나는 풀바디 다이노</strong>를 모사한다 <a href="#ref-1" class="ref-link">[1]</a>. 양발 동시 추진의 폭발력을 키운다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">5~10<span class="unit">회</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">2<span class="unit">분</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">착지의 <strong>부드러움</strong>이 높이보다 우선. 흔들리지 않는 박스만 사용. 마땅한 박스가 없으면 제자리 점프 스쿼트로 대체.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">제자리 점프 스쿼트 (착지 통제)</td><td>3 &times; 8</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">낮은 박스 점프 (무릎 아래 높이)</td><td>3 &times; 5~10</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">중간 박스 점프 + 부드러운 착지</td><td>3 &times; 5~10</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">한 발 박스 점프 (강한 근력 기반 필요)</td><td>3 &times; 5/다리</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> Hörst가 풀바디 다이노 파워 운동으로 <a href="#ref-1" class="ref-link">[1]</a>에서 직접 추천. 박스 대체·프로그레션 안전 단계는 일반 플라이오 원리 적용.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 04. JUMP LUNGES ══════════ -->
+<section class="section fade-in" id="ex4">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 04</div>
+    <h2>점프 런지</h2>
+    <p class="section-tagline">Jump Lunges — 단측성 하체 파워. 한 다리씩 미는 추진력</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치/저자</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=iJMsF7fzrOM" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/iJMsF7fzrOM/maxresdefault.jpg" alt="점프 런지 시연" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/iJMsF7fzrOM/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Hörst 글에 임베드된 시연 영상 · JUMP LUNGE</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 점프 런지를 다리·둔근·고관절 굴곡근의 <strong>단측성(한 다리) 파워</strong> 운동으로 제시한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+    <p style="margin-top:0.8rem;">수행: 런지 자세(앞무릎 90°, 뒤꿈치 듦)에서 살짝 내려간 뒤 <strong>폭발적으로 점프하며 공중에서 다리를 교체</strong>, 반대 런지 자세로 착지한다. 3세트 × 5~10회/다리 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>한 다리씩 차례로 미는 추진 동작에 필요한 <strong>단측 파워</strong>를 키운다 <a href="#ref-1" class="ref-link">[1]</a>. 하이스텝에서 한 발로 강하게 밀어 일어설 때 직결된다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">5~10<span class="unit">회/다리</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">90초~2<span class="unit">분</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">무릎이 안쪽으로 무너지지 않게 정렬 유지. 착지 시 충격을 흡수하며 곧바로 다음 점프로 반동을 살린다.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">반복 런지 (점프 없이, 통제)</td><td>3 &times; 8/다리</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">스플릿 점프 (낮게, 다리 교체)</td><td>3 &times; 5~8/다리</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">점프 런지 (풀 교체)</td><td>3 &times; 5~10/다리</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">KB 8kg 들고 점프 런지 / 점프 높이 증가</td><td>3 &times; 5~8/다리</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> Hörst가 단측성 하체 파워 운동으로 <a href="#ref-1" class="ref-link">[1]</a>에서 직접 추천. 프로그레션은 일반 플라이오 진행 원리 적용.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 05. SKATERS ══════════ -->
+<section class="section fade-in" id="ex5">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 05</div>
+    <h2>스케이터</h2>
+    <p class="section-tagline">Skaters — 측면 파워. 좌우 이동 동작의 폭발력</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치/저자</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=DUbAhVe0e8Q" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/DUbAhVe0e8Q/maxresdefault.jpg" alt="스케이터 런지 시연" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/DUbAhVe0e8Q/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Hörst 글에 임베드된 시연 영상 · How to do a skater lunge</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 스케이터를 다리·둔근·<strong>측면 안정근</strong>의 측면 이동 파워 운동으로 제시한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+    <p style="margin-top:0.8rem;">수행: 한 다리를 굽혀 서고 반대 다리는 뒤로 커시(curtsy) 자세 → <strong>옆으로 최대한 멀리 도약</strong> → 반대 발로 착지하며 다른 다리를 커시로. 팔을 스윙해 모멘텀을 만든다. <strong>높이보다 거리</strong>를 강조한다. 3세트 × 5~10회/방향 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>좌우로 이동하는 동작에 필요한 <strong>측면 파워</strong>를 키운다 <a href="#ref-1" class="ref-link">[1]</a>. 래터럴 다이노나 옆으로 무게중심을 던지는 무브에 대응한다.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">5~10<span class="unit">회/방향</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">90<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">착지하는 다리로 균형을 잡고 한 박자 안정시킨 뒤 반대로 도약. 좌우 거리를 점점 늘려간다.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">좌우 스텝 (도약 없이, 균형 잡기)</td><td>3 &times; 8/방향</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">짧은 스케이터 홉</td><td>3 &times; 5~10/방향</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">풀 스케이터 (거리 강조)</td><td>3 &times; 5~10/방향</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">착지 1초 홀드(단일 다리 안정) / 거리 증가</td><td>3 &times; 5~8/방향</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> Hörst가 측면 이동 파워 운동으로 <a href="#ref-1" class="ref-link">[1]</a>에서 직접 추천. 프로그레션은 일반 플라이오 진행 원리 적용.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ 06. MOUNTAIN CLIMBERS ══════════ -->
+<section class="section fade-in" id="ex6">
+  <div class="section-header">
+    <div class="section-number">EXERCISE 06</div>
+    <h2>마운틴 클라이머</h2>
+    <p class="section-tagline">Mountain Climbers — 폭발적 무릎 드라이브 + 코어 지구력 마무리</p>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-tier2">Tier 2 — 전문 코치/저자</span>
+  </div>
+
+  <div class="media-grid">
+    <div class="video-wrap">
+      <a href="https://www.youtube.com/watch?v=kLh-uczlPLg" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/kLh-uczlPLg/maxresdefault.jpg" alt="마운틴 클라이머 시연" loading="lazy"
+          onerror="this.src='https://img.youtube.com/vi/kLh-uczlPLg/hqdefault.jpg'">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>
+      </a>
+    </div>
+    <p class="video-label">&#9654; 클릭하면 YouTube에서 재생 · Hörst 글에 임베드된 시연 영상 · How To Do Mountain Climbers</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-source">&#128196;</span> 원문 근거</h3>
+    <p>Hörst는 마운틴 클라이머를 코어·대퇴사두·고관절 굴곡근의 <strong>폭발적 무릎 드라이브</strong> 운동으로 제시한다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+    <p style="margin-top:0.8rem;">수행: 플랭크 자세에서 한 무릎을 가슴 쪽으로 <strong>최대한 빠르게</strong> 끌어당기고(앞꿈치로 밀기), 빠르게 다리를 교대한다. "무릎을 코까지 가져간다"는 이미지로. 3세트 × 10~20회/다리 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="block">
+    <h3><span class="icon icon-climb">&#129495;</span> 클라이밍 연관성</h3>
+    <p>높은 토훅 상황에서의 <strong>빠른 발 배치</strong>를 가능하게 하고, 코어 지구력을 기른다 <a href="#ref-1" class="ref-link">[1]</a>.</p>
+  </div>
+
+  <div class="set-rest-card">
+    <div class="set-rest-item">
+      <div class="label">권장 세트</div>
+      <div class="value">3<span class="unit">세트</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">반복</div>
+      <div class="value">10~20<span class="unit">회/다리</span></div>
+    </div>
+    <div class="set-rest-item">
+      <div class="label">세트 간 휴식</div>
+      <div class="value">45~60<span class="unit">초</span></div>
+    </div>
+  </div>
+  <p class="set-rest-note">6개 중 유일한 지구력 성격 운동 — 휴식을 짧게 가져가고 세션 마무리에 배치. 엉덩이가 들리지 않게 플랭크 정렬 유지.</p>
+
+  <table class="prog-table">
+    <thead><tr><th>레벨</th><th>프로그레션</th><th>세트 × 반복</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lv lv-1">Lv.1</span></td><td class="principle-name">느린 마운틴 클라이머 (자세 정렬 학습)</td><td>3 &times; 10/다리</td></tr>
+      <tr><td><span class="lv lv-2">Lv.2</span></td><td class="principle-name">표준 속도 마운틴 클라이머</td><td>3 &times; 10~15/다리</td></tr>
+      <tr><td><span class="lv lv-3">Lv.3</span></td><td class="principle-name">빠른 마운틴 클라이머</td><td>3 &times; 15~20/다리</td></tr>
+      <tr><td><span class="lv lv-4">Lv.4</span></td><td class="principle-name">크로스바디(사선) 마운틴 클라이머</td><td>3 &times; 15~20/다리</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">검증 수준</div>
+    <p><span class="badge badge-tier2">Tier 2</span> Hörst가 빠른 발 배치·코어 지구력 운동으로 <a href="#ref-1" class="ref-link">[1]</a>에서 직접 추천. 프로그레션은 일반 진행 원리 적용.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ PRINCIPLES ══════════ -->
+<section class="section fade-in" id="principles">
+  <div class="section-header">
+    <div class="section-number">PROGRAMMING PRINCIPLES</div>
+    <h2>프로그래밍 원칙</h2>
+    <p class="section-tagline">검증된 출처에서 확인된 파워 훈련 가이드라인</p>
+  </div>
+
+  <table class="prog-table">
+    <thead>
+      <tr><th>원칙</th><th>출처</th><th>원문 요약</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="principle-name">품질 &gt; 양</td>
+        <td>Eric Hörst <a href="#ref-1" class="ref-link">[1]</a></td>
+        <td>"여기서는 양보다 질이다. 피로한 상태에서는 파워를 제대로 훈련할 수 없다." 파워가 떨어지는 것을 감지하는 즉시 정해진 렙 범위 안에서 멈춘다.</td>
+      </tr>
+      <tr>
+        <td class="principle-name">상·하체 짝짓기 균형</td>
+        <td>Eric Hörst <a href="#ref-1" class="ref-link">[1]</a></td>
+        <td>파워 풀업을 파워 푸쉬업과 짝지어 상체 앞뒤 균형을 맞추고, 여기에 하체·코어 운동을 더해 전신 파워를 균형 있게 발달시킨다.</td>
+      </tr>
+      <tr>
+        <td class="principle-name">벽 등반이 우선, 플라이오는 보조</td>
+        <td>Eric Hörst <a href="#ref-1" class="ref-link">[1]</a></td>
+        <td>대부분의 클라이밍 훈련은 벽에서 이뤄져야 하며, 플라이오메트릭은 과도한 손가락 부하 없이 폭발적 근력을 기르는 영리한 보완 수단이다.</td>
+      </tr>
+      <tr>
+        <td class="principle-name">신장-단축 주기(SSC)와 근력 기반 <span class="badge badge-tierA">🔶 Tier A</span></td>
+        <td>NSCA <a href="#ref-3" class="ref-link">[3]</a></td>
+        <td>플라이오메트릭은 편심 사전 신장 → 탄성 에너지 저장 → 폭발적 구심 수축으로 이어지는 SSC를 활용한다. 효과와 안전을 위해 기본 근력 확보와 세트 간 완전 회복이 전제된다. <em>(일반 운동과학 원리)</em></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ SOURCE TIERS ══════════ -->
+<section class="section fade-in" id="sources">
+  <div class="section-header">
+    <div class="section-number">SOURCE CRITERIA</div>
+    <h2>출처 기준</h2>
+    <p class="section-tagline">이 페이지의 6개 운동은 모두 단일 1차 출처(Hörst)에서 직접 추천된 것이며, 일반 운동과학 원리로 보강했다.</p>
+  </div>
+
+  <div class="accordion open">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span>출처 계층</span>
+      <span class="accordion-arrow">&#9660;</span>
+    </div>
+    <div class="accordion-body">
+      <div class="tier-item">
+        <h4><span class="badge badge-tier2">Tier 2</span> 공인 자격 클라이밍 전문 코치/저자</h4>
+        <p><strong>Eric Hörst (Training for Climbing)</strong> — 30년+ 클라이밍 훈련 연구·코칭, 다수 저서(<em>Training for Climbing</em>, <em>Conditioning for Climbers</em>)의 저자. 이 페이지의 6개 운동을 모두 "클라이밍 파워를 높이는 플라이오메트릭 운동"으로 직접 제시하고, 각 운동의 클라이밍 적용과 시연 영상까지 함께 제공. <a href="#ref-1" class="ref-link">[1]</a> <a href="#ref-2" class="ref-link">[2]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-tierA">🔶 Tier A</span> 인접 학문 (일반 운동과학)</h4>
+        <p><strong>NSCA — <em>Essentials of Strength Training and Conditioning</em></strong> — 플라이오메트릭 훈련의 확립된 원리(신장-단축 주기, 근력 기반 선행, 세트 간 완전 회복, 점진적 강도 증가)의 근거. 클라이밍 특화 추천은 아니며, 본 페이지에서는 휴식 간격·프로그레션 단계·안전 가이드의 근거로만 사용. <a href="#ref-3" class="ref-link">[3]</a></p>
+      </div>
+      <div class="tier-item">
+        <h4><span class="badge badge-principle">🔶 원칙 적용</span> 검증된 원칙에서 도출</h4>
+        <p>각 운동의 <strong>직접 추천은 Hörst(✅ Tier 2)</strong>에서 확인됐다. 다만 Hörst가 명시하지 않은 <strong>세트 간 휴식 간격·Lv.1~4 프로그레션·안전 단계</strong>는 일반 플라이오메트릭 원리(Tier A)를 적용한 것으로, 운동 카드에 별도 표기했다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════ REFERENCES ══════════ -->
+<section class="section fade-in" id="references">
+  <div class="section-header">
+    <div class="section-number">REFERENCES</div>
+    <h2>레퍼런스</h2>
+  </div>
+
+  <ol class="ref-list">
+    <li id="ref-1">
+      <span class="ref-num">[1]</span>
+      <div>Hörst, E. "6 Plyometric Exercises to Boost Climbing Power." <em>Training for Climbing</em>. — 6개 운동 전부를 클라이밍 파워 운동으로 직접 추천하고, 각 운동의 수행법·클라이밍 적용·시연 영상을 제공한 1차 출처. <a href="https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/" target="_blank" rel="noopener">trainingforclimbing.com</a></div>
+    </li>
+    <li id="ref-2">
+      <span class="ref-num">[2]</span>
+      <div>Hörst, E. <em>Training for Climbing: The Definitive Guide to Improving Your Performance</em> (3rd ed.). (서적) — 파워 및 파워 지구력 훈련 챕터 포함.</div>
+    </li>
+    <li id="ref-3">
+      <span class="ref-num">[3]</span>
+      <div>Haff, G.G. &amp; Triplett, N.T. (eds.). <em>Essentials of Strength Training and Conditioning</em> (4th ed.). NSCA / Human Kinetics. — 플라이오메트릭 훈련 챕터(신장-단축 주기, 근력 기반, 회복, 점진적 강도). 클라이밍 특화 출처가 아닌 일반 운동과학 근거(Tier A).</div>
+    </li>
+  </ol>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <p>클라이머를 위한 파워 세션 — 검증된 출처 기반 플라이오메트릭 훈련 가이드</p>
+  <p style="margin-top: 0.5rem; opacity: 0.5;">마지막 업데이트 2026-05</p>
+</footer>
+
+<button class="back-to-top" aria-label="맨 위로 이동">&uarr;</button>
+
+<script>
+  function toggleAccordion(header) {
+    header.parentElement.classList.toggle('open');
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  // ── TOC: 스무스 스크롤 + 히스토리 미축적 ──
+  const tocBar = document.querySelector('.toc');
+  const tocLinks = document.querySelectorAll('.toc a');
+  tocLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = link.getAttribute('href');
+      const target = document.querySelector(href);
+      if (!target) return;
+      const offset = tocBar ? tocBar.offsetHeight : 0;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      history.replaceState(null, '', href);
+    });
+  });
+
+  // ── 스크롤 스파이: 현재 섹션의 TOC 항목 하이라이트 ──
+  const tocMap = new Map();
+  tocLinks.forEach(link => {
+    const id = link.getAttribute('href').slice(1);
+    tocMap.set(id, link);
+  });
+
+  function setActive(link) {
+    tocLinks.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    if (tocBar && tocBar.scrollWidth > tocBar.clientWidth) {
+      const linkCenter = link.offsetLeft + link.offsetWidth / 2;
+      tocBar.scrollTo({
+        left: linkCenter - tocBar.clientWidth / 2,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  const spyObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const link = tocMap.get(e.target.id);
+        if (link) setActive(link);
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+  tocMap.forEach((link, id) => {
+    const sec = document.getElementById(id);
+    if (sec) spyObs.observe(sec);
+  });
+
+  // ── 플로팅 ↑ 버튼 ──
+  const btt = document.querySelector('.back-to-top');
+  if (btt) {
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 400) btt.classList.add('visible');
+      else btt.classList.remove('visible');
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      history.replaceState(null, '', window.location.pathname);
+    });
+  }
+</script>
+
+</body>
+</html>
