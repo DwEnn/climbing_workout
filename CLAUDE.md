@@ -107,8 +107,10 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 
 ### 파워 세션 (플라이오메트릭)
 
-**설계 원칙: 단일 1차 출처 + 일반 운동과학 보강.**
-6개 운동 전부 Eric Hörst의 "6 Plyometric Exercises to Boost Climbing Power" [P-1]에서 클라이머에게 직접 추천되었으며, 각 운동의 수행법·클라이밍 적용·시연 영상이 원문에 포함되어 있다. 따라서 6개 모두 ✅ 직접 검증(Tier 2). Hörst가 명시하지 않은 세트 간 휴식·Lv.1~4 프로그레션·안전 단계만 🔶 일반 플라이오 원리(Tier A, NSCA)로 보강.
+**설계 원칙: Hörst 1차 출처(주력 5개) + 발목 안정성 모듈 1개(Tier 3 + Tier A) 보강.**
+주력 파워 5개(파워 풀업·푸쉬업·박스 점프·점프 런지·마운틴 클라이머)는 Eric Hörst의 "6 Plyometric Exercises to Boost Climbing Power" [P-1]에서 클라이머에게 직접 추천됨 → ✅ 직접 검증(Tier 2). Hörst의 6번째 스케이터는 착지 정렬보다 최대 거리를 강조해, 발목 제어 목적에 맞춰 **래터럴 홉-앤-스틱으로 대체**함. 발목 모듈 1개(래터럴 홉-앤-스틱)는 클라이밍 의료 전문가(Tier 3)와 hop-stabilization RCT·일반 운동과학(Tier A)으로 검증. 총 6개 운동. Hörst가 명시하지 않은 세트 간 휴식·Lv.1~4 프로그레션·안전 단계는 🔶 일반 플라이오 원리(Tier A, NSCA)로 보강.
+
+> **발목 모듈은 1개만 유지 결정:** 후보는 ① 래터럴 홉-앤-스틱(흡수·제동), ② 싱글레그 4방향 포고(반사탄력·강성). **동적 움직임 제어**와 **검증 레벨** 두 축 모두 ①이 우위 — hop-stabilization RCT [P-6]가 측정한 개선 지표(착지 시 관절 굴곡↑·관상면 붕괴↓·지면반력↓)가 곧 착지 제어이고, 클라이밍 의료 전문가(Hedges [P-8]·Vagy [P-4])가 좌우 홉+한발 진행을 직접 추천. 포고의 반사탄력은 클라이밍 퍼포먼스 직접 출처가 없어 제외. 드롭-앤-스틱 착지는 ①의 워밍업/Lv.1로 흡수.
 
 | 운동 | 패턴 | 검증 | 핵심 출처 |
 |------|------|------|----------|
@@ -116,15 +118,16 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 | 파워 푸쉬업 | 폭발적 밀기 (당김 대항) | ✅ | Hörst [P-1] |
 | 박스 점프 | 양측성 하체 파워 | ✅ | Hörst [P-1] |
 | 점프 런지 | 단측성 하체 파워 | ✅ | Hörst [P-1] |
-| 스케이터 | 측면 파워 | ✅ | Hörst [P-1] |
+| 싱글레그 래터럴·사선 홉-앤-스틱 | 측면 파워 + 착지 제동·발목 제어 | ✅ Tier 3 (착지/부상예방) + 🔶 Tier A (hop-stabilization) | Hedges/Climbing Doctor [P-8], Vagy [P-4], hop-stabilization RCT [P-6], MGB 준비도 [P-7] · (측면 파워 계보 Hörst [P-1]) |
 | 마운틴 클라이머 | 폭발적 무릎 드라이브 + 코어 | ✅ | Hörst [P-1] |
-| 발목 반사탄력 & 착지 | 발목 강성 + 착지 메커닉스 | ✅ Tier 3 (착지/부상예방) + 🔶 Tier A (반사탄력) | Vagy [P-4], Hooper's Beta [P-5], NSCA [P-3] |
 
 > **타이밍 주의 (다른 세션과 반대):** 푸쉬·코어는 클라이밍 직후에 붙이지만, 파워 훈련은 **신선할 때만** 제대로 된다. Hörst: "피로한 상태에서는 파워를 제대로 훈련할 수 없다." → 워밍업 후 본격 등반 전, 또는 등반 볼륨이 가벼운 날에 배치. 주 1~2회.
 >
 > **장비 주의:** 보유 장비에 박스 없음 → 안정된 플랫폼/벤치 대체 또는 제자리 점프 스쿼트로 대체. 파워 풀업은 당김 계열이라 주간 당김 볼륨(클라이밍 + 프론트 레버)에 합산됨에 유의.
 >
-> **발목 반사탄력 & 착지 (7번째 운동) 근거 구분:** Hörst 플라이오 글에는 발목 특화 내용이 없고, "발목탄력=파워"를 추천한 클라이밍 출처는 없음 → 반사탄력(포고 홉) 부분은 🔶 Tier A(NSCA)로만 표기. 반면 **착지 메커닉스·발목 반응 훈련**은 볼더링 발목 염좌(클라이머 하체 부상 1위) 예방으로 Vagy·Hooper's Beta(Tier 3)가 직접 추천 → 이 부분은 ✅. 한 카드에 ✅/🔶를 함께 달되 어느 부분이 어느 근거인지 명시. 주 가치는 파워가 아니라 부상예방·풋워크 지지 (고관절 가동성이 더 높은 우선순위).
+> **발목 모듈(EX05 래터럴 홉-앤-스틱) 근거 구분:** Hörst 플라이오 글에는 발목 특화 내용이 없고, hop-stabilization의 클라이밍 퍼포먼스 전이는 🔶 Tier A로 표기. hop-stabilization RCT [P-6]는 peer-reviewed지만 **대상이 농구선수(클라이머 아님)**라 전이는 원칙 기반 추론. 반면 **착지 메커닉스·측면 홉·발목 반응 훈련**은 볼더링 발목 염좌(클라이머 하체 부상 1위) 예방으로 Vagy [P-4]·Hooper's Beta [P-5]·Hedges/Climbing Doctor [P-8](Tier 3)가 직접 추천 → 이 부분은 ✅. 한 카드에 ✅/🔶를 함께 달되 어느 부분이 어느 근거인지 명시. 주 가치는 파워가 아니라 부상예방·풋워크 지지 (고관절 가동성이 더 높은 우선순위).
+>
+> **주의 (검증에서 확인된 사항):** ① hop-stabilization 연구의 구체적 홉 거리(예: 30cm/40cm)는 접근 가능한 논문에 명시돼 있지 않음 → 페이지에는 "연구 수치가 아닌 실전 시작값"으로만 표기. ② The Climbing Doctor의 발목 재활 홉 진행 콘텐츠 저자는 **Nicholas Hedges(게스트 DPT)**이며 Vagy가 아님 → 귀속 구분.
 
 ---
 
@@ -210,6 +213,18 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 [P-5] Hooper, J. "How to Fix Ankle Pain for Climbers." Hooper's Beta. (Tier 3) — 염좌 후
       고유수용성 저하, 점진적 플라이오 진행의 재발 예방.
       https://www.hoopersbeta.com/library/how-to-heal-ankle-injury-back-to-100-climbing
+[P-6] Ardakani, M.K., Wikstrom, E.A., et al. (2019). "Hop-Stabilization Training and Landing
+      Biomechanics in Athletes With Chronic Ankle Instability: A RCT." J. Athletic Training.
+      (Tier A) — 좌우·앞뒤·지그재그·4방향 홉(최종 2Hz)로 착지 역학 개선. 대상: 남자 대학
+      농구선수(클라이머 아님) → 전이는 원칙 기반 추론. https://pubmed.ncbi.nlm.nih.gov/31618073/
+[P-7] Massachusetts General Brigham Sports Medicine. "Rehabilitation Protocol for Lateral
+      Ankle Sprain: non-operative management." — 진행 기준 싱글레그 힐레이즈 25회 + Y/Star
+      balance 80%; 복귀 기준 Y-balance·홉 대칭 90% + 통증·붓기 증가 없음.
+      https://www.massgeneral.org/assets/MGH/pdf/orthopaedics/sports-medicine/physical-therapy/rehabilitation-protocol-for-ankle-sprain.pdf
+[P-8] Hedges, N. (DPT). "Rock Climbing Injury: Ankle Sprain Rehab." The Climbing Doctor.
+      (Tier 3) — 클라이머용 발목 재활: 정적 균형 → 앞뒤 홉 → 좌우 홉 → 한발 진행, 스텝오프
+      착지 드릴. ⚠️ The Climbing Doctor 게스트 저자(Vagy 아님).
+      https://theclimbingdoctor.com/ankle-sprain-assessment-and-rehab/
 ```
 
 ---
