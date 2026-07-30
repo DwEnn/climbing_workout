@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "condition": "without_skill",
+  "verdict": "fail",
+  "checks_run": 3,
+  "checks_failed": 3,
+  "findings": {
+    "broken_internal_references": 1,
+    "invalid_direct_evidence_labels": 1,
+    "unavailable_equipment_requirements": 1
+  },
+  "input_files_modified": false
+}

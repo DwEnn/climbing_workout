@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "configuration": "with_skill",
+  "run_number": 1,
+  "prompt": "현재 저장소의 4개 운동 가이드를 validation/spec.yaml과 source-audit.yaml 기준으로 전수 검증한다."
+}

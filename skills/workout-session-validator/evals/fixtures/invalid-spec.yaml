@@ -1,0 +1,9 @@
+sessions:
+  fixture:
+    guide: invalid-guide.html
+    available_equipment:
+      - floor
+    exercises:
+      - id: ex1
+        title: 불안정 의자 박스 점프
+        declared_evidence: direct

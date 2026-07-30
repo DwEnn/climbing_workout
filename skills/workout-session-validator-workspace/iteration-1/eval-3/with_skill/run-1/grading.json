@@ -1,0 +1,48 @@
+{
+  "expectations": [
+    {
+      "text": "세 후보를 같은 100점 루브릭으로 채점한다",
+      "passed": true,
+      "evidence": "세 후보 모두 근거 30, 목표 25, 통합 20, 장비 15, 사용성 10의 동일 표에서 100점 만점으로 채점했다."
+    },
+    {
+      "text": "hard_failure가 있는 후보를 점수보다 먼저 탈락시킨다",
+      "passed": true,
+      "evidence": "보고서 1절에서 채택 상태를 가린 채 A와 C의 장비·안전 하드 실패를 먼저 적용했다."
+    },
+    {
+      "text": "현재 채택 여부와 무관하게 최고 후보를 선택한다",
+      "passed": true,
+      "evidence": "블라인드 후보 B를 86점 1위로 고른 뒤 3절에서 현재 운동이 A였음을 공개했다."
+    },
+    {
+      "text": "최고 후보가 현재 운동보다 5점 넘게 높을 때 선택 후회를 보고한다",
+      "passed": true,
+      "evidence": "현재 36점과 최고 86점의 +50점 차이를 계산하고 5점 초과 선택 후회를 명시했다."
+    }
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {
+    "tool_calls": {"Read": 0, "Write": 0, "Bash": 2, "Edit": 1, "Glob": 0, "Grep": 0},
+    "total_tool_calls": 3,
+    "total_steps": 7,
+    "errors_encountered": 0
+  },
+  "claims": [
+    {
+      "claim": "후보 B가 현재 운동보다 50점 높다",
+      "type": "factual",
+      "verified": true,
+      "evidence": "표의 86점과 36점 차이는 50점이다."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": ["fixture에 실제 출처 URL과 세션 용량이 없어 Tier와 용량은 확정하지 않음"],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "모든 기대사항을 구체적 계산과 근거로 충족했다."
+  }
+}

@@ -1,0 +1,327 @@
+version: 1
+audited_at: 2026-07-30
+
+scope:
+  sessions: 4
+  active_exercises: 18
+  required_videos_per_exercise: 1
+  allowed_host: www.youtube.com
+  role: movement_demonstration_not_evidence
+  match_rule: >
+    The linked video must demonstrate the named card movement, including the
+    defining variation when the card is more specific than the base exercise.
+    A source article, unavailable thumbnail, generic progression, or adjacent
+    movement does not pass.
+  verification_method: >
+    YouTube metadata was checked for every retained and replacement video.
+    New or ambiguous candidates were also downloaded at low resolution and
+    reviewed by frame before implementation.
+
+summary:
+  linked_videos: 18
+  public_videos: 18
+  exact_movement_matches: 18
+  retained: 8
+  added: 3
+  replaced: 7
+  unavailable: 0
+  mismatched: 0
+
+videos:
+  - key: push.ex1
+    session: push
+    guide: guides/push-training-guide.html
+    exercise_id: ex1
+    title: 푸쉬업 플러스
+    youtube_id: 3TsOKiUDzw0
+    youtube_url: https://www.youtube.com/watch?v=3TsOKiUDzw0
+    verified_title: Scapula Push Ups TUTORIAL
+    channel: Vitaly Pavlenko
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: >
+      The card prescribes straight-elbow scapular protraction and retraction;
+      the retained scapular push-up video demonstrates that exact plus-phase drill.
+
+  - key: push.ex2
+    session: push
+    guide: guides/push-training-guide.html
+    exercise_id: ex2
+    title: KB 오버헤드 프레스
+    youtube_id: OHo4GZHem7U
+    youtube_url: https://www.youtube.com/watch?v=OHo4GZHem7U
+    verified_title: The BEST Single Arm kettlebell Overhead Press Guide for Beginners
+    channel: Coach Gabe West
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: Single-arm kettlebell overhead press matches the card.
+
+  - key: push.ex3
+    session: push
+    guide: guides/push-training-guide.html
+    exercise_id: ex3
+    title: 플로어 푸쉬업 프로그레션
+    youtube_id: EH9mTZKjDtA
+    youtube_url: https://www.youtube.com/watch?v=EH9mTZKjDtA
+    verified_title: Push Up
+    channel: E3 Rehab Exercise Library
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces: kGhDnFwMY3E
+    verification: metadata_and_frame_review
+    match_note: >
+      Standard floor push-up replaces the prior diamond push-up thumbnail and
+      article-only link.
+
+  - key: push.ex4
+    session: push
+    guide: guides/push-training-guide.html
+    exercise_id: ex4
+    title: 밴드 편심 삼두 신전
+    youtube_id: JWl_x2jgADs
+    youtube_url: https://www.youtube.com/watch?v=JWl_x2jgADs
+    verified_title: Eccentric Band Tricep Extensions
+    channel: Rush Hemphill
+    availability: public
+    movement_match: exact
+    action: added
+    replaces: article_only
+    verification: metadata_and_frame_review
+    match_note: The video demonstrates an anchored-band eccentric triceps extension.
+
+  - key: push.ex5
+    session: push
+    guide: guides/push-training-guide.html
+    exercise_id: ex5
+    title: 스탠딩 로우-투-캑터스
+    youtube_id: rcVw94fPUE4
+    youtube_url: https://www.youtube.com/watch?v=rcVw94fPUE4
+    verified_title: "Banded row to 90:90 external rotation"
+    channel: Jake Blackmer
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces: HSoHeSjvIdY
+    verification: metadata_and_frame_review
+    match_note: >
+      Row followed by 90:90 external rotation matches the card's cactus finish;
+      the prior thumbnail was a face pull.
+
+  - key: push.ex6
+    session: push
+    guide: guides/push-training-guide.html
+    exercise_id: ex6
+    title: 손목 익스텐서-업
+    youtube_id: fWuDUVUp3oA
+    youtube_url: https://www.youtube.com/watch?v=fWuDUVUp3oA
+    verified_title: Quadruped Back of Hands to Knuckles
+    channel: Kyle Habdo
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces: NvBWQpBfHn0
+    verification: metadata_and_frame_review
+    match_note: >
+      The quadruped back-of-hands to knuckles transition is the defining
+      wrist extensor-up movement written on the card.
+
+  - key: core.ex1
+    session: core
+    guide: guides/core-training-guide.html
+    exercise_id: ex1
+    title: 데드버그
+    youtube_id: 4XLEnwUr1d8
+    youtube_url: https://www.youtube.com/watch?v=4XLEnwUr1d8
+    verified_title: Dead Bug - Abdominal / Core Exercise Guide
+    channel: Bodybuilding.com
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: Dead bug matches the card's base movement.
+
+  - key: core.ex2
+    session: core
+    guide: guides/core-training-guide.html
+    exercise_id: ex2
+    title: 링 롤아웃
+    youtube_id: i-MYh6YtBBg
+    youtube_url: https://www.youtube.com/watch?v=i-MYh6YtBBg
+    verified_title: How to Do RING ROLLOUT
+    channel: Double Circle Fitness
+    availability: public
+    movement_match: exact
+    action: added
+    replaces: article_only
+    verification: metadata_and_frame_review
+    match_note: The video demonstrates a rollout using gymnastic rings.
+
+  - key: core.ex3
+    session: core
+    guide: guides/core-training-guide.html
+    exercise_id: ex3
+    title: 밴드 안티로테이션 할로우 홀드
+    youtube_id: APwJ8S28q88
+    youtube_url: https://www.youtube.com/watch?v=APwJ8S28q88
+    verified_title: BAND ANTI ROTATION HOLLOW HOLD
+    channel: Cameron Kissick
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces: uZqTUwq96iU
+    verification: metadata_and_frame_review
+    match_note: >
+      The exact band anti-rotation variation replaces a generic hollow-body
+      progression.
+
+  - key: core.ex4
+    session: core
+    guide: guides/core-training-guide.html
+    exercise_id: ex4
+    title: 행잉 니레이즈 / 레그레이즈
+    youtube_id: Pr1ieGZ5atk
+    youtube_url: https://www.youtube.com/watch?v=Pr1ieGZ5atk
+    verified_title: Hanging Leg Raise | HOW-TO
+    channel: ATHLEAN-X
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: Hanging leg raise matches the card and includes its knee-raise regression.
+
+  - key: core.ex6
+    session: core
+    guide: guides/core-training-guide.html
+    exercise_id: ex6
+    title: 밴드 사이드 플랭크
+    youtube_id: naDct0da38A
+    youtube_url: https://www.youtube.com/watch?v=naDct0da38A
+    verified_title: Elbow Side Plank and Resistance Band Row Exercise. BONUS Move. Leg Lift!
+    channel: Fitness Foundry (Coach Julio)
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces: K2VljzCC16g
+    verification: metadata_and_frame_review
+    match_note: >
+      Elbow side plank with a free-hand band row matches the written setup;
+      the prior video demonstrated only an unbanded side plank.
+
+  - key: core.ex8
+    session: core
+    guide: guides/core-training-guide.html
+    exercise_id: ex8
+    title: 턱 프론트 레버 프로그레션
+    youtube_id: -90lX4_fMoU
+    youtube_url: https://www.youtube.com/watch?v=-90lX4_fMoU
+    verified_title: Master the front lever in 7 steps
+    channel: Major Calisthenics
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: The front-lever progression includes the tuck variation used by the card.
+
+  - key: power.ex1
+    session: power
+    guide: guides/power-training-guide.html
+    exercise_id: ex1
+    title: 파워 풀업
+    youtube_id: sAsgo1HcVSU
+    youtube_url: https://www.youtube.com/watch?v=sAsgo1HcVSU
+    verified_title: EXPLOSIVE PULL-UPS! BEST TIPS.
+    channel: The Calisthenics School
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: Explosive pull-ups match the power pull-up card.
+
+  - key: power.ex2
+    session: power
+    guide: guides/power-training-guide.html
+    exercise_id: ex2
+    title: 파워 푸쉬업
+    youtube_id: CvgV8W98inA
+    youtube_url: https://www.youtube.com/watch?v=CvgV8W98inA
+    verified_title: Explosive Push Up TUTORIAL
+    channel: Marek Kida Fitness
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: Explosive push-up matches the card.
+
+  - key: power.ex3
+    session: power
+    guide: guides/power-training-guide.html
+    exercise_id: ex3
+    title: 스쿼트 점프 + 스틱 랜딩
+    youtube_id: 5BGogaLB4nQ
+    youtube_url: https://www.youtube.com/watch?v=5BGogaLB4nQ
+    verified_title: Squat Jump to Stick Landing (2 Feet)
+    channel: elkintraining
+    availability: public
+    movement_match: exact
+    action: added
+    replaces: article_only
+    verification: metadata_and_frame_review
+    match_note: The video demonstrates a two-foot squat jump followed by a held landing.
+
+  - key: power.ex4
+    session: power
+    guide: guides/power-training-guide.html
+    exercise_id: ex4
+    title: 점프 런지
+    youtube_id: iJMsF7fzrOM
+    youtube_url: https://www.youtube.com/watch?v=iJMsF7fzrOM
+    verified_title: JUMP LUNGE
+    channel: Atomic Athlete
+    availability: public
+    movement_match: exact
+    action: retained
+    verification: metadata_title_exact
+    match_note: Jump lunge matches the card.
+
+  - key: power.ex5
+    session: power
+    guide: guides/power-training-guide.html
+    exercise_id: ex5
+    title: 낮은 싱글레그 홉-앤-스틱
+    youtube_id: yrwyXb0Bv4w
+    youtube_url: https://www.youtube.com/watch?v=yrwyXb0Bv4w
+    verified_title: Single Leg In-Place Hop + Stick
+    channel: Theory of Motion Exercise Library
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces:
+      - XDBHOQoAa3w
+      - kcnlmCqiI-U
+    verification: metadata_and_frame_review
+    match_note: >
+      Low in-place single-leg hopping with a held landing replaces a lateral
+      bound and a broader lateral plyometric series.
+
+  - key: finger_extensor.ex1
+    session: finger_extensor
+    guide: guides/finger-extensor-office.html
+    exercise_id: ex1
+    title: 고무밴드 손가락 스프레드
+    youtube_id: lQPppTK7mFc
+    youtube_url: https://www.youtube.com/watch?v=lQPppTK7mFc
+    verified_title: Finger exercise with rubber band - great for climbing !
+    channel: www.sportsinjuryclinic.net
+    availability: public
+    movement_match: exact
+    action: replaced
+    replaces: wMVuB6MjKBM
+    verification: metadata_and_frame_review
+    match_note: >
+      The video uses a simple rubber band around the fingers; the prior
+      thumbnail ID was unavailable and linked only to an article.

@@ -1,0 +1,19 @@
+slot: bilateral_lower_power
+available_equipment:
+  - floor
+candidates:
+  - name: 불안정 의자 박스 점프
+    selected: true
+    evidence: general fitness blog
+    equipment: unstable chair
+    safety: fall hazard
+  - name: 제자리 점프 스쿼트
+    selected: false
+    evidence: adjacent plyometric principle
+    equipment: floor
+    safety: progressive landing requirement
+  - name: 안정된 박스 점프
+    selected: false
+    evidence: explicit climbing coach recommendation
+    equipment: stable box not owned
+    safety: stable platform required

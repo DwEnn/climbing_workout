@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "21개 운동을 세션별로 빠짐없이 식별한다",
+      "passed": true,
+      "evidence": "Push 6, Core 8, Power 6, Finger extensor 1개 표를 모두 제공했다."
+    },
+    {
+      "text": "정적 검사기의 1개 오류와 22개 경고를 구조 문제로 구분한다",
+      "passed": true,
+      "evidence": "구조 검사 절에서 오류 1건과 경고 22건을 근거·프로그램 검토와 다른 층위로 분리했다."
+    },
+    {
+      "text": "근거 직접성과 세션 조합을 별도 축으로 평가한다",
+      "passed": true,
+      "evidence": "운동별 근거 판정과 세션별 평균·중복·피로 판정을 별도 절과 표로 제시했다."
+    },
+    {
+      "text": "가이드 HTML을 수정하지 않고 Markdown 감사 보고서를 생성한다",
+      "passed": true,
+      "evidence": "report.md가 생성됐고 원본 가이드 미수정을 명시했다."
+    }
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {
+    "tool_calls": {},
+    "total_steps": 6,
+    "errors_encountered": 0,
+    "output_chars": 8661,
+    "transcript_chars": 976
+  },
+  "claims": [
+    {
+      "claim": "모든 21개 운동을 다뤘다",
+      "type": "quality",
+      "verified": true,
+      "evidence": "네 세션 표의 행 수와 키가 source-audit.yaml의 21개와 일치한다."
+    }
+  ],
+  "user_notes_summary": {"uncertainties": [], "needs_review": [], "workarounds": []},
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "구조화된 source-audit.yaml 자체가 상세한 결론을 제공하므로 이 평가도 스킬 가치를 구분하지 못한다."
+      }
+    ],
+    "overall": "모든 기대사항을 충족했으며 이 end-to-end 사례는 두 구성의 동률이다."
+  }
+}

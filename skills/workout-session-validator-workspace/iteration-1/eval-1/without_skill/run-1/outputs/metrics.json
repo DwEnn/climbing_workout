@@ -1,0 +1,25 @@
+{
+  "eval_id": 1,
+  "condition": "without_skill",
+  "verdict": "fail",
+  "sessions_reviewed": 4,
+  "exercises_reviewed": 21,
+  "reference_links_checked": 153,
+  "structural_errors": 1,
+  "structural_warnings": 22,
+  "exercise_dispositions": {
+    "retain": 1,
+    "revise": 9,
+    "replace": 11
+  },
+  "session_verdicts": {
+    "push": "revise",
+    "core": "redesign",
+    "power": "redesign",
+    "finger_extensor": "replace_protocol"
+  },
+  "evidence_hard_failure_cards": 14,
+  "all_exercises_covered": true,
+  "structural_and_evidence_findings_separated": true,
+  "input_files_modified": false
+}

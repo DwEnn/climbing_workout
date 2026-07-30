@@ -1,0 +1,26 @@
+{
+  "eval_id": 3,
+  "mode": "without_skill",
+  "slot": "bilateral_lower_power",
+  "candidate_count": 3,
+  "selected_candidate": "제자리 점프 스쿼트",
+  "current_exercise": "불안정 의자 박스 점프",
+  "change_recommended": true,
+  "comparison_dimensions": [
+    "equipment_feasibility",
+    "evidence_directness",
+    "safety"
+  ],
+  "feasible_candidate_count": 1,
+  "disqualified_candidates": {
+    "불안정 의자 박스 점프": [
+      "equipment_mismatch",
+      "fall_hazard"
+    ],
+    "안정된 박스 점프": [
+      "required_equipment_not_owned"
+    ]
+  },
+  "external_sources_used": 0,
+  "project_skill_used": false
+}

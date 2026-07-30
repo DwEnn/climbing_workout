@@ -1,0 +1,21 @@
+{
+  "tool_calls": {
+    "Read": 0,
+    "Write": 0,
+    "Bash": 2,
+    "Edit": 1,
+    "Glob": 0,
+    "Grep": 0
+  },
+  "total_tool_calls": 3,
+  "total_steps": 7,
+  "files_created": [
+    "report.md",
+    "transcript.md",
+    "metrics.json"
+  ],
+  "errors_encountered": 0,
+  "candidates_scored": 3,
+  "hard_failures_identified": 2,
+  "selection_regret_points": 50
+}

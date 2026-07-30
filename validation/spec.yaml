@@ -1,0 +1,228 @@
+version: 1
+last_updated: 2026-07-29
+
+source_of_truth:
+  precedence:
+    - validation/spec.yaml
+    - latest_intentional_git_commits
+    - guide_html
+    - CLAUDE.md
+  note: >
+    Later intentional session redesigns override stale exercise inventories in
+    CLAUDE.md. `page_declared_evidence` records what the current HTML claims;
+    verified evidence and scores live in validation/source-audit.yaml.
+    Replacement-audit outcomes may modify the guides only after every approval
+    gate passes; the guides and this spec must then be revalidated together.
+  disclaimer_policy: index_only
+
+athlete_profile:
+  audience: V6+ boulderer
+  active_injury_assumed: false
+  equipment:
+    - kettlebell_8kg
+    - pushup_bars
+    - pullup_bar
+    - fingerboard
+    - gymnastic_rings
+    - resistance_band
+    - finger_extensor_band
+
+evidence_policy:
+  direct:
+    definition: >
+      A Tier 1-4 source explicitly recommends the named exercise to climbers
+      for the claimed purpose.
+    required_card_marker: "✅"
+  principle:
+    definition: >
+      The exercise is inferred from a supported training or rehabilitation
+      principle, or the study population is not climbers.
+    required_card_marker: "🔶"
+  mixed:
+    definition: >
+      Separate claims on the same card have direct and principle-based support.
+    required_card_markers:
+      - "✅"
+      - "🔶"
+  tier_rules:
+    "1": peer-reviewed research directly involving climbers
+    "1.5": an identifiable large practical climbing dataset
+    "2": an explicit recommendation by a qualified climbing coach or author
+    "3": an explicit recommendation by a climbing-focused medical professional
+    "4": climbing-specialist media without a stronger attributable source
+    A: adjacent exercise or rehabilitation science applied to climbing
+  tier_1_policy_override: >
+    CLAUDE.md uses Tier 1 for peer-reviewed research broadly. This validation
+    spec intentionally reserves Tier 1 for studies involving climbers and
+    classifies other peer-reviewed populations as Tier A.
+  inaccessible_source_policy: unverified
+  non_climber_population_policy: principle_only
+
+scoring:
+  weights:
+    evidence_accuracy: 30
+    goal_and_pattern_fit: 25
+    session_integration: 20
+    equipment_and_time_fit: 15
+    usability_and_progression: 10
+  thresholds:
+    retain: 80
+    revise: 70
+  hard_failures:
+    - unsupported_or_misattributed_direct_claim
+    - unavailable_required_equipment_without_safe_substitute
+    - material_safety_problem
+
+replacement_approval:
+  minimum_total_score: 80
+  required_source_status: verified
+  require_no_hard_failures: true
+  require_equipment_and_time_fit: true
+  require_session_integration_pass: true
+  selection_regret_threshold: 5
+  allowed_outcomes:
+    - verified_replacement
+    - revise_current
+    - remove_slot
+    - unresolved
+  rule: >
+    A score advantage only reopens the slot. A replacement is approved only
+    when the candidate independently passes every gate. If no candidate passes,
+    do not modify the guide and mark the slot unresolved or revise the current
+    exercise when its problems are correctable.
+
+required_card_fields:
+  - title
+  - subtitle
+  - evidence_badge
+  - reference_media
+  - source_basis
+  - climbing_relevance
+  - sets_reps_rest
+  - progression
+  - validation_summary
+
+video_policy:
+  required_videos_per_exercise: 1
+  allowed_host: www.youtube.com
+  required_availability: public
+  required_movement_match: exact
+  require_matching_thumbnail_id: true
+  require_video_label: true
+  rule: >
+    Every active exercise card must link to one public YouTube video that
+    demonstrates the named movement and defining variation. Source articles,
+    unavailable thumbnails, generic progressions, and adjacent movements do
+    not satisfy the video requirement. Videos are demonstrations, not evidence
+    for the exercise's climbing-specific claims.
+
+sessions:
+  push:
+    guide: guides/push-training-guide.html
+    purpose: antagonist pushing strength and shoulder-forearm capacity
+    timing: after_climbing_or_standalone
+    frequency_per_week: "2"
+    duration_minutes: "30-40"
+    exercises:
+      - id: ex1
+        title: 푸쉬업 플러스
+        slot: scapular_activation
+        page_declared_evidence: direct
+      - id: ex2
+        title: KB 오버헤드 프레스
+        slot: vertical_press
+        page_declared_evidence: mixed
+      - id: ex3
+        title: 플로어 푸쉬업 프로그레션
+        slot: horizontal_press
+        page_declared_evidence: mixed
+      - id: ex4
+        title: 밴드 편심 삼두 신전
+        slot: high_intensity_press
+        page_declared_evidence: mixed
+      - id: ex5
+        title: 스탠딩 로우-투-캑터스
+        slot: scapular_retraction_external_rotation
+        page_declared_evidence: direct
+      - id: ex6
+        title: 손목 익스텐서-업
+        slot: wrist_extensor_prehab
+        page_declared_evidence: direct
+
+  core:
+    guide: guides/core-training-guide.html
+    purpose: trunk endurance and integrated body tension
+    timing: standalone_core_day
+    frequency_per_week: "1"
+    duration_minutes: "30-40"
+    exercises:
+      - id: ex1
+        title: 데드버그
+        slot: motor_control_anti_rotation
+        page_declared_evidence: mixed
+      - id: ex2
+        title: 링 롤아웃
+        slot: anti_extension
+        page_declared_evidence: direct
+      - id: ex3
+        title: 밴드 안티로테이션 할로우 홀드
+        slot: anti_rotation
+        page_declared_evidence: direct
+      - id: ex4
+        title: 행잉 니레이즈 / 레그레이즈
+        slot: hanging_hip_flexion
+        page_declared_evidence: direct
+      - id: ex6
+        title: 밴드 사이드 플랭크
+        slot: anti_lateral_flexion
+        page_declared_evidence: direct
+      - id: ex8
+        title: 턱 프론트 레버 프로그레션
+        slot: integrated_pull_core
+        page_declared_evidence: direct
+
+  power:
+    guide: guides/power-training-guide.html
+    purpose: explosive whole-body power and landing control
+    timing: fresh_before_climbing_or_light_day
+    frequency_per_week: "1-2"
+    duration_minutes: "25-35"
+    exercises:
+      - id: ex1
+        title: 파워 풀업
+        slot: explosive_pull
+        page_declared_evidence: direct
+      - id: ex2
+        title: 파워 푸쉬업
+        slot: explosive_push
+        page_declared_evidence: direct
+      - id: ex3
+        title: 스쿼트 점프 + 스틱 랜딩
+        slot: bilateral_lower_power
+        page_declared_evidence: mixed
+      - id: ex4
+        title: 점프 런지
+        slot: unilateral_lower_power
+        page_declared_evidence: mixed
+      - id: ex5
+        title: 낮은 싱글레그 홉-앤-스틱
+        slot: lateral_landing_control
+        page_declared_evidence: mixed
+
+  finger_extensor:
+    guide: guides/finger-extensor-office.html
+    purpose: low-load finger extensor activation
+    timing: optional_during_workday
+    frequency_per_week: optional
+    duration_minutes: "3-5"
+    exercises:
+      - id: ex1
+        title: 고무밴드 손가락 스프레드
+        slot: finger_extensor_prehab
+        page_declared_evidence: direct
+
+documentation_drift_checks:
+  - document: CLAUDE.md
+    section: disclaimer
+    stale_terms:
+      - 각 페이지 상단

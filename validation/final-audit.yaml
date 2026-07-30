@@ -1,0 +1,361 @@
+version: 1
+audited_at: 2026-07-30
+
+basis:
+  spec: validation/spec.yaml
+  source_registry: validation/source-audit.yaml
+  replacement_decisions: validation/replacement-audit.yaml
+  video_registry: validation/video-audit.yaml
+  guide_sha256:
+    guides/push-training-guide.html: c1f82d37f2281d0727dcd44594a0d7313973b456ce98dee4f63fc7c55e29fb20
+    guides/core-training-guide.html: 42f828cc917bc8a668785d3c4028aa62369e612639f5f38eb0621c98a8b2d4bc
+    guides/power-training-guide.html: c63058560694457364036b36f1b24cf65b40f08b5269cc64bb1438ff960620e3
+    guides/finger-extensor-office.html: 01c531b5845a2ff829c142f7097f2751b49f9a668b381ff1cf1c0de7ddc8f192
+
+scope:
+  sessions: 4
+  active_exercises: 18
+  method: >
+    Every active exercise was rescored from the current HTML card and its
+    position in the current final session. Replacement-audit scores were not
+    assumed to remain valid when the HTML introduced conflicting dose,
+    frequency, ordering, or progression text.
+  score_weights:
+    evidence_accuracy: 30
+    goal_and_pattern_fit: 25
+    session_integration: 20
+    equipment_and_time_fit: 15
+    usability_and_progression: 10
+  thresholds:
+    retain: 80
+    revise: 70
+
+summary:
+  score_mean: 84.8
+  minimum_score: 79
+  maximum_score: 90
+  at_or_above_80: 17
+  below_80: 1
+  hard_failures: 0
+  removed_after_rescore: 2
+  dispositions:
+    retain: 17
+    revise: 1
+    replace: 0
+    remove: 0
+
+session_summary:
+  push:
+    exercises: 6
+    score_mean: 86.3
+    below_80: 0
+  core:
+    exercises: 6
+    score_mean: 84.7
+    below_80: 0
+  power:
+    exercises: 5
+    score_mean: 84.2
+    below_80: 0
+  finger_extensor:
+    exercises: 1
+    score_mean: 79.0
+    below_80: 1
+
+removals:
+  - key: core.ex7
+    session: core
+    title: 글루트 브릿지
+    previous_score: 76
+    outcome: remove_slot
+    removed_from:
+      - validation/spec.yaml
+      - guides/core-training-guide.html
+    rationale: >
+      The exact exercise lacked direct source support, its two HTML dose
+      prescriptions conflicted, and the posterior-chain slot was not required
+      for the final core-session purpose. No replacement was added.
+  - key: core.ex5
+    session: core
+    title: 행잉 윈드쉴드 와이퍼
+    previous_score: 82
+    outcome: remove_slot
+    removed_from:
+      - validation/spec.yaml
+      - guides/core-training-guide.html
+      - validation/video-audit.yaml
+    rationale: >
+      The user selected the hanging knee/leg raise for the unified standalone
+      core session. Removing the second hanging dynamic exercise limits grip
+      and shoulder-hang fatigue and makes the choice deterministic.
+
+exercises:
+  - key: push.ex1
+    session: push
+    title: 푸쉬업 플러스
+    slot: scapular_activation
+    evidence: direct
+    source_keys: [mcclure_schedule]
+    score: {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 18, equipment_and_time_fit: 15, usability_and_progression: 8, total: 90}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The exact movement is directly prescribed for climbers, the prior
+      prevention claim was removed, and the activation dose is consistent
+      across the session table and card.
+
+  - key: push.ex2
+    session: push
+    title: KB 오버헤드 프레스
+    slot: vertical_press
+    evidence: mixed
+    source_keys: [bechtel_press]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 9, total: 87}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The press is directly recommended, while the single-arm transfer and
+      exact dose are visibly separated as programming applications.
+
+  - key: push.ex3
+    session: push
+    title: 플로어 푸쉬업 프로그레션
+    slot: horizontal_press
+    evidence: mixed
+    source_keys: [climbing_antagonist]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 85}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The exact floor push-up is directly supported, the lower repetition
+      range is disclosed as programming, and unstable pressing duplication
+      has been removed.
+
+  - key: push.ex4
+    session: push
+    title: 밴드 편심 삼두 신전
+    slot: high_intensity_press
+    evidence: mixed
+    source_keys: [vagy_triceps]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 12, usability_and_progression: 7, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      Eccentric triceps work is directly supported and the band, tempo, and
+      dose are clearly labeled as session-specific applications.
+
+  - key: push.ex5
+    session: push
+    title: 스탠딩 로우-투-캑터스
+    slot: scapular_retraction_external_rotation
+    evidence: direct
+    source_keys: [climbing_antagonist, wong_ng]
+    score: {evidence_accuracy: 27, goal_and_pattern_fit: 24, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 88}
+    hard_failures: []
+    disposition: retain
+    issues:
+      - session_table_uses_10_to_15_reps_while_card_uses_12_to_15
+    rationale: >
+      The movement, two-second hold, and source dose are direct. The small
+      lower-bound mismatch does not change selection but should be normalized.
+
+  - key: push.ex6
+    session: push
+    title: 손목 익스텐서-업
+    slot: wrist_extensor_prehab
+    evidence: direct
+    source_keys: [climbing_antagonist]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 12, usability_and_progression: 7, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The written source, movement, and 3 by 20-30 dose match exactly and the
+      exercise needs no extra equipment. The linked quadruped back-of-hands to
+      knuckles video now demonstrates the exact extensor-up movement.
+
+  - key: core.ex1
+    session: core
+    title: 데드버그
+    slot: motor_control_anti_rotation
+    evidence: mixed
+    source_keys: [hwang_deadbug]
+    score: {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 7, total: 86}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      Author, population, exercise, and source dose are accurate. The card and
+      unified session now agree on two preparation sets before the first main
+      strength exercise.
+
+  - key: core.ex2
+    session: core
+    title: 링 롤아웃
+    slot: anti_extension
+    evidence: direct
+    source_keys: [horst_core, trainingbeta_core]
+    score: {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 8, total: 87}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The exercise appears in the published climber core routine, fits the
+      owned rings, and has a clear kneeling-to-standing progression without a
+      duplicate rollout elsewhere.
+
+  - key: core.ex3
+    session: core
+    title: 밴드 안티로테이션 할로우 홀드
+    slot: anti_rotation
+    evidence: direct
+    source_keys: [climbingdoctor_core]
+    score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 8, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The exact anti-rotation hollow progression is directly listed for
+      climbers and replaces a duplicate anti-extension slot.
+
+  - key: core.ex4
+    session: core
+    title: 행잉 니레이즈 / 레그레이즈
+    slot: hanging_hip_flexion
+    evidence: direct
+    source_keys: [powercompany_hardcore]
+    score: {evidence_accuracy: 23, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 8, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues:
+      - exact_tempo_and_dose_are_programming_applications_not_source_dose
+    rationale: >
+      Hanging leg raise is a direct climber regression and the final session
+      uses it as the sole hanging raise movement after the front lever.
+
+  - key: core.ex6
+    session: core
+    title: 밴드 사이드 플랭크
+    slot: anti_lateral_flexion
+    evidence: direct
+    source_keys: [climbingdoctor_core]
+    score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 7, total: 83}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The exact exercise and regressions are directly supported, and the card
+      and unified session now agree on two finishing sets per side.
+
+  - key: core.ex8
+    session: core
+    title: 턱 프론트 레버 프로그레션
+    slot: integrated_pull_core
+    evidence: direct
+    source_keys: [powercompany_hardcore, gripped_lhang]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 12, equipment_and_time_fit: 15, usability_and_progression: 9, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The tuck regression is directly supported, performed as the first main
+      strength exercise after two deadbug preparation sets, and protected by
+      full rest and a form-based stopping rule.
+
+  - key: power.ex1
+    session: power
+    title: 파워 풀업
+    slot: explosive_pull
+    evidence: direct
+    source_keys: [hanes_plyometrics, horst_power_pullup]
+    score: {evidence_accuracy: 27, goal_and_pattern_fit: 24, session_integration: 15, equipment_and_time_fit: 12, usability_and_progression: 8, total: 86}
+    hard_failures: []
+    disposition: retain
+    issues:
+      - advanced_release_and_campus_progressions_are_not_directly_sourced
+    rationale: >
+      Author, movement, dose, rest intent, and quality stopping rule are now
+      accurate; only the highest progressions extend beyond the direct source.
+
+  - key: power.ex2
+    session: power
+    title: 파워 푸쉬업
+    slot: explosive_push
+    evidence: direct
+    source_keys: [hanes_plyometrics]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 8, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues:
+      - ring_power_pushup_progression_is_not_directly_sourced
+    rationale: >
+      The base exercise, pairing, and 3 by 3-5 dose are direct and fit the
+      final upper-body power pair.
+
+  - key: power.ex3
+    session: power
+    title: 스쿼트 점프 + 스틱 랜딩
+    slot: bilateral_lower_power
+    evidence: mixed
+    source_keys: [ace_high_knee, white_graff_landing, hanes_plyometrics]
+    score: {evidence_accuracy: 23, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 14, usability_and_progression: 8, total: 85}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The page correctly separates adjacent squat-jump evidence from direct
+      climber landing progression and removes the unavailable box.
+
+  - key: power.ex4
+    session: power
+    title: 점프 런지
+    slot: unilateral_lower_power
+    evidence: mixed
+    source_keys: [hanes_plyometrics]
+    score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 7, total: 84}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      The movement is directly recommended and the reduced contact count and
+      either-or lower-body programming are explicitly marked as applications.
+
+  - key: power.ex5
+    session: power
+    title: 낮은 싱글레그 홉-앤-스틱
+    slot: lateral_landing_control
+    evidence: mixed
+    source_keys: [ankle_rct, white_graff_landing, hedges_ankle, mgh_ankle]
+    score: {evidence_accuracy: 21, goal_and_pattern_fit: 24, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 82}
+    hard_failures: []
+    disposition: retain
+    issues: []
+    rationale: >
+      Direct climber landing progressions and non-climber hop evidence are
+      separated, and the card includes conservative readiness and stopping
+      conditions.
+
+  - key: finger_extensor.ex1
+    session: finger_extensor
+    title: 고무밴드 손가락 스프레드
+    slot: finger_extensor_prehab
+    evidence: direct
+    source_keys: [vagy_antagonist, finger_trial]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 22, session_integration: 11, equipment_and_time_fit: 15, usability_and_progression: 6, total: 79}
+    hard_failures: []
+    disposition: revise
+    issues:
+      - routine_flow_shows_four_to_six_distributed_sets_but_note_limits_use_to_one_session
+      - maximum_ten_holds_per_hand_can_exceed_the_declared_three_to_five_minutes
+    recommended_action: >
+      Remove the old four-to-six-set distribution flow or explicitly define
+      one optional 3-5 minute bout with a lower hold cap that fits the declared
+      duration.
+    rationale: >
+      Exercise and source ceiling are accurate and equipment fit is excellent,
+      but the current page gives mutually incompatible frequency and duration
+      instructions.

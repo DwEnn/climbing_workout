@@ -1,0 +1,343 @@
+version: 1
+audited_at: 2026-07-29
+scope:
+  reopened_slots: 11
+  candidates: 22
+  rule: >
+    Screening score advantage only reopens a slot. Every candidate is then
+    checked for a score of at least 80, verified sources, no hard failures,
+    equipment/time fit, and integration with the final session.
+
+summary:
+  verified_replacement: 7
+  revise_current: 3
+  remove_slot: 1
+  unresolved: 0
+
+slots:
+  push.ex3:
+    implemented_title: 플로어 푸쉬업 프로그레션
+    candidates:
+      - name: Floor push-up progression
+        source_keys: [climbing_antagonist]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 85}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: Use one scalable horizontal press; ring and diamond variants are no longer claimed as directly sourced.
+      - name: Single-arm KB floor press
+        source_keys: [hooper_press]
+        source_status: verified
+        evidence_match: unverified
+        score: {evidence_accuracy: 12, goal_and_pattern_fit: 20, session_integration: 14, equipment_and_time_fit: 12, usability_and_progression: 8, total: 66}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: [unsupported_or_misattributed_direct_claim]
+        gate_status: fail
+        note: The source discusses bench press, not this exact exercise, and an 8 kg bell gives limited progression.
+    outcome: verified_replacement
+    approved_candidate: Floor push-up progression
+    rationale: Direct climber recommendation, no special equipment, and no duplicate high-instability press.
+
+  push.ex4:
+    implemented_title: 밴드 편심 삼두 신전
+    candidates:
+      - name: Band eccentric triceps extension
+        source_keys: [vagy_triceps]
+        source_status: verified
+        evidence_match: mixed
+        score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 12, usability_and_progression: 7, total: 84}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: The movement and eccentric intent are direct; band resistance and exact dose are programming applications.
+      - name: Close-grip floor push-up
+        source_keys: [mcclure_schedule]
+        source_status: verified
+        evidence_match: principle
+        score: {evidence_accuracy: 18, goal_and_pattern_fit: 21, session_integration: 8, equipment_and_time_fit: 15, usability_and_progression: 8, total: 70}
+        equipment_and_time_fit: pass
+        session_integration: fail
+        hard_failures: []
+        gate_status: fail
+        note: The exact variant is not prescribed and it duplicates the approved horizontal press.
+    outcome: verified_replacement
+    approved_candidate: Band eccentric triceps extension
+    rationale: Preserves a triceps slot while removing ring-dip depth and instability risk.
+
+  push.ex6:
+    implemented_title: 손목 익스텐서-업
+    candidates:
+      - name: Wrist extensor-up
+        source_keys: [climbing_antagonist]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 12, usability_and_progression: 7, total: 84}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: The source directly describes the quadruped movement and 3 sets of 20-30 reps.
+      - name: Light reverse wrist curl
+        source_keys: [bechtel_grip]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 7, total: 82}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: Valid fallback with a light bottle or band; the owned 8 kg kettlebell is not the starting load.
+    outcome: verified_replacement
+    approved_candidate: Wrist extensor-up
+    rationale: Highest same-slot option and needs no unlisted light dumbbell.
+
+  core.ex2:
+    implemented_title: 링 롤아웃
+    candidates:
+      - name: Ring rollout
+        source_keys: [horst_core, trainingbeta_core]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 8, total: 87}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: Hörst's five-exercise routine is independently transcribed as including a TRX/ring rollout.
+      - name: Tuck L-hang
+        source_keys: [gripped_lhang]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 18, goal_and_pattern_fit: 21, session_integration: 14, equipment_and_time_fit: 13, usability_and_progression: 7, total: 73}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: fail
+        note: Directly described but does not clear the evidence and integration score threshold.
+    outcome: verified_replacement
+    approved_candidate: Ring rollout
+    rationale: Directly sourced anti-extension work with a clear kneeling-to-standing progression.
+
+  core.ex3:
+    implemented_title: 밴드 안티로테이션 할로우 홀드
+    candidates:
+      - name: Ring rollout
+        source_keys: [horst_core, trainingbeta_core]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 6, equipment_and_time_fit: 13, usability_and_progression: 8, total: 76}
+        equipment_and_time_fit: pass
+        session_integration: fail
+        hard_failures: []
+        gate_status: fail
+        note: Valid alone, but duplicates the rollout already approved for core.ex2.
+      - name: Body saw plank
+        source_keys: [climbingdoctor_core]
+        source_status: verified
+        evidence_match: unverified
+        score: {evidence_accuracy: 12, goal_and_pattern_fit: 21, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 8, total: 71}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: [unsupported_or_misattributed_direct_claim]
+        gate_status: fail
+        note: The opened source does not list a body saw.
+    corrected_current:
+      name: Band anti-rotation hollow hold
+      source_keys: [climbingdoctor_core]
+      source_status: verified
+      evidence_match: direct
+      score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 8, total: 84}
+      equipment_and_time_fit: pass
+      session_integration: pass
+      hard_failures: []
+      gate_status: pass
+    outcome: revise_current
+    approved_candidate: null
+    rationale: Correcting the hollow-hold variant gives direct support and avoids duplicate rollouts.
+
+  core.ex6:
+    implemented_title: 밴드 사이드 플랭크
+    candidates:
+      - name: Banded side plank
+        source_keys: [climbingdoctor_core]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 7, total: 83}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: Directly listed for climbers with regressions to no band or one knee down.
+      - name: Suitcase carry in place
+        source_keys: [climbing_antagonist, climbingdoctor_core]
+        source_status: verified
+        evidence_match: principle
+        score: {evidence_accuracy: 16, goal_and_pattern_fit: 20, session_integration: 15, equipment_and_time_fit: 8, usability_and_progression: 7, total: 66}
+        equipment_and_time_fit: fail
+        session_integration: pass
+        hard_failures: []
+        gate_status: fail
+        note: Sources use a walking carry or march and substantially more load than the owned 8 kg kettlebell.
+    outcome: verified_replacement
+    approved_candidate: Banded side plank
+    rationale: Direct climbing-specific source and an equipment-matched progression.
+
+  core.ex8:
+    implemented_title: 턱 프론트 레버 프로그레션
+    candidates:
+      - name: Tuck front lever first in session
+        source_keys: [powercompany_hardcore, gripped_lhang]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 12, equipment_and_time_fit: 15, usability_and_progression: 9, total: 84}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: This is a placement and regression correction to the current exercise, not a new movement.
+      - name: Ring rollout
+        source_keys: [horst_core, trainingbeta_core]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 25, goal_and_pattern_fit: 22, session_integration: 5, equipment_and_time_fit: 13, usability_and_progression: 8, total: 73}
+        equipment_and_time_fit: pass
+        session_integration: fail
+        hard_failures: []
+        gate_status: fail
+        note: Duplicates core.ex2 and removes the integrated pull-core slot.
+    corrected_current:
+      name: Tuck front lever first in module B
+      source_keys: [powercompany_hardcore, gripped_lhang]
+      source_status: verified
+      evidence_match: direct
+      score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 12, equipment_and_time_fit: 15, usability_and_progression: 9, total: 84}
+      equipment_and_time_fit: pass
+      session_integration: pass
+      hard_failures: []
+      gate_status: pass
+    outcome: revise_current
+    approved_candidate: null
+    rationale: Retain the movement but perform its tuck regression first in the hanging module with full rest.
+
+  power.ex3:
+    implemented_title: 스쿼트 점프 + 스틱 랜딩
+    candidates:
+      - name: Squat jump with stick landing
+        source_keys: [ace_high_knee, white_graff_landing, hanes_plyometrics]
+        source_status: verified
+        evidence_match: mixed
+        score: {evidence_accuracy: 23, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 14, usability_and_progression: 8, total: 85}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: Squat-jump mechanics are adjacent evidence; landing control and quality-first power principles are climbing-specific.
+      - name: Broad jump with stick landing
+        source_keys: [white_graff_landing]
+        source_status: verified
+        evidence_match: principle
+        score: {evidence_accuracy: 17, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 11, usability_and_progression: 8, total: 73}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: fail
+        note: The exact broad jump is not prescribed and needs more clear floor space.
+    outcome: verified_replacement
+    approved_candidate: Squat jump with stick landing
+    rationale: Removes the unavailable box while retaining a bilateral power and landing-control slot.
+
+  power.ex5:
+    implemented_title: 낮은 싱글레그 홉-앤-스틱
+    candidates:
+      - name: Low single-leg hop-and-stick
+        source_keys: [ankle_rct, white_graff_landing, mgh_ankle]
+        source_status: verified
+        evidence_match: principle
+        score: {evidence_accuracy: 21, goal_and_pattern_fit: 24, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 82}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: pass
+        note: Start low and single-direction; require pain-free balance and stop when landing control degrades.
+      - name: Star-excursion reach
+        source_keys: [mgh_ankle]
+        source_status: verified
+        evidence_match: principle
+        score: {evidence_accuracy: 23, goal_and_pattern_fit: 14, session_integration: 14, equipment_and_time_fit: 14, usability_and_progression: 8, total: 73}
+        equipment_and_time_fit: pass
+        session_integration: pass
+        hard_failures: []
+        gate_status: fail
+        note: Useful as a readiness assessment, but it does not fill an explosive landing-control slot.
+    outcome: verified_replacement
+    approved_candidate: Low single-leg hop-and-stick
+    rationale: A constrained regression is safer and more reproducible than the current multi-direction composite.
+
+  power.ex6:
+    implemented_title: null
+    candidates:
+      - name: High-knee run in place
+        source_keys: [ace_high_knee]
+        source_status: verified
+        evidence_match: principle
+        score: {evidence_accuracy: 12, goal_and_pattern_fit: 17, session_integration: 12, equipment_and_time_fit: 15, usability_and_progression: 7, total: 63}
+        equipment_and_time_fit: pass
+        session_integration: fail
+        hard_failures: []
+        gate_status: fail
+        note: Generic conditioning does not preserve maximum-power quality at the end of this session.
+      - name: Band-resisted high-knee drive
+        source_keys: [ace_high_knee]
+        source_status: verified
+        evidence_match: unverified
+        score: {evidence_accuracy: 10, goal_and_pattern_fit: 18, session_integration: 12, equipment_and_time_fit: 15, usability_and_progression: 7, total: 62}
+        equipment_and_time_fit: pass
+        session_integration: fail
+        hard_failures: [unsupported_or_misattributed_direct_claim]
+        gate_status: fail
+        note: The source describes resisted sprinting, not a stationary banded knee-drive drill.
+    outcome: remove_slot
+    approved_candidate: null
+    rationale: Neither alternative passes and the conditioning slot is unnecessary in a maximum-power session.
+
+  finger_extensor.ex1:
+    implemented_title: 고무밴드 손가락 스프레드
+    candidates:
+      - name: High-resistance isometric finger extension
+        source_keys: [finger_trial]
+        source_status: verified
+        evidence_match: direct
+        score: {evidence_accuracy: 29, goal_and_pattern_fit: 24, session_integration: 16, equipment_and_time_fit: 0, usability_and_progression: 7, total: 76}
+        equipment_and_time_fit: fail
+        session_integration: pass
+        hard_failures: [unavailable_required_equipment_without_safe_substitute]
+        gate_status: fail
+        note: The trial requires a force-sensing board and real-time feedback to maintain at least 70% MES.
+      - name: Carabiner-band 10-second expansion
+        source_keys: [climbing_finger_extensor, vagy_antagonist]
+        source_status: verified
+        evidence_match: mixed
+        score: {evidence_accuracy: 20, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 8, usability_and_progression: 7, total: 72}
+        equipment_and_time_fit: fail
+        session_integration: pass
+        hard_failures: [unavailable_required_equipment_without_safe_substitute]
+        gate_status: fail
+        note: A carabiner is not in the declared equipment and the written dose applies to rubber-band expansions.
+    corrected_current:
+      name: Rubber-band finger expansion, 10-second holds
+      source_keys: [vagy_antagonist, bechtel_grip]
+      source_status: verified
+      evidence_match: direct
+      score: {evidence_accuracy: 25, goal_and_pattern_fit: 22, session_integration: 18, equipment_and_time_fit: 15, usability_and_progression: 8, total: 88}
+      equipment_and_time_fit: pass
+      session_integration: pass
+      hard_failures: []
+      gate_status: pass
+    outcome: revise_current
+    approved_candidate: null
+    rationale: Keep the available band movement, use the directly stated hold protocol, and remove prevention promises.

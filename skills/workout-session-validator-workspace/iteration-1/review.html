@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "workout-session-validator", "runs": [{"id": "eval-1-with_skill-run-1", "prompt": "\ud604\uc7ac \uc800\uc7a5\uc18c\uc758 4\uac1c \uc6b4\ub3d9 \uac00\uc774\ub4dc\ub97c validation/spec.yaml\uacfc source-audit.yaml \uae30\uc900\uc73c\ub85c \uc804\uc218 \uac80\uc99d\ud55c\ub2e4.", "eval_id": 1, "outputs": [{"name": "report.md", "type": "text", "content": "# \uc6b4\ub3d9 \uc138\uc158 \uc804\uc218 \uac10\uc0ac\n\n\uac10\uc0ac \uae30\uc900: `validation/spec.yaml`, `validation/source-audit.yaml`  \n\ubc94\uc704: \ud478\uc26c 6\uac1c, \ucf54\uc5b4 8\uac1c, \ud30c\uc6cc 6\uac1c, \uc190\uac00\ub77d \uc2e0\uc804\uadfc 1\uac1c  \n\uc6d0\ubcf8 \uac00\uc774\ub4dc \uc218\uc815: \uc5c6\uc74c\n\n## \uacb0\ub860\n\n\ud604\uc7ac \uc6b4\ub3d9 \ubaa9\ub85d\uc740 \uad6c\uc870\uc801\uc73c\ub85c \uc644\uacb0\ub418\uc9c0 \uc54a\uc558\uace0, \uadfc\uac70 \uadc0\uc18d\uacfc \uc138\uc158 \ud1b5\ud569\uc5d0\ub3c4 \uc218\uc815\uc774\n\ud544\uc694\ud558\ub2e4. 21\uac1c \uc911 `\uc720\uc9c0`\ub294 KB \uc624\ubc84\ud5e4\ub4dc \ud504\ub808\uc2a4 1\uac1c, `\uc218\uc815`\uc740 9\uac1c,\n`\uad50\uccb4`\ub294 11\uac1c\ub2e4. \uc6b4\ub3d9 \uc790\uccb4\uac00 \ubaa8\ub450 \ubd80\uc801\uc808\ud55c \uac83\uc740 \uc544\ub2c8\ub2e4. \uac00\uc7a5 \ud070 \ubb38\uc81c\ub294\n\uc9c1\uc811 \uadfc\uac70\ub85c \ud45c\uc2dc\ud55c \uce74\ub4dc\uc758 \uc800\uc790\u00b7\ub300\uc0c1\u00b7\uc6b4\ub3d9\u00b7\uc6a9\ub7c9\uc774 \uc6d0\ubb38\uacfc \ub2e4\ub974\uac70\ub098, \uac1c\ubcc4 \uc6b4\ub3d9\uc744\n\ud55c \uc138\uc158\uc5d0 \ubaa8\ub450 \uc313\uc558\uc744 \ub54c \ud504\ub808\uc2a4\u00b7\ud589\uc789\u00b7\ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \ud53c\ub85c\uac00 \uc911\ubcf5\ub418\ub294 \uc810\uc774\ub2e4.\n\n\uc138\uc158 \ud3c9\uade0\uc740 \ud478\uc26c 78.3\uc810, \ucf54\uc5b4 74.8\uc810, \ud30c\uc6cc 76.5\uc810, \uc190\uac00\ub77d \uc2e0\uc804\uadfc\n60.0\uc810\uc774\ub2e4. \ud604\uc7ac \uc0c1\ud0dc\uc758 \uc138\uc158 \ud310\uc815\uc740 \ud478\uc26c `\uc218\uc815`, \ucf54\uc5b4\u00b7\ud30c\uc6cc `\uc7ac\uc124\uacc4`,\n\uc190\uac00\ub77d \uc2e0\uc804\uadfc `\ud504\ub85c\ud1a0\ucf5c \uad50\uccb4`\ub2e4.\n\n## 1. \uad6c\uc870 \uac80\uc0ac\n\n`python3 scripts/validate_guides.py --no-fail`\uc758 \uc7ac\ud604 \uacb0\uacfc\ub294 \ub2e4\uc74c\uacfc \uac19\ub2e4.\n\n- \uac80\uc0ac \ubc94\uc704: 4\uc138\uc158, 21\uac1c \uc6b4\ub3d9, \ub0b4\ubd80 \ub808\ud37c\ub7f0\uc2a4 \ub9c1\ud06c 153\uac1c\n- \uc0c1\ud0dc: `fail`\n- \uc624\ub958: **1\uac1c**\n- \uacbd\uace0: **22\uac1c**\n- \ub04a\uc5b4\uc9c4 \ub0b4\ubd80 \ub808\ud37c\ub7f0\uc2a4: 0\uac1c\n\n\uc624\ub958 1\uac1c\ub294 `guides/finger-extensor-office.html`\uc758 \uc6b4\ub3d9 \uce74\ub4dc \ub0b4\ubd80\uc5d0 \ud544\uc218\n`sets_reps_rest` \ube14\ub85d\uc774 \uc5c6\ub294 \ubb38\uc81c\ub2e4. \ud398\uc774\uc9c0 \uc55e\ubd80\ubd84\uc758 \ub8e8\ud2f4 \uc694\uc57d\uc740 \uce74\ub4dc \ud544\uc218\n\ud544\ub4dc\ub97c \ub300\uc2e0\ud558\uc9c0 \uc54a\ub294\ub2e4.\n\n\uacbd\uace0 22\uac1c\ub294 \ub2e4\uc74c\ucc98\ub7fc \ub098\ub25c\ub2e4.\n\n- \uadfc\uac70 \ub9c8\ucee4 \ub204\ub77d 20\uac1c: \ud478\uc26c 6\uac1c, \ucf54\uc5b4 8\uac1c, \ud30c\uc6cc 5\uac1c\n  (\ud649-\uc564-\uc2a4\ud2f1 \uc81c\uc678), \uc190\uac00\ub77d \uc2e0\uc804\uadfc 1\uac1c \uce74\ub4dc\uc758 badge row\uac00 \uba85\uc138\uc758\n  `\u2705/\ud83d\udd36` \uc694\uad6c\ub97c \ucda9\uc871\ud558\uc9c0 \uc54a\ub294\ub2e4.\n- \ubb38\uc11c \ub4dc\ub9ac\ud504\ud2b8 2\uac1c: `CLAUDE.md` \ucf54\uc5b4 \ubaa9\ub85d\uc5d0 \uc571 \ub864\uc544\uc6c3\u00b7\ud314\ub85c\ud504 \ud504\ub808\uc2a4\uac00\n  \ub0a8\uace0 L-Sit\u00b7\uc708\ub4dc\uc274\ub4dc \uc640\uc774\ud37c\uac00 \ube60\uc838 \uc788\uc73c\uba70, \uc778\ub371\uc2a4 \uc804\uc6a9 \uba74\ucc45 \uc815\ucc45\uacfc \ub2ec\ub9ac\n  \u201c\uac01 \ud398\uc774\uc9c0 \uc0c1\ub2e8\u201d\uc774\ub77c\uace0 \uc801\ud600 \uc788\ub2e4.\n\n\uc774 1\uac1c \uc624\ub958\uc640 22\uac1c \uacbd\uace0\ub294 DOM\u00b7\uba85\uc138 \uc815\ud569\uc131 \ubb38\uc81c\ub2e4. \uc544\ub798\uc758 \ucd9c\ucc98 \uc624\uadc0\uc18d,\n\uc9c1\uc811\uc131, \uc138\uc158 \uc911\ubcf5 \ud310\uc815\uacfc\ub294 \ubcc4\ub3c4 \ucd95\uc774\ub2e4.\n\n## 2. 21\uac1c \uc6b4\ub3d9 \uadfc\uac70 \uac10\uc0ac\n\n\ud558\ub4dc \uc2e4\ud328\ub294 \ud604\uc7ac \uce74\ub4dc\uc758 \ubc1c\ud589\uc744 \ub9c9\ub294 \ubb38\uc81c\ub97c \ub73b\ud55c\ub2e4. \ucd9c\ucc98 \ud45c\uae30\ub97c \ubc14\ub85c\uc7a1\uc744 \uc218\n\uc788\uace0 \uc6b4\ub3d9 \uc790\uccb4\uac00 \ud0c0\ub2f9\ud55c \uacbd\uc6b0\uc5d0\ub294 \ud558\ub4dc \uc2e4\ud328\uac00 \uc788\uc5b4\ub3c4 \uc6b4\ub3d9 \ud310\uc815\uc740 `\uc218\uc815`\uc77c \uc218\n\uc788\ub2e4. \ubc18\uba74 \ubbf8\ubcf4\uc720 \uc7a5\ube44\ub098 \uc911\uc694\ud55c \uc548\uc804 \ubb38\uc81c\ub294 \uc6b4\ub3d9 \uc120\ud0dd\uc5d0 \uc9c1\uc811 \uc801\uc6a9\ub41c\ub2e4.\n\n| \uc138\uc158 | \uc6b4\ub3d9 / \uc2ac\ub86f | \ud655\uc778 \uadfc\uac70\u00b7Tier | \uc810\uc218\u00b7\ud310\uc815 | \ud575\uc2ec \ubb38\uc81c\uc640 \ud558\ub4dc \uc2e4\ud328 | \uac19\uc740 \uc2ac\ub86f \ub300\uc548 2\uac1c |\n|---|---|---|---|---|---|\n| \ud478\uc26c | \uacac\uac11\uace8 \ud478\uc26c\uc5c5 / scapular activation | principle \u00b7 T3 \u00b7 [\uadfc\uac70](https://theclimbingdoctor.com/optimal-training-and-injury-prevention-techniques-for-climbers-with-a-full-time-schedule/) | 79 \u00b7 \uc218\uc815 | Vagy\uac00 \uc774 \ub3d9\uc791\uc744 \uc9c1\uc811 \ucc98\ubc29\ud558\uc9c0 \uc54a\ub294\ub2e4. McClure\uc758 push-up plus\ub85c \uadfc\uac70\ub97c \ubc14\uafb8\uace0 \uce58\ud0a8\uc719 \uc608\ubc29 \ub2e8\uc815\uc744 \uc644\ud654\ud574\uc57c \ud55c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Serratus punch 84; Band reach 82 |\n| \ud478\uc26c | KB \uc624\ubc84\ud5e4\ub4dc \ud504\ub808\uc2a4 / vertical press | mixed \u00b7 T2 \u00b7 [\uadfc\uac70](https://www.powercompanyclimbing.com/blog/2016/01/episode-2-resistance-training-with.html) | 87 \u00b7 \uc720\uc9c0 | Bechtel\uc740 OHP\ub97c \uc9c1\uc811 \ucd94\ucc9c\ud558\uc9c0\ub9cc \uc815\ud655\ud55c 3\uc138\ud2b8 \ucc98\ubc29\uacfc \ud56d\ud68c\uc804 \uc804\uc774\ub294 \uc6d0\uce59 \uc801\uc6a9\uc774\ub2e4. HF \uc5c6\uc74c | Pike push-up 85; Band shoulder press 78 |\n| \ud478\uc26c | \ub9c1/\ub2e4\uc774\uc544\ubaac\ub4dc \ud478\uc26c\uc5c5 / horizontal press | mixed \u00b7 T2\u00b7T4\u00b7A \u00b7 [\uadfc\uac70](https://latticetraining.com/blog/how-to-structure-your-training/) | 77 \u00b7 \uad50\uccb4 | \ubc14\ub2e5 \ud478\uc26c\uc5c5\uc740 \uc9c1\uc811 \uadfc\uac70\uac00 \uc788\uc73c\ub098 \ub9c1\u00b7\ub2e4\uc774\uc544\ubaac\ub4dc\ub294 \uc6d0\uce59 \uc801\uc6a9\uc774\uba70 \ub525\uc2a4 \uc2ac\ub86f\uacfc \uc911\ubcf5\ub41c\ub2e4. HF \uc5c6\uc74c | Floor push-up 85; Single-arm KB floor press 78 |\n| \ud478\uc26c | \ub9c1 \ub525\uc2a4 / high-intensity press | mixed \u00b7 T2\u00b7T3 \u00b7 [\uadfc\uac70](https://latticetraining.com/blog/training-tips-for-climbers-the-importance-of-antagonist-training-during-performance-phase/) | 71 \u00b7 \uad50\uccb4 | Hooper\uc758 \uc120\ud638\ub97c \uc77c\ubc18 \ucc98\ubc29\ucc98\ub7fc \uc4f0\uace0, \uc778\uc6a9\ud55c Climbing \uae00\uc5d0\ub294 \ub525\uc2a4\uac00 \uc5c6\uc73c\uba70 \uc5b4\uae68 \ubd88\uc548\uc815 \uc2dc \uae4a\uc774 \uc81c\ud55c\uc774 \ube60\uc84c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Band eccentric triceps extension 84; Close-grip floor push-up 79 |\n| \ud478\uc26c | \ud398\uc774\uc2a4 \ud480/\ubc34\ub4dc \ud480\uc5b4\ud30c\ud2b8 / scapular retraction\u00b7ER | principle \u00b7 T1\u00b7T3\u00b7T4 \u00b7 [\uadfc\uac70](https://www.climbing.com/skills/antagonist-workouts-for-climbers-improve-performance-and-prevent-injury/) | 83 \u00b7 \uc218\uc815 | \ud604\uc7ac \ucd9c\ucc98\ub294 face pull\uc744 \uc9c1\uc811 \ucc98\ubc29\ud558\uc9c0 \uc54a\uace0 Wong\u2013Ng \uc790\ub8cc\ub294 \uad00\ucc30 \uc5f0\uad6c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Standing row-to-cactus 88; Bent-over letter T 83 |\n| \ud478\uc26c | \uc190\ubaa9 \uc2e0\uc804\uadfc \ud6c8\ub828 / wrist extensor prehab | mixed \u00b7 T2\u00b7T3\u00b7T4\u00b7A \u00b7 [\uadfc\uac70](https://www.climbing.com/skills/antagonist-workouts-for-climbers-improve-performance-and-prevent-injury/) | 73 \u00b7 \uad50\uccb4 | \uc6b4\ub3d9 \uc790\uccb4\ub294 \uc9c1\uc811 \ucd94\ucc9c\ub418\uc9c0\ub9cc \uadf8\ub9bd \ud5a5\uc0c1\u00b7\ubd80\uc0c1 \uc608\ubc29 \ud6a8\uacfc\ub97c \uacfc\uc7a5\ud588\uace0 \uc800\ud56d \uc124\uc815\uc774 \ubd88\uba85\ud655\ud558\ub2e4. HF \uc5c6\uc74c | Wrist extensor-up 84; Light reverse wrist curl 82 |\n| \ucf54\uc5b4 | \ub370\ub4dc\ubc84\uadf8 / motor control\u00b7anti-rotation | direct \u00b7 T3 \u00b7 [\uadfc\uac70](https://theclimbingdoctor.com/low-back-injuries-in-boulderers-preventative-measures-for-chronic-low-back-pain/) | 81 \u00b7 \uc218\uc815 | \uc9c1\uc811 \uae00\uc758 \uc800\uc790\ub294 Jared Vagy\uac00 \uc544\ub2c8\ub77c Mike Hwang\uc774\uba70 \uc6d0\ubb38 \uc6a9\ub7c9\uc740 \uce21\ub2f9 4\u00d712, \uc8fc 4\ud68c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Bird dog 79; Pallof press 77 |\n| \ucf54\uc5b4 | L-Sit / static compression | principle \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/video-complete-core-training-epic-tv-ep-4/) | 61 \u00b7 \uad50\uccb4 | H\u00f6rst\uac00 \uacf5\uac1c\ud55c 5\uac1c \ucf54\uc5b4 \ub8e8\ud2f4\uc5d0 L-Sit\uc774 \uc5c6\ub2e4. \ud604\uc7ac \uc9c1\uc811 \uadc0\uc18d\uc740 \uac80\uc99d\ub418\uc9c0 \uc54a\uc558\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Ring rollout 87; Tuck L-hang 73 |\n| \ucf54\uc5b4 | \ud560\ub85c\uc6b0 \ubc14\ub514 \ud640\ub4dc / anti-extension | mixed \u00b7 T3 \u00b7 [\uadfc\uac70](https://theclimbingdoctor.com/360-core-power-unlock-full-body-strength-for-climbing/) | 78 \u00b7 \uad50\uccb4 | \ud604\uc7ac H\u00f6rst/Lattice \uadc0\uc18d\uc740 \ud2c0\ub838\uace0 \ub2e4\ub978 Climbing Doctor \uc790\ub8cc\ub85c\ub9cc \uc9c1\uc811\uc131\uc744 \ubcf4\uc644\ud560 \uc218 \uc788\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Ring rollout 86; Body saw plank 78 |\n| \ucf54\uc5b4 | \ud589\uc789 \ub2c8\ub808\uc774\uc988/\ub808\uadf8\ub808\uc774\uc988 / hanging hip flexion | direct \u00b7 T2\u00b7T4 \u00b7 [\uadfc\uac70](https://www.powercompanyclimbing.com/blog/2011/06/hardcore.html) | 78 \u00b7 \uc218\uc815 | \uc6b4\ub3d9\uc740 \uc9c1\uc811 \uc9c0\uc9c0\ub418\uc9c0\ub9cc \ud604\uc7ac Lattice/Metolius \uadc0\uc18d\uc740 \ub9de\uc9c0 \uc54a\uace0 \ud504\ub860\ud2b8 \ub808\ubc84 \uc804 \ud589\uc789 \ud53c\ub85c\ub97c \ub298\ub9b0\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Supine reverse crunch 81; Seated compression lift 79 |\n| \ucf54\uc5b4 | \ud589\uc789 \uc708\ub4dc\uc274\ub4dc \uc640\uc774\ud37c / dynamic rotation | direct \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/my-favorite-core-exercise-windshield-wipers/) | 77 \u00b7 \uc218\uc815 | H\u00f6rst\uac00 \uc9c1\uc811 \ucd94\ucc9c\ud558\uc9c0\ub9cc \uc6d0\ubb38\uc740 6\u201312\ud68c, 2\u20133\uc138\ud2b8, \uc57d 3\ubd84 \ud734\uc2dd\uc774\uba70 \ud604\uc7ac 60\ucd08\uc640 \ub2e4\ub974\ub2e4. HF \uc5c6\uc74c | Bent-knee windshield wiper 82; Slow cross-body mountain climber 72 |\n| \ucf54\uc5b4 | \uc0ac\uc774\ub4dc \ud50c\ub7ad\ud06c \ud504\ub85c\uadf8\ub808\uc158 / anti-lateral flexion | mixed \u00b7 T3 \u00b7 [\uadfc\uac70](https://theclimbingdoctor.com/360-core-power-unlock-full-body-strength-for-climbing/) | 73 \u00b7 \uad50\uccb4 | \uc8fc\uc7a5\ud55c Lattice \uc0c1\uad00 \ub370\uc774\ud130\uac00 \uacf5\uac1c \ud655\uc778\ub418\uc9c0 \uc54a\ub294\ub2e4. Tier 1.5\ub97c \uc81c\uac70\ud574\uc57c \ud55c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Banded side plank 83; Suitcase carry in place 72 |\n| \ucf54\uc5b4 | \uae00\ub8e8\ud2b8 \ube0c\ub9bf\uc9c0 / posterior chain | principle \u00b7 T3 \u00b7 [\uadfc\uac70](https://theclimbingdoctor.com/optimal-training-and-injury-prevention-techniques-for-climbers-with-a-full-time-schedule/) | 77 \u00b7 \uc218\uc815 | Vagy\uc758 \uc9c1\uc811 \ucc98\ubc29\uc744 \ud655\uc778\ud560 \uc218 \uc5c6\ub2e4. \uc9c1\uc811 \ub17c\uc758\ub41c hip-extension \uc6b4\ub3d9\uc758 \ud68c\uadc0\ud615\uc73c\ub85c \ud45c\uc2dc\ud574\uc57c \ud55c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Single-leg hip thrust 82; KB Romanian deadlift 80 |\n| \ucf54\uc5b4 | \ud504\ub860\ud2b8 \ub808\ubc84 \ud504\ub85c\uadf8\ub808\uc158 / integrated pull-core | direct \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/video-complete-core-training-epic-tv-ep-4/) | 73 \u00b7 \uad50\uccb4 | H\u00f6rst\uc758 \uc9c1\uc811 \uadfc\uac70\ub294 \uc788\uc73c\ub098 \uc5ec\ub7ec \ud589\uc789 \uc6b4\ub3d9 \ub4a4 \ub9c8\uc9c0\ub9c9 \ubc30\uce58\uc640 60\u201390\ucd08 \ud734\uc2dd\uc774 \ud488\uc9c8\uc744 \ud574\uce5c\ub2e4. HF \uc5c6\uc74c | \uc138\uc158 \uccab Tuck front lever 84; Ring rollout 83 |\n| \ud30c\uc6cc | \ud30c\uc6cc \ud480\uc5c5 / explosive pull | direct \u00b7 T2 \u00b7 [\uadfc\uac70 1](https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/) \u00b7 [\uadfc\uac70 2](https://trainingforclimbing.com/power-training-chest-bump-pull-up/) | 82 \u00b7 \uc218\uc815 | 6\uac1c \ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \uae00\uc740 Eric H\u00f6rst\uac00 \uc544\ub2c8\ub77c Lucie Hanes\uc758 \uae00\uc774\ub2e4. H\u00f6rst\uc758 \uc9c1\uc811 \uae00\uc740 \ubcc4\ub3c4\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Chest-bump pull-up 86; Band-assisted power pull-up 78 |\n| \ud30c\uc6cc | \ud30c\uc6cc \ud478\uc26c\uc5c5 / explosive push | direct \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/) | 84 \u00b7 \uc218\uc815 | \ub3d9\uc791\uc740 \uc9c1\uc811 \ucd94\ucc9c\ub418\uc9c0\ub9cc \uc800\uc790\ub97c H\u00f6rst\ub85c \uc798\ubabb \uc801\uace0, \uae00\uc5d0 \uc5c6\ub294 \uc804\uccb4 \uc138\uc158 \uc124\uacc4\ub97c \uc6d0\ubb38 \ucc98\ubc29\ucc98\ub7fc \uc37c\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Incline power push-up 82; Kneeling clap push-up 78 |\n| \ud30c\uc6cc | \ubc15\uc2a4 \uc810\ud504 / bilateral lower power | direct \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/) | 74 \u00b7 \uad50\uccb4 | \ubcf4\uc720 \uc7a5\ube44\uc5d0 \ubc15\uc2a4\uac00 \uc5c6\ub2e4. \ubca4\uce58\ub098 \uacc4\ub2e8\uc740 \uc548\uc804\ud55c \uc784\uc2dc \ucc29\uc9c0\ub300\ub85c \uc778\uc815\ud560 \uc218 \uc5c6\ub2e4. HF: \ubbf8\ubcf4\uc720 \ud544\uc218 \uc7a5\ube44 | Squat jump + stick landing 85; Broad jump + stick landing 80 |\n| \ud30c\uc6cc | \uc810\ud504 \ub7f0\uc9c0 / unilateral lower power | direct \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/) | 77 \u00b7 \uc218\uc815 | \uc9c1\uc811 \ubaa9\ub85d\uc5d0\ub294 \uc788\uc73c\ub098 \ud604\uc7ac \uc62c\uc778\uc6d0 \uc138\uc158\uc758 \ud558\uccb4 \ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \ucd1d\ub7c9\uc774 \uacfc\ud558\ub2e4. HF \uc5c6\uc74c | Split-squat jump 79; Step-up knee drive 73 |\n| \ud30c\uc6cc | \uc2f1\uae00\ub808\uadf8 \ub798\ud130\ub7f4\u00b7\uc0ac\uc120 \ud649-\uc564-\uc2a4\ud2f1 / landing control | principle \u00b7 A\u00b7T3 \u00b7 [\uadfc\uac70](https://pmc.ncbi.nlm.nih.gov/articles/PMC6922560/) | 74 \u00b7 \uad50\uccb4 | RCT \ub300\uc0c1\uc740 \ud074\ub77c\uc774\uba38\uac00 \uc544\ub2cc \ub9cc\uc131 \ubc1c\ubaa9 \ubd88\uc548\uc815 \ub0a8\uc790 \ub300\ud559 \ub18d\uad6c\uc120\uc218\ub2e4. \ubcf5\ud569 \uc9c4\ud589\uc740 \uc6d0\uce59 \uc801\uc6a9\uc774\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | Low single-leg hop-and-stick 82; Star-excursion reach 78 |\n| \ud30c\uc6cc | \ub9c8\uc6b4\ud2f4 \ud074\ub77c\uc774\uba38 / fast knee-drive core | direct \u00b7 T2 \u00b7 [\uadfc\uac70](https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/) | 68 \u00b7 \uad50\uccb4 | \ucd9c\ucc98 \ubaa9\ub85d\uc5d0\ub294 \uc788\uc9c0\ub9cc 15\uac1c \ud30c\uc6cc \uc138\ud2b8 \ub4a4\uc5d0\ub294 \ucd5c\ub300 \ud30c\uc6cc\uac00 \uc544\ub2cc \ucee8\ub514\uc154\ub2dd\uc774 \ub41c\ub2e4. HF \uc5c6\uc74c | Band-resisted high-knee drive 74; High-knee run in place 72 |\n| \uc190\uac00\ub77d | \uace0\ubb34\ubc34\ub4dc \uc190\uac00\ub77d \uc2a4\ud504\ub808\ub4dc / finger extensor prehab | mixed \u00b7 T1\u00b7T2\u00b7T3\u00b7T4 \u00b7 [\uadfc\uac70](https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2023.1243354/full) | 60 \u00b7 \uad50\uccb4 | \ub3d9\uc791 \ucd94\ucc9c\uc740 \uc788\uc73c\ub098 \ub9e4\uc77c \uc800\uac15\ub3c4 4\u20136\uc138\ud2b8\uc640 \ubd80\uc0c1 \uc608\ubc29 \uc57d\uc18d\uc740 \uc778\uc6a9 \uc6a9\ub7c9\u00b7\uacb0\uacfc\uc640 \ub9de\uc9c0 \uc54a\ub294\ub2e4. HF: \uc9c1\uc811 \uc8fc\uc7a5 \uc624\uadc0\uc18d | High-resistance isometric extension 89; Carabiner-band 10-second expansion 81 |\n\n`direct`\ub294 \ud655\uc778 \uac00\ub2a5\ud55c \ucd9c\ucc98\uac00 \ud574\ub2f9 \uc6b4\ub3d9\uc744 \ud074\ub77c\uc774\uba38\uc5d0\uac8c \uba85\uc2dc\uc801\uc73c\ub85c \ucd94\ucc9c\ud55c\ub2e4\ub294\n\ub73b\uc774\uace0, `principle`\uc740 \ud0c0 \uc9d1\ub2e8 \uc5f0\uad6c\ub098 \uc77c\ubc18 \uc6d0\uce59\uc758 \uc801\uc6a9\uc774\ub2e4. `mixed`\ub294 \uac19\uc740\n\uce74\ub4dc\uc5d0 \ub450 \uc131\uaca9\uc758 \uc8fc\uc7a5\uc774 \ud568\uaed8 \uc788\ub2e4\ub294 \ub73b\uc774\ub2e4.\n\n## 3. \uc138\uc158 \ud1b5\ud569 \ud310\uc815\n\n### \ud478\uc26c \u2014 \uc218\uc815\n\nOHP\ub294 \uc720\uc9c0\ud558\ub418 \uc138 \uac1c\uc758 \uac15\ud55c \ud504\ub808\uc2a4 \uc2ac\ub86f\uc744 \ubaa8\ub450 \ub204\uc801\ud558\uc9c0 \uc54a\ub294\ub2e4.\n`\uacac\uac11 \ud65c\uc131\ud654 2\uc138\ud2b8 \u2192 OHP 3\uc138\ud2b8 \u2192 \ud478\uc26c\uc5c5 \ub610\ub294 \ub525\uc2a4 \uacc4\uc5f4 3\uc138\ud2b8 \u2192\nrow-to-cactus 3\uc138\ud2b8 \u2192 \uc190\ubaa9 \uc2e0\uc804 2~3\uc138\ud2b8`\ub85c \uc904\uc774\uace0 \ud478\uc26c\uc5c5\u00b7\ub525\uc2a4\ub294 A/B\ub85c\n\uad50\ub300\ud55c\ub2e4. \uadfc\uac70 \uc624\ub958\uc640 \ubcc4\uac1c\ub85c \ud604\uc7ac \uad6c\uc131\uc740 \uc218\ud3c9 \ud504\ub808\uc2a4\uc640 \uace0\uac15\ub3c4 \ud504\ub808\uc2a4\uac00\n\uc911\ubcf5\ub418\uc5b4 30\u201340\ubd84 \uc870\uac74\uacfc \ud68c\ubcf5 \ud488\uc9c8\uc744 \ud574\uce5c\ub2e4.\n\n### \ucf54\uc5b4 \u2014 \uc7ac\uc124\uacc4\n\n\ud604\uc7ac 24\uc138\ud2b8\uc640 \ub2e4\uc218\uc758 \ud589\uc789\u00b7\ub2f9\uae30\uae30 \uc6b4\ub3d9\uc740 \uc8fc 2\ud68c 35\u201345\ubd84 \uc138\uc158\uc73c\ub85c \uacfc\ud558\ub2e4.\nA/B 15\u201320\ubd84 \ubaa8\ub4c8\ub85c \ub098\ub208\ub2e4.\n\n- A: \ub370\ub4dc\ubc84\uadf8, ring rollout \ub610\ub294 hollow, side plank, glute bridge\n- B: front lever\ub97c \uccab \uc6b4\ub3d9\uc73c\ub85c \uc218\ud589\ud558\uace0 hanging raise\uc640 windshield wiper\n  \uc911 \ud558\ub098\ub9cc \uc120\ud0dd\n\n\uc708\ub4dc\uc274\ub4dc \uc640\uc774\ud37c\ub97c \uc720\uc9c0\ud558\uba74 \uc6d0\ubb38\uc5d0 \uac00\uae5d\uac8c 2\u20133\uc138\ud2b8\uc640 \uc57d 3\ubd84 \ud734\uc2dd\uc744 \ud655\ubcf4\ud55c\ub2e4.\n\n### \ud30c\uc6cc \u2014 \uc7ac\uc124\uacc4\n\n6\uc6b4\ub3d9 18\uc138\ud2b8 \ub300\uc2e0 \uc0c1\uccb4 pull/push \ub450 \uc2ac\ub86f\uacfc \ud558\uccb4 \ud30c\uc6cc \ub610\ub294 \ucc29\uc9c0 \uc81c\uc5b4 \ud55c\n\uc2ac\ub86f\uc744 \ud569\uce5c 3\u20134\uc6b4\ub3d9 \ud68c\uc804 \ubaa8\ub4c8\ub85c \uc904\uc778\ub2e4. \ud649-\uc564-\uc2a4\ud2f1\uc740 \ud53c\ub85c \uc804\uc5d0 \uc218\ud589\ud558\uace0,\n\ub9c8\uc6b4\ud2f4 \ud074\ub77c\uc774\uba38\ub294 \ubcc4\ub3c4 \ucee8\ub514\uc154\ub2dd\uc73c\ub85c \uc774\ub3d9\ud55c\ub2e4. \ubc15\uc2a4\uac00 \uc5c6\uc73c\ubbc0\ub85c \ubd88\uc548\uc815\ud55c\n\ubca4\uce58\u00b7\uacc4\ub2e8\uc774 \uc544\ub2c8\ub77c squat jump + stick landing\uc744 \uc4f4\ub2e4.\n\n### \uc190\uac00\ub77d \uc2e0\uc804\uadfc \u2014 \ud504\ub85c\ud1a0\ucf5c \uad50\uccb4\n\n\uc0ac\ubb34\uc2e4 \ubc34\ub4dc \uc2a4\ud504\ub808\ub4dc\ub294 \uc800\uac15\ub3c4 \uc6c0\uc9c1\uc784 \uc635\uc158\uc73c\ub85c\ub9cc \ub0a8\uae30\uace0 \ubd80\uc0c1 \uc608\ubc29\uc744 \uc57d\uc18d\ud558\uc9c0\n\uc54a\ub294\ub2e4. \uadfc\ub825 \ud504\ub85c\ud1a0\ucf5c\uc740 \ud604\uc7ac \uc9c1\uc811 \uc5f0\uad6c\uac00 \uc2dc\ud5d8\ud55c \uc8fc 2\ud68c \uace0\uc800\ud56d \ub4f1\ucc99\uc131\n4\uc138\ud2b8\uc640 \ubd84\ub9ac\ud55c\ub2e4. \ud1b5\uc99d\u00b7\ucd5c\uadfc \uc190\uac00\ub77d \ubd80\uc0c1\uc774 \uc788\uc73c\uba74 \uc6b4\ub3d9 \ucc98\ubc29\ubcf4\ub2e4 \uac1c\ubcc4 \ud3c9\uac00\uac00\n\uc6b0\uc120\uc774\ub2e4.\n\n## 4. \ubb38\uc11c \ub4dc\ub9ac\ud504\ud2b8\uc640 \uac80\uc99d \ud55c\uacc4\n\n- `CLAUDE.md`\uc758 \ucf54\uc5b4 \uc6b4\ub3d9 \ubaa9\ub85d\uacfc \uba74\ucc45 \uc704\uce58 \uc124\uba85\uc744 \ucd5c\uc2e0 \uba85\uc138\uc5d0 \ub9de\ucdb0\uc57c \ud55c\ub2e4.\n- \uc774 eval\uc740 \uc6f9\uc744 \ub2e4\uc2dc \ud0d0\uc0c9\ud558\uc9c0 \uc54a\uace0 `validation/source-audit.yaml`\uc5d0 \uc774\ubbf8\n  \uae30\ub85d\ub41c \uac80\uc99d \uacb0\uacfc\uc640 URL\uc744 \uc0ac\uc6a9\ud588\ub2e4. \uc811\uadfc \ubd88\uac00\u00b7\ud398\uc774\uc6d4 \uc138\ubd80\ub294 \uc0c8\ub85c \ucd94\uc815\ud558\uc9c0\n  \uc54a\uc558\ub2e4.\n- \uc810\uc218\ub294 \ud504\ub85c\uadf8\ub7a8 \uc120\ud0dd\uc744 \uc704\ud55c \ube44\uad50 \ub3c4\uad6c\uc774\uba70 \uc784\uc0c1 \uc9c4\ub2e8\uc774 \uc544\ub2c8\ub2e4.\n- \uac10\uc0ac \uacb0\uacfc\ub9cc\uc73c\ub85c \ub124 HTML \uac00\uc774\ub4dc\uc5d0\ub294 \uc5b4\ub5a4 \uc218\uc815\ub3c4 \ud558\uc9c0 \uc54a\uc558\ub2e4.\n"}], "grading": {"expectations": [{"text": "21\uac1c \uc6b4\ub3d9\uc744 \uc138\uc158\ubcc4\ub85c \ube60\uc9d0\uc5c6\uc774 \uc2dd\ubcc4\ud55c\ub2e4", "passed": true, "evidence": "\ubcf4\uace0\uc11c \ud45c\uac00 \ud478\uc26c 6, \ucf54\uc5b4 8, \ud30c\uc6cc 6, \uc190\uac00\ub77d 1\uac1c\ub97c \ubaa8\ub450 \uc2dd\ubcc4\ud558\uace0 \uc720\uc9c0 1\u00b7\uc218\uc815 9\u00b7\uad50\uccb4 11\ub85c \uc9d1\uacc4\ud588\ub2e4."}, {"text": "\uc815\uc801 \uac80\uc0ac\uae30\uc758 1\uac1c \uc624\ub958\uc640 22\uac1c \uacbd\uace0\ub97c \uad6c\uc870 \ubb38\uc81c\ub85c \uad6c\ubd84\ud55c\ub2e4", "passed": true, "evidence": "1\uc808\uc774 sets_reps_rest \uc624\ub958 1\uac1c\uc640 \uadfc\uac70 \ub9c8\ucee4\u00b7\ubb38\uc11c \ub4dc\ub9ac\ud504\ud2b8 \uacbd\uace0 22\uac1c\ub97c \ubcc4\ub3c4 \uad6c\uc870 \ucd95\uc73c\ub85c \uc124\uba85\ud588\ub2e4."}, {"text": "\uadfc\uac70 \uc9c1\uc811\uc131\uacfc \uc138\uc158 \uc870\ud569\uc744 \ubcc4\ub3c4 \ucd95\uc73c\ub85c \ud3c9\uac00\ud55c\ub2e4", "passed": true, "evidence": "2\uc808\uc758 direct/principle/mixed \ubc0f \ud558\ub4dc \uc2e4\ud328 \uac10\uc0ac\uc640 3\uc808\uc758 \ub124 \uc138\uc158 \ud1b5\ud569 \ud310\uc815\uc774 \ubd84\ub9ac\ub418\uc5b4 \uc788\ub2e4."}, {"text": "\uac00\uc774\ub4dc HTML\uc744 \uc218\uc815\ud558\uc9c0 \uc54a\uace0 Markdown \uac10\uc0ac \ubcf4\uace0\uc11c\ub97c \uc0dd\uc131\ud55c\ub2e4", "passed": true, "evidence": "report.md\uac00 \uc0dd\uc131\ub410\uace0 \ubcf4\uace0\uc11c\u00b7transcript\uac00 \uc6d0\ubcf8 \uac00\uc774\ub4dc \uc218\uc815 \uc5c6\uc74c\uc774\ub77c\uace0 \uae30\ub85d\ud588\ub2e4."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"Read": 0, "Write": 0, "Bash": 6, "Edit": 2, "Glob": 0, "Grep": 0}, "total_tool_calls": 8, "total_steps": 7, "errors_encountered": 0, "output_chars": 8610, "transcript_chars": 762}, "claims": [{"claim": "21\uac1c \ud310\uc815\uc740 \uc720\uc9c0 1, \uc218\uc815 9, \uad50\uccb4 11\uc774\ub2e4", "type": "factual", "verified": true, "evidence": "source-audit.yaml\uc758 disposition \uc9d1\uacc4\uc640 \uc77c\uce58\ud55c\ub2e4."}], "user_notes_summary": {"uncertainties": ["\uc6f9\uc744 \uc7ac\ud0d0\uc0c9\ud558\uc9c0 \uc54a\uace0 \uc774\ubbf8 \uac10\uc0ac\ub41c source-audit.yaml\uc744 \uc0ac\uc6a9\ud568"], "needs_review": [], "workarounds": []}, "eval_feedback": {"suggestions": [], "overall": "end-to-end \uae30\ub300\uc0ac\ud56d\uc744 \ubaa8\ub450 \ucda9\uc871\ud588\ub2e4."}}}, {"id": "eval-1-without_skill-run-1", "prompt": "\ud604\uc7ac \uc800\uc7a5\uc18c\uc758 4\uac1c \uc6b4\ub3d9 \uac00\uc774\ub4dc\ub97c validation/spec.yaml\uacfc source-audit.yaml \uae30\uc900\uc73c\ub85c \uc804\uc218 \uac80\uc99d\ud55c\ub2e4.", "eval_id": 1, "outputs": [{"name": "report.md", "type": "text", "content": "# \uc6b4\ub3d9 \uc138\uc158 \uac80\uc99d \ubcf4\uace0\uc11c \u2014 \ubca0\uc774\uc2a4\ub77c\uc778\n\n## \uacb0\ub860\n\n\ud604\uc7ac \ub124 \uc138\uc158\uc744 \uadf8\ub300\ub85c \u201c\uc870\uac74\uc5d0 \ub9de\uac8c \uc798 \ucc3e\uc740 \uc6b4\ub3d9 \uc138\uc158\u201d\uc774\ub77c\uace0 \ud310\uc815\ud558\uae30 \uc5b4\ub835\ub2e4.\n\n- \uad6c\uc870 \uac80\uc0ac: **\uc2e4\ud328** \u2014 \uc624\ub958 1\uac74, \uacbd\uace0 22\uac74\n- \uc6b4\ub3d9 \uc218: 4\uac1c \uc138\uc158, 21\uac1c \uc6b4\ub3d9\n- \ub0b4\ubd80 \ucc38\uc870: 153\uac1c \ud655\uc778\n- \uc6b4\ub3d9 \ud310\uc815: \uc720\uc9c0 1\uac1c, \uc218\uc815 9\uac1c, \uad50\uccb4 11\uac1c\n- \uc9c1\uc811\uadfc\uac70 \uc624\ud45c\uae30\u00b7\uc624\uadc0\uc18d \ub4f1 \uadfc\uac70 \ud558\ub4dc \uc2e4\ud328: 14\uac1c \uce74\ub4dc\n- \uac00\uc774\ub4dc \uc6d0\ubcf8\uc740 \uc218\uc815\ud558\uc9c0 \uc54a\uc558\ub2e4.\n\n\uad6c\uc870 \uac80\uc0ac \uacb0\uacfc\uc640 \uadfc\uac70\u00b7\ud504\ub85c\uadf8\ub7a8 \uac80\ud1a0 \uacb0\uacfc\ub294 \uc11c\ub85c \ub2e4\ub978 \uce35\uc704\ub2e4. \uad6c\uc870 \uac80\uc0ac\uc5d0\uc11c \uc6b4\ub3d9 \uce74\ub4dc\uc640 \ub0b4\ubd80 \ub9c1\ud06c\ub97c \ucc3e\uc558\ub2e4\ub294 \uc0ac\uc2e4\uc740 \ud574\ub2f9 \ucc98\ubc29\uc774\ub098 \ucd9c\ucc98 \uadc0\uc18d\uc774 \uc633\ub2e4\ub294 \ub73b\uc774 \uc544\ub2c8\ub2e4.\n\n## 1. \uad6c\uc870 \uac80\uc0ac\n\n`python3 scripts/validate_guides.py --no-fail` \uacb0\uacfc\ub294 \ub2e4\uc74c\uacfc \uac19\ub2e4.\n\n| \ud56d\ubaa9 | \uacb0\uacfc |\n|---|---:|\n| \uc138\uc158 | 4 |\n| \uc6b4\ub3d9 | 21 |\n| \uac10\uc0ac \ub370\uc774\ud130\uc5d0 \uc5f0\uacb0\ub41c \uc6b4\ub3d9 | 21 |\n| \ud655\uc778\ud55c \ub0b4\ubd80 \ucc38\uc870 \ub9c1\ud06c | 153 |\n| \uc624\ub958 | 1 |\n| \uacbd\uace0 | 22 |\n| \ucd5c\uc885 \uc0c1\ud0dc | fail |\n\n\uc624\ub958 1\uac74\uc740 \uc190\uac00\ub77d \uc2e0\uc804\uadfc \uce74\ub4dc \ub0b4\ubd80\uc5d0 \ud544\uc218 `sets_reps_rest` \ud544\ub4dc\uac00 \uc5c6\ub294 \ubb38\uc81c\ub2e4. \ud398\uc774\uc9c0 \uc0c1\ub2e8 \ub8e8\ud2f4 \uc601\uc5ed\uc5d0 \uc6a9\ub7c9 \uc815\ubcf4\uac00 \uc788\ub354\ub77c\ub3c4 \ud574\ub2f9 \uc6b4\ub3d9 \uce74\ub4dc \uc790\uccb4\uc758 \ud544\uc218 \ud544\ub4dc\ub97c \ucda9\uc871\ud558\uc9c0 \ubabb\ud55c\ub2e4.\n\n\uacbd\uace0\ub294 \ub2e4\uc74c \uc138 \ubc94\uc8fc\ub2e4.\n\n- \uc9c1\uc811\uadfc\uac70\ub85c \uc120\uc5b8\ub41c \uce74\ub4dc 20\uac1c\uc5d0 \uc694\uad6c\ub418\ub294 `\u2705` \uadfc\uac70 \ub9c8\ucee4 \ub204\ub77d\n- `CLAUDE.md`\uc758 \ucf54\uc5b4 \uc6b4\ub3d9 \ubaa9\ub85d\uc774 \ud604\uc7ac \uac00\uc774\ub4dc\uc640 \ubd88\uc77c\uce58\n- `CLAUDE.md`\uc758 \uba74\ucc45 \ubb38\uad6c \uc704\uce58 \uc124\uba85\uc774 \ud604\uc7ac\uc758 `index_only` \uc815\ucc45\uacfc \ubd88\uc77c\uce58\n\n\ud30c\uc6cc \uc138\uc158\uc758 \ud649-\uc564-\uc2a4\ud2f1 \uce74\ub4dc\ub9cc `\u2705`\uc640 `\ud83d\udd36`\ub97c \ud45c\uc2dc\ud55c\ub2e4. \ub098\uba38\uc9c0 \uce74\ub4dc\uc758 \ubc30\uc9c0 \ud589\uc740 \ud2f0\uc5b4\ub9cc \ubcf4\uc5ec \uc8fc\uba70 \uc9c1\uc811 \ucc98\ubc29\uacfc \uc6d0\ub9ac \uc801\uc6a9\uc744 \uad6c\ubd84\ud558\uc9c0 \uc54a\ub294\ub2e4.\n\n## 2. \uc138\uc158 \ub2e8\uc704 \ud310\uc815\n\n| \uc138\uc158 | \ud3c9\uade0 \uc810\uc218 | \ud310\uc815 | \ud575\uc2ec \uc774\uc720 |\n|---|---:|---|---|\n| Push | 78.3 | \uc218\uc815 | OHP \uadfc\uac70\ub294 \uc591\ud638\ud558\uc9c0\ub9cc OHP\u00b7\ud478\uc26c\uc5c5\u00b7\ub9c1 \ub525\uc2a4\uc758 \uac15\ud55c \ud504\ub808\uc2a4 \uc2ac\ub86f\uc774 \uc911\ubcf5\ub41c\ub2e4. \ud478\uc26c\uc5c5\uacfc \ub525\uc2a4\ub97c \uad50\ub300\ub85c \uc4f0\ub294 \ud3b8\uc774 \ub0ab\ub2e4. |\n| Core | 74.8 | \uc7ac\uc124\uacc4 | H\u00f6rst\uc758 \uacf5\uac1c 5\uc885 \ub8e8\ud2f4\uc5d0 \uc5c6\ub294 \uc6b4\ub3d9\uc744 \uc9c1\uc811 \uadc0\uc18d\ud588\uace0, \ucd1d 24\uc138\ud2b8\uc5d0 \ud589\uc789\u00b7\ub2f9\uae30\uae30 \ud53c\ub85c\uac00 \uacfc\ub3c4\ud558\uac8c \uacb9\uce5c\ub2e4. |\n| Power | 76.5 | \uc7ac\uc124\uacc4 | \uc800\uc790\u00b7\uc790\uaca9 \uadc0\uc18d \uc624\ub958, \ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\uc758 \uacfc\ub3c4\ud55c \uc9c1\uc811 \uc801\uc6a9, \ud6c4\ubc18\ubd80 \ud53c\ub85c \ub54c\ubb38\uc5d0 \ud30c\uc6cc \ud488\uc9c8\uc774 \ub5a8\uc5b4\uc9c0\ub294 6\uc885 \uad6c\uc131\uc774 \ubb38\uc81c\ub2e4. |\n| Finger extensor | 60.0 | \ud504\ub85c\ud1a0\ucf5c \uad50\uccb4 | \ub3d9\uc791 \uc790\uccb4\ub294 \ud0c0\ub2f9\ud558\uc9c0\ub9cc \ub9e4\uc77c 4\u20136\uc138\ud2b8 \ubd84\uc0b0 \ucc98\ubc29\uacfc \ubd80\uc0c1 \uc608\ubc29 \uc57d\uc18d\uc774 \uc778\uc6a9\ud55c \uc6a9\ub7c9\ubcf4\ub2e4 \uac15\ud558\ub2e4. |\n\n## 3. 21\uac1c \uc6b4\ub3d9 \ud310\uc815\n\n### Push\n\n| ID | \ud604\uc7ac \uc6b4\ub3d9 | \uc810\uc218 | \ud310\uc815 | \uac80\uc99d \uacb0\uacfc |\n|---|---|---:|---|---|\n| push.ex1 | \uacac\uac11\uace8 \ud478\uc26c\uc5c5 | 79 | \uc218\uc815 | \uc6d0\ub9ac \uc801\uc6a9. Vagy\uc758 \uc9c1\uc811 \ucc98\ubc29\uc73c\ub85c \ubcf4\uae30 \uc5b4\ub835\ub2e4. McClure \uacc4\uc5f4 \ud478\uc26c\uc5c5 \uadfc\uac70\ub85c \ubc14\uafb8\uace0 chicken-wing \uc8fc\uc7a5\uc744 \uc644\ud654\ud574\uc57c \ud55c\ub2e4. |\n| push.ex2 | KB \uc624\ubc84\ud5e4\ub4dc \ud504\ub808\uc2a4 | 87 | **\uc720\uc9c0** | Bechtel\uc774 OHP\ub97c \uc9c1\uc811 \uad8c\ud55c\ub2e4. \ub2e4\ub9cc anti-rotation \uc804\uc774\uc640 \uc815\ud655\ud55c 3\uc138\ud2b8 \ucc98\ubc29\uc740 \uc6d0\ub9ac \uc801\uc6a9\uc73c\ub85c \ubd84\ub9ac\ud574\uc57c \ud55c\ub2e4. |\n| push.ex3 | \ub9c1/\ub2e4\uc774\uc544\ubaac\ub4dc \ud478\uc26c\uc5c5 | 77 | \uad50\uccb4 | \uc77c\ubc18 \ubc14\ub2e5 \ud478\uc26c\uc5c5\uc740 \uc9c1\uc811 \uc9c0\uc9c0\ub418\uc9c0\ub9cc \ub9c1\u00b7\ub2e4\uc774\uc544\ubaac\ub4dc \ubcc0\ud615\uc740 \uc6d0\ub9ac \uc801\uc6a9\uc774\uba70 \ub525\uc2a4 \uc2ac\ub86f\uacfc \uc911\ubcf5\ub41c\ub2e4. \ubc14\ub2e5 \ud478\uc26c\uc5c5\uc774 \uc6b0\uc120 \ub300\uc548\uc774\ub2e4. |\n| push.ex4 | \ub9c1 \ub525\uc2a4 | 71 | \uad50\uccb4 | \uc9c1\uc811\uadfc\uac70 \uadc0\uc18d\uc774 \uacfc\ud558\uace0 \uc5b4\uae68 \ubd88\uc548\uc815 \uc2dc \uae4a\uc774 \uc81c\ud55c\ub3c4 \ube60\uc838 \uc788\ub2e4. \ubc34\ub4dc \ud3b8\uc2ec \uc0bc\ub450 \uc2e0\uc804\uc774 \ub354 \ub098\uc740 \ub3d9\uc77c \uc2ac\ub86f \ub300\uc548\uc774\ub2e4. |\n| push.ex5 | \ud398\uc774\uc2a4 \ud480/\ubc34\ub4dc \ud480\uc5b4\ud30c\ud2b8 | 83 | \uc218\uc815 | \ud604\uc7ac \ucd9c\ucc98\ub294 face pull\uc744 \uc9c1\uc811 \ucc98\ubc29\ud558\uc9c0 \uc54a\uace0 \uad00\ucc30\uc5f0\uad6c\ub3c4 \uc11e\uc600\ub2e4. \uc9c1\uc811 \ucd9c\ucc98\uac00 \uc788\ub294 standing row-to-cactus\ub85c \uc815\ub9ac \uac00\ub2a5\ud558\ub2e4. |\n| push.ex6 | \uc190\ubaa9 \uc2e0\uc804\uadfc \ud6c8\ub828 | 73 | \uad50\uccb4 | \ub3d9\uc791 \uad8c\uace0\ub294 \ucc3e\uc744 \uc218 \uc788\uc73c\ub098 \uadf8\ub9bd \ud5a5\uc0c1\u00b7\ubd80\uc0c1 \uc608\ubc29 \ud45c\ud604\uc774 \uacfc\ud558\uace0 \uc800\ud56d \uc124\uc815\uc774 \ubd88\uba85\ud655\ud558\ub2e4. wrist extensor-up \ub610\ub294 \uac00\ubcbc\uc6b4 reverse wrist curl\uc774 \ub354 \uba85\ub8cc\ud558\ub2e4. |\n\n### Core\n\n| ID | \ud604\uc7ac \uc6b4\ub3d9 | \uc810\uc218 | \ud310\uc815 | \uac80\uc99d \uacb0\uacfc |\n|---|---|---:|---|---|\n| core.ex1 | \ub370\ub4dc\ubc84\uadf8 | 81 | \uc218\uc815 | \ud074\ub77c\uc774\uba38 \ub300\uc0c1 \uc9c1\uc811 \uc790\ub8cc\ub294 \uc788\uc9c0\ub9cc \uc800\uc790\ub294 Jared Vagy\uac00 \uc544\ub2c8\ub77c Mike Hwang\uc774\ub2e4. \ucd9c\ucc98 \uc6a9\ub7c9\ub3c4 \uc88c\uc6b0 \uac01 12\ud68c\u00d74\uc138\ud2b8, \uc8fc 4\ud68c\ub85c \ud604\uc7ac \uc124\uba85\uacfc \ub2e4\ub974\ub2e4. |\n| core.ex2 | L-Sit | 61 | \uad50\uccb4 | H\u00f6rst\uc758 \uacf5\uac1c 5\uc885 \ucf54\uc5b4 \ub8e8\ud2f4\uc5d0 L-Sit\uc774 \uc5c6\ub2e4. \uc9c1\uc811 \uadc0\uc18d\uc744 \uc81c\uac70\ud558\uace0 \uadfc\uac70\uac00 \uba85\ud655\ud55c ring rollout\uc73c\ub85c \uad50\uccb4\ud558\ub294 \uac83\uc774 \ub0ab\ub2e4. |\n| core.ex3 | \ud560\ub85c\uc6b0 \ubc14\ub514 \ud640\ub4dc | 78 | \uad50\uccb4 | \ud604\uc7ac H\u00f6rst/Lattice \uadc0\uc18d\uc740 \ub9de\uc9c0 \uc54a\ub294\ub2e4. Climbing Doctor \uadfc\uac70\ub85c \uc0c8\ub85c \uc791\uc131\ud558\uac70\ub098 ring rollout\uc73c\ub85c \uad50\uccb4\ud574\uc57c \ud55c\ub2e4. |\n| core.ex4 | \ud589\uc789 \ub2c8\ub808\uc774\uc988/\ub808\uadf8\ub808\uc774\uc988 | 78 | \uc218\uc815 | \ub3d9\uc791\uc740 \ub2e4\ub978 \ud074\ub77c\uc774\ubc0d \uc790\ub8cc\ub85c \uc9c0\uc9c0\ud560 \uc218 \uc788\uc9c0\ub9cc \ud604\uc7ac Lattice/Metolius \uadc0\uc18d\uc740 \ubd80\uc815\ud655\ud558\uba70 front lever \uc804 \ud589\uc789 \ud53c\ub85c\ub3c4 \uace0\ub824\ud574\uc57c \ud55c\ub2e4. |\n| core.ex5 | \ud589\uc789 \uc708\ub4dc\uc274\ub4dc \uc640\uc774\ud37c | 77 | \uc218\uc815 | H\u00f6rst \uc9c1\uc811 \uad8c\uace0\ub294 \ud655\uc778\ub418\ub098 \uc6d0 \ucd9c\ucc98\ub294 6\u201312\ud68c, 2\u20133\uc138\ud2b8, \uc57d 3\ubd84 \ud734\uc2dd\uc774\ub2e4. \ud604\uc7ac 60\ucd08 \ud734\uc2dd\uc740 \uc9e7\ub2e4. |\n| core.ex6 | \uc0ac\uc774\ub4dc \ud50c\ub7ad\ud06c \ud504\ub85c\uadf8\ub808\uc158 | 73 | \uad50\uccb4 | \uacf5\uac1c\ub41c Lattice \uc2e4\ubb34 \ub370\uc774\ud130\uc758 \uc0c1\uad00 \uc8fc\uc7a5\uc744 \ud655\uc778\ud560 \uc218 \uc5c6\uc5b4 Tier 1.5\ub97c \uc81c\uac70\ud574\uc57c \ud55c\ub2e4. banded side plank\uac00 \ub354 \uc798 \uc9c0\uc9c0\ub41c\ub2e4. |\n| core.ex7 | \uae00\ub8e8\ud2b8 \ube0c\ub9bf\uc9c0 | 77 | \uc218\uc815 | Vagy\uc758 \uc9c1\uc811 \ucc98\ubc29\uc740 \ud655\uc778\ub418\uc9c0 \uc54a\uc558\ub2e4. \uc9c1\uc811 \ub17c\uc758\ub41c hip-extension \uc791\uc5c5\uc758 \ud68c\uadc0 \ub3d9\uc791\uc73c\ub85c \ud45c\uc2dc\ud558\uac70\ub098 single-leg hip thrust\ub97c \uc4f4\ub2e4. |\n| core.ex8 | \ud504\ub860\ud2b8 \ub808\ubc84 \ud504\ub85c\uadf8\ub808\uc158 | 73 | \uad50\uccb4 | H\u00f6rst \uadfc\uac70\ub294 \uc788\uc73c\ub098 \uc5ec\ub7ec \ud589\uc789 \ub3d9\uc791 \ub4a4 \ub9c8\uc9c0\ub9c9 \ubc30\uce58\uc640 60\u201390\ucd08 \ud734\uc2dd\uc774 \ud488\uc9c8\uc744 \ud6fc\uc190\ud55c\ub2e4. \uc720\uc9c0\ud558\ub824\uba74 \uc138\uc158 \uccab \ubd80\ubd84\uc73c\ub85c \uc774\ub3d9\ud574\uc57c \ud55c\ub2e4. |\n\n### Power\n\n| ID | \ud604\uc7ac \uc6b4\ub3d9 | \uc810\uc218 | \ud310\uc815 | \uac80\uc99d \uacb0\uacfc |\n|---|---|---:|---|---|\n| power.ex1 | \ud30c\uc6cc \ud480\uc5c5 | 82 | \uc218\uc815 | 6\uac1c \ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \uae00\uc758 \uc800\uc790\ub294 Eric H\u00f6rst\uac00 \uc544\ub2c8\ub77c Lucie Hanes\ub2e4. H\u00f6rst\uc758 \ubcc4\ub3c4 chest-bump pull-up \uc790\ub8cc\ub85c \uadc0\uc18d\uc744 \ubc14\ub85c\uc7a1\uc744 \uc218 \uc788\ub2e4. |\n| power.ex2 | \ud30c\uc6cc \ud478\uc26c\uc5c5 | 84 | \uc218\uc815 | \uc6b4\ub3d9 \uc9c1\uc811 \uad8c\uace0\ub294 \uc788\uc73c\ub098 \uc800\uc790 \uadc0\uc18d\uc774 \ud2c0\ub9ac\uace0 \ud604\uc7ac\uc758 \uc815\ud655\ud55c \uc138\uc158 \uc124\uacc4\uae4c\uc9c0 \ucd9c\ucc98\uac00 \uc815\ud588\ub2e4\uace0 \ud45c\ud604\ud558\uba74 \uc548 \ub41c\ub2e4. |\n| power.ex3 | \ubc15\uc2a4 \uc810\ud504 | 74 | \uad50\uccb4 | \ubcf4\uc720 \uc7a5\ube44\uc5d0 \ubc15\uc2a4\uac00 \uc5c6\ub2e4. \ubca4\uce58\u00b7\uacc4\ub2e8\uc744 \uc989\uc11d \ucc29\uc9c0\ub300\ub85c \uc4f0\ub294 \uac83\uc740 \uc548\uc804\ud55c \ub300\uccb4\uac00 \uc544\ub2c8\ubbc0\ub85c squat jump with stick landing\uc73c\ub85c \ubc14\uafb8\ub294 \ud3b8\uc774 \ub0ab\ub2e4. |\n| power.ex4 | \uc810\ud504 \ub7f0\uc9c0 | 77 | \uc218\uc815 | \uc9c1\uc811 \ubaa9\ub85d\uc5d0\ub294 \uc788\uc9c0\ub9cc \ud604\uc7ac 6\uc885 \ud1b5\ud569 \uc138\uc158\uc5d0\uc11c\ub294 \ud558\uccb4 \ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \uc6a9\ub7c9\uc774 \uacfc\ub3c4\ud558\ub2e4. \ud68c\uc804 \uc2ac\ub86f\uc73c\ub85c \uc904\uc5ec\uc57c \ud55c\ub2e4. |\n| power.ex5 | \uc2f1\uae00\ub808\uadf8 \ub798\ud130\ub7f4\u00b7\uc0ac\uc120 \ud649-\uc564-\uc2a4\ud2f1 | 74 | \uad50\uccb4 | \uadfc\uac70 \uc5f0\uad6c \ub300\uc0c1\uc740 \ud074\ub77c\uc774\uba38\uac00 \uc544\ub2c8\ub77c \ub0a8\uc790 \ub300\ud559 \ub18d\uad6c\uc120\uc218\ub2e4. \ud604 \ubcf5\ud569 \uc9c4\ud589\uc740 \uc9c1\uc811 \ucc98\ubc29\uc774 \uc544\ub2cc \uc6d0\ub9ac \uc801\uc6a9\uc774\uba70 \ub0ae\uc740 \ub2e8\uc77c \ud649-\uc564-\uc2a4\ud2f1\uc774 \uc6b0\uc120\uc774\ub2e4. |\n| power.ex6 | \ub9c8\uc6b4\ud2f4 \ud074\ub77c\uc774\uba38 | 68 | \uad50\uccb4 | \ucd9c\ucc98 \ubaa9\ub85d\uc5d0\ub294 \uc788\uc9c0\ub9cc \uc55e\uc758 \ud30c\uc6cc 15\uc138\ud2b8 \ub4a4\uc5d0\ub294 \ucd5c\ub300 \ud30c\uc6cc\ubcf4\ub2e4 \ucee8\ub514\uc154\ub2dd\uc774 \ub41c\ub2e4. \uc138\uc158 \ubaa9\uc801\uc5d0 \uac00\uc7a5 \ub35c \ub9de\ub294\ub2e4. |\n\n### Finger extensor\n\n| ID | \ud604\uc7ac \uc6b4\ub3d9 | \uc810\uc218 | \ud310\uc815 | \uac80\uc99d \uacb0\uacfc |\n|---|---|---:|---|---|\n| finger_extensor.ex1 | \uace0\ubb34\ubc34\ub4dc \uc190\uac00\ub77d \uc2a4\ud504\ub808\ub4dc | 60 | \uad50\uccb4 | \ub3d9\uc791 \uad8c\uace0\ub294 \uc788\uc73c\ub098 \ub9e4\uc77c 4\u20136 \uc800\ubd80\ud558 \uc138\ud2b8\uc640 \ubd80\uc0c1 \uc608\ubc29 \uc57d\uc18d\uc740 \ucd9c\ucc98 \uc6a9\ub7c9\uc744 \ub118\uc5b4\uc120\ub2e4. \uace0\uc800\ud56d \ub4f1\ucc99\uc131 \uc190\uac00\ub77d \uc2e0\uc804\uc774 \ub354 \uac15\ud55c \ub300\uc548\uc774\ub2e4. \uce74\ub4dc \ub0b4\ubd80 \uc138\ud2b8\u00b7\ud69f\uc218\u00b7\ud734\uc2dd \ud544\ub4dc\ub3c4 \ubcf4\uc644\ud574\uc57c \ud55c\ub2e4. |\n\n## 4. \uc6b0\uc120\uc21c\uc704\n\n1. \uc190\uac00\ub77d \uce74\ub4dc\uc758 \ud544\uc218 \uc6a9\ub7c9 \ud544\ub4dc\ub97c \ucd94\uac00\ud558\uae30 \uc804\uae4c\uc9c0 \uad6c\uc870 \uac80\uc0ac\ub97c \ud1b5\uacfc\uc2dc\ud0a4\uc9c0 \uc54a\ub294\ub2e4.\n2. 14\uac1c \ud558\ub4dc \uc2e4\ud328 \uce74\ub4dc\uc758 \uc9c1\uc811\uadfc\uac70 \ud45c\uc2dc\uc640 \uc800\uc790\u00b7\uc790\uaca9 \uadc0\uc18d\ubd80\ud130 \uc218\uc815\ud55c\ub2e4.\n3. \ucf54\uc5b4\ub294 24\uc138\ud2b8 \uc77c\uad04 \uad6c\uc131\uc744 A/B \ub610\ub294 15\u201320\ubd84 \ubaa8\ub4c8\ub85c \uc904\uc774\uace0, front lever \uac19\uc740 \uace0\ud488\uc9c8 \uae30\uc220\uc131 \ub3d9\uc791\uc744 \uc55e\ucabd\uc73c\ub85c \uc62e\uae34\ub2e4.\n4. \ud30c\uc6cc\ub294 \uc0c1\uccb4 \ud3ed\ubc1c 1\u20132\uac1c, \ud558\uccb4 \ud3ed\ubc1c 1\uac1c, \ucc29\uc9c0 \uc81c\uc5b4 1\uac1c \uc815\ub3c4\ub85c \ud68c\uc804\uc2dc\ud0a4\uace0 \ubc15\uc2a4 \uc5c6\ub294 \ubc15\uc2a4 \uc810\ud504\uc640 \ud6c4\ubc18 mountain climber\ub97c \ube80\ub2e4.\n5. Push\ub294 OHP\ub97c \uc720\uc9c0\ud558\ub418 \ud478\uc26c\uc5c5\uacfc \ub525\uc2a4\ub97c \uac19\uc740 \ub0a0 \ubaa8\ub450 \uac15\ud558\uac8c \uc218\ud589\ud558\uc9c0 \uc54a\ub294\ub2e4.\n6. `CLAUDE.md`\uc758 \uc6b4\ub3d9 \ubaa9\ub85d\uacfc \uba74\ucc45 \uc704\uce58 \uc124\uba85\uc744 \ud604\uc7ac \uc2a4\ud399\uc5d0 \ub9de\ucd98\ub2e4.\n\n## \ucd5c\uc885 \ud310\uc815\n\n**Fail \u2014 \uc218\uc815 \ud6c4 \uc7ac\uac80\uc99d \ud544\uc694.** \uc6b4\ub3d9 \ud6c4\ubcf4\uac00 \ubaa8\ub450 \ubb34\ud6a8\ub77c\ub294 \ub73b\uc740 \uc544\ub2c8\ub2e4. OHP\ucc98\ub7fc \uc720\uc9c0 \uac00\ub2a5\ud55c \ud56d\ubaa9\ub3c4 \uc788\uc73c\ub098, \ud604\uc7ac \ubb38\uc11c \uc0c1\ud0dc\uc5d0\uc11c\ub294 \uad6c\uc870 \ub204\ub77d 1\uac74\uacfc \uadfc\uac70 \ud45c\uc2dc\u00b7\uadc0\uc18d \uc624\ub958\uac00 \uacb9\uccd0 \uc138\uc158 \uc804\uccb4\ub97c \uac80\uc99d \uc644\ub8cc\ub85c \uc2b9\uc778\ud560 \uc218 \uc5c6\ub2e4.\n"}], "grading": {"expectations": [{"text": "21\uac1c \uc6b4\ub3d9\uc744 \uc138\uc158\ubcc4\ub85c \ube60\uc9d0\uc5c6\uc774 \uc2dd\ubcc4\ud55c\ub2e4", "passed": true, "evidence": "Push 6, Core 8, Power 6, Finger extensor 1\uac1c \ud45c\ub97c \ubaa8\ub450 \uc81c\uacf5\ud588\ub2e4."}, {"text": "\uc815\uc801 \uac80\uc0ac\uae30\uc758 1\uac1c \uc624\ub958\uc640 22\uac1c \uacbd\uace0\ub97c \uad6c\uc870 \ubb38\uc81c\ub85c \uad6c\ubd84\ud55c\ub2e4", "passed": true, "evidence": "\uad6c\uc870 \uac80\uc0ac \uc808\uc5d0\uc11c \uc624\ub958 1\uac74\uacfc \uacbd\uace0 22\uac74\uc744 \uadfc\uac70\u00b7\ud504\ub85c\uadf8\ub7a8 \uac80\ud1a0\uc640 \ub2e4\ub978 \uce35\uc704\ub85c \ubd84\ub9ac\ud588\ub2e4."}, {"text": "\uadfc\uac70 \uc9c1\uc811\uc131\uacfc \uc138\uc158 \uc870\ud569\uc744 \ubcc4\ub3c4 \ucd95\uc73c\ub85c \ud3c9\uac00\ud55c\ub2e4", "passed": true, "evidence": "\uc6b4\ub3d9\ubcc4 \uadfc\uac70 \ud310\uc815\uacfc \uc138\uc158\ubcc4 \ud3c9\uade0\u00b7\uc911\ubcf5\u00b7\ud53c\ub85c \ud310\uc815\uc744 \ubcc4\ub3c4 \uc808\uacfc \ud45c\ub85c \uc81c\uc2dc\ud588\ub2e4."}, {"text": "\uac00\uc774\ub4dc HTML\uc744 \uc218\uc815\ud558\uc9c0 \uc54a\uace0 Markdown \uac10\uc0ac \ubcf4\uace0\uc11c\ub97c \uc0dd\uc131\ud55c\ub2e4", "passed": true, "evidence": "report.md\uac00 \uc0dd\uc131\ub410\uace0 \uc6d0\ubcf8 \uac00\uc774\ub4dc \ubbf8\uc218\uc815\uc744 \uba85\uc2dc\ud588\ub2e4."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {}, "total_steps": 6, "errors_encountered": 0, "output_chars": 8661, "transcript_chars": 976}, "claims": [{"claim": "\ubaa8\ub4e0 21\uac1c \uc6b4\ub3d9\uc744 \ub2e4\ub918\ub2e4", "type": "quality", "verified": true, "evidence": "\ub124 \uc138\uc158 \ud45c\uc758 \ud589 \uc218\uc640 \ud0a4\uac00 source-audit.yaml\uc758 21\uac1c\uc640 \uc77c\uce58\ud55c\ub2e4."}], "user_notes_summary": {"uncertainties": [], "needs_review": [], "workarounds": []}, "eval_feedback": {"suggestions": [{"reason": "\uad6c\uc870\ud654\ub41c source-audit.yaml \uc790\uccb4\uac00 \uc0c1\uc138\ud55c \uacb0\ub860\uc744 \uc81c\uacf5\ud558\ubbc0\ub85c \uc774 \ud3c9\uac00\ub3c4 \uc2a4\ud0ac \uac00\uce58\ub97c \uad6c\ubd84\ud558\uc9c0 \ubabb\ud55c\ub2e4."}], "overall": "\ubaa8\ub4e0 \uae30\ub300\uc0ac\ud56d\uc744 \ucda9\uc871\ud588\uc73c\uba70 \uc774 end-to-end \uc0ac\ub840\ub294 \ub450 \uad6c\uc131\uc758 \ub3d9\ub960\uc774\ub2e4."}}}, {"id": "eval-2-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": 2, "outputs": [{"name": "report.md", "type": "text", "content": "# Fixture \uc6b4\ub3d9 \uac00\uc774\ub4dc \uac10\uc0ac\n\n## \uacb0\ub860\n\n`ex1`\uc740 **\uc81c\uac70(remove)** \ud310\uc815\uc774\ub2e4. \ub04a\uc5b4\uc9c4 \ub0b4\ubd80 \ub808\ud37c\ub7f0\uc2a4, \ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\uc758\n\uc9c1\uc811 \uadfc\uac70 \uc624\ud45c\uae30, \ubbf8\ubcf4\uc720\u00b7\ubd88\uc548\uc815 \uc7a5\ube44 \uc0ac\uc6a9\uc774 \uac01\uac01 \ub3c5\ub9bd\uc801\uc73c\ub85c \ud655\uc778\ub410\ub2e4. \ud2b9\ud788\n\uc9c1\uc811\uc131 \uc624\ud45c\uae30\uc640 \uc7a5\ube44\u00b7\uc2e4\ud589 \uc548\uc804 \ubb38\uc81c\ub294 \ub8e8\ube0c\ub9ad\uc0c1 \ud558\ub4dc \uc2e4\ud328\ub2e4.\n\n## \uad6c\uc870 \uac80\uc0ac\n\n| \uc2ec\uac01\ub3c4 | \uc720\ud615 | \ud655\uc778 \uacb0\uacfc |\n|---|---|---|\n| \uc624\ub958 | `REFERENCE_TARGET_MISSING` | \uce74\ub4dc\uac00 `href=\"#ref-99\"`\ub97c \ucc38\uc870\ud558\uc9c0\ub9cc \ubb38\uc11c\uc5d0 `id=\"ref-99\"`\uac00 \uc5c6\ub2e4. |\n| \uacbd\uace0 | `EVIDENCE_MARKER_MISSING` | \uba85\uc138\ub294 `direct`\uc778\ub370 \ubc30\uc9c0\uc5d0\ub294 Tier\ub9cc \uc788\uace0 \uc9c1\uc811 \uac80\uc99d \ud45c\uae30\uac00 \uc5c6\ub2e4. |\n| \ud1b5\uacfc | \uce74\ub4dc \ud544\ub4dc\u00b7\uc21c\uc11c | `ex1` \uc21c\uc11c\uc640 \ud544\uc218 \uce74\ub4dc \ud544\ub4dc\ub294 fixture\uc758 \ucd5c\uc18c \uad6c\uc870\uc5d0\uc11c \ud655\uc778\ub41c\ub2e4. |\n\n\uc800\uc7a5\uc18c \ud45c\uc900 \uac80\uc0ac\uae30\ub294 \uc815\uc0c1 \uc2e4\ud589\ub410\uc9c0\ub9cc, fixture \uba85\uc138\ub294 \ub8e8\ud2b8 \uae30\uc900 \uac00\uc774\ub4dc \uacbd\ub85c\uc640\n\uc804\uc5ed `evidence_policy`/`source_of_truth`\uac00 \uc5c6\ub294 \ucd5c\uc18c \ud30c\uc77c\uc774\ub77c CLI \uc785\ub825\uc73c\ub85c \uc9c1\uc811\n\uc2e4\ud589\ud560 \uc218 \uc5c6\ub2e4. \uc704 \uacb0\uacfc\ub294 \ub3d9\uc77c\ud55c \uac80\uc0ac \uaddc\uce59\uc744 fixture \ubcf8\ubb38\uc5d0 \uc801\uc6a9\ud55c \uac83\uc774\ub2e4.\n\n## \uc6b4\ub3d9 \uac10\uc0ac\n\n| \uc138\uc158 | \uc2ac\ub86f | \uc6b4\ub3d9 | \uc2e4\uc81c \uadfc\uac70 \ubd84\ub958 | Tier | \uc810\uc218 | \ud310\uc815 | \ud558\ub4dc \uc2e4\ud328 | \ucd9c\ucc98 |\n|---|---|---|---|---|---:|---|---|---|\n| fixture | \ud558\uccb4 \ud30c\uc6cc\u00b7\ucc29\uc9c0 | \ubd88\uc548\uc815 \uc758\uc790 \ubc15\uc2a4 \uc810\ud504 | `principle (source unverified)` | `unverified` | 29/100 | `remove` | \uc9c1\uc811\uc131 \uc624\ud45c\uae30; \ubbf8\ubcf4\uc720 \uc7a5\ube44; \uc911\uc694\ud55c \uc548\uc804 \ubb38\uc81c | `#ref-99` \u2014 \ub04a\uc5b4\uc9c4 \ub0b4\ubd80 \ub9c1\ud06c |\n\n\uc810\uc218\ub294 \uadfc\uac70 \uc815\ud655\uc131 2/30, \ubaa9\ud45c\u00b7\ud328\ud134 \uc801\ud569\uc131 16/25, \uc138\uc158 \ud1b5\ud569 10/20,\n\uc7a5\ube44\u00b7\uc2dc\uac04 \uc801\ud569\uc131 0/15, \uc0ac\uc6a9\uc131\u00b7\uc9c4\ud589 1/10\uc774\ub2e4.\n\n- \ubb38\uc7a5\uc740 \ub18d\uad6c\uc120\uc218 \ub300\uc0c1 \uc5f0\uad6c\ub77c\uace0 \uc2a4\uc2a4\ub85c \ubc1d\ud78c\ub2e4. \ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\ub294\n  \ud074\ub77c\uc774\ubc0d \uc801\uc6a9 \uc6d0\ub9ac\ub9cc \ub4b7\ubc1b\uce68\ud560 \uc218 \uc788\uc73c\ubbc0\ub85c `direct`\uac00 \uc544\ub2c8\ub2e4.\n- \uc2e4\uc81c \ub17c\ubb38\u00b7\uc800\uc790\u00b7\ub300\uc0c1\u00b7\uc6b4\ub3d9\u00b7\uc6a9\ub7c9\uc744 \uc2dd\ubcc4\ud560 \uc218 \uc788\ub294 \ucd9c\ucc98\uac00 \uc5c6\ub2e4. \ub530\ub77c\uc11c\n  principle \uc801\uc6a9 \uac00\ub2a5\uc131 \uc678\uc758 \uc138\ubd80 \uc8fc\uc7a5\uc740 \uac80\uc99d\ud560 \uc218 \uc5c6\ub2e4.\n- \uba85\uc138\uc0c1 \ubcf4\uc720 \uc7a5\ube44\ub294 `floor`\ubfd0\uc778\ub370 \uc2e4\ud589\uc5d0\ub294 \uc758\uc790\uac00 \ud544\uc694\ud558\ub2e4.\n- \u201c\ud754\ub4e4\ub9ac\ub294 \uc758\uc790 \uc704\ub85c \ucd5c\ub300 \ub192\uc774 \uc810\ud504\u201d\ub294 \uc548\uc815\ub41c \ucc29\uc9c0\uba74, \ub192\uc774 \uc81c\ud55c,\n  \ud68c\uadc0 \ub3d9\uc791, \uc911\ub2e8 \uae30\uc900\uc774 \uc5c6\uc5b4 \uc911\uc694\ud55c \uc548\uc804 \ubb38\uc81c\ub2e4.\n\n## \ube14\ub77c\uc778\ub4dc \ub300\uc548 \ube44\uad50\n\n\ucd9c\ucc98\uac00 fixture\uc5d0 \uc81c\uacf5\ub418\uc9c0 \uc54a\uc558\uc73c\ubbc0\ub85c \ub450 \ub300\uc548 \ubaa8\ub450 \uadfc\uac70 \uc810\uc218\ub294 \ubcf4\uc218\uc801\uc73c\ub85c\n\ud3c9\uac00\ud588\ub2e4. \ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\ub294 \uc810\uc218\uc5d0 \ubc18\uc601\ud558\uc9c0 \uc54a\uc558\ub2e4.\n\n| \ud6c4\ubcf4 | \uadfc\uac70 | \ubaa9\ud45c | \ud1b5\ud569 | \uc7a5\ube44\u00b7\uc2dc\uac04 | \uc0ac\uc6a9\uc131 | \ud569\uacc4 | \ud558\ub4dc \uc2e4\ud328 | \ud310\uc815 |\n|---|---:|---:|---:|---:|---:|---:|---|---|\n| \ubc14\ub2e5 \uc2a4\ucffc\ud2b8 \uc810\ud504 + \uc815\uc9c0 \ucc29\uc9c0 | 5 | 19 | 14 | 15 | 7 | 60 | \uc5c6\uc74c | \ucd9c\ucc98 \ubcf4\uac15 \ud6c4 \uad50\uccb4 \ud6c4\ubcf4 |\n| \ubc14\ub2e5 \uc81c\uc790\ub9ac \uba40\ub9ac\ub6f0\uae30 + \uc815\uc9c0 \ucc29\uc9c0 | 5 | 17 | 14 | 15 | 7 | 58 | \uc5c6\uc74c | \ucd9c\ucc98 \ubcf4\uac15 \ud6c4 \uad50\uccb4 \ud6c4\ubcf4 |\n| \ubd88\uc548\uc815 \uc758\uc790 \ubc15\uc2a4 \uc810\ud504 | 2 | 16 | 10 | 0 | 1 | 29 | 3\uac1c | \uc81c\uac70 |\n\n\ub450 \ub300\uc548\uc740 \ubcf4\uc720 \uc7a5\ube44 \uc548\uc5d0\uc11c \uc548\uc804 \uc704\ud5d8\uc744 \ud06c\uac8c \ub0ae\ucd94\uc9c0\ub9cc, 70\uc810 \ubbf8\ub9cc\uc774\ubbc0\ub85c\n\uac80\uc99d \uac00\ub2a5\ud55c \ucd9c\ucc98, \uc801\uc815 \uc6a9\ub7c9, \ucc29\uc9c0 \uae30\uc900\uc744 \ubcf4\uac15\ud558\uae30 \uc804\uc5d0\ub294 \ucd5c\uc885 \ucc44\ud0dd\ud558\uc9c0 \uc54a\ub294\ub2e4.\n\n## \ubb38\uc11c\u00b7\ud3c9\uac00 \ub4dc\ub9ac\ud504\ud2b8\n\n`evals.json`\uc758 \uae30\ub300 \ubb38\uad6c\uc5d0\ub294 \u201c\ubbf8\ubcf4\uc720 barbell\u201d\uc774 \uc801\ud600 \uc788\uc9c0\ub9cc \uc2e4\uc81c\n`invalid-guide.html`\uc5d0\ub294 barbell\uc774 \uc804\ud600 \uc5c6\ub2e4. \uc2e4\uc81c fixture\uac00 \uc694\uad6c\ud558\ub294 \ubbf8\ubcf4\uc720\n\uc7a5\ube44\ub294 \uc758\uc790\uc774\ubbc0\ub85c, \uc874\uc7ac\ud558\uc9c0 \uc54a\ub294 barbell \uc704\ubc18\uc744 \ub9cc\ub4e4\uc5b4\ub0b4\uc9c0 \uc54a\uace0 \uc758\uc790 \ubb38\uc81c\ub97c\n\ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud588\ub2e4.\n\n## \uad8c\uace0\n\n\ud604\uc7ac \uce74\ub4dc\ub97c \uc0ad\uc81c\ud558\uac70\ub098, \uc548\uc815\ub41c \ubc14\ub2e5 \ucc29\uc9c0 \ubcc0\ud615\uc73c\ub85c \uad50\uccb4\ud55c \ub4a4 \uc2dd\ubcc4 \uac00\ub2a5\ud55c\n\uc6d0\ubb38 URL\uacfc \ub300\uc0c1\u00b7\uc6b4\ub3d9\u00b7\ubaa9\uc801\u00b7\uc6a9\ub7c9\uc744 \ucd94\uac00\ud55c\ub2e4. \ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\ub77c\uba74 \ud45c\uc2dc\ub294\n`principle`\uc774\uc5b4\uc57c \ud558\uba70, \uc758\uc790\u00b7\ubca4\uce58 \ub300\uccb4\uc548\uc740 \uc548\uc815\uc131\uacfc \ubcf4\uc720 \uc5ec\ubd80\ub97c \uba3c\uc800 \ud655\uc778\ud574\uc57c\n\ud55c\ub2e4.\n"}], "grading": {"expectations": [{"text": "\uc874\uc7ac\ud558\uc9c0 \uc54a\ub294 #ref-99 \ub0b4\ubd80 \ub9c1\ud06c\ub97c \ud0d0\uc9c0\ud55c\ub2e4", "passed": true, "evidence": "report.md \uad6c\uc870 \uac80\uc0ac\uc5d0\uc11c href=\"#ref-99\"\uc5d0 \ub300\uc751\ud558\ub294 id=\"ref-99\"\uac00 \uc5c6\ub2e4\uace0 \uba85\uc2dc\ud588\ub2e4."}, {"text": "\ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\uc758 \uc9c1\uc811 \uac80\uc99d \ud45c\uc2dc\ub97c principle\ub85c \ub0ae\ucd98\ub2e4", "passed": true, "evidence": "\uc2e4\uc81c \uadfc\uac70 \ubd84\ub958\ub97c principle (source unverified)\ub85c \ub0ae\ucd94\uace0 \ub18d\uad6c\uc120\uc218 \uc9d1\ub2e8 \ud55c\uacc4\ub97c \uc124\uba85\ud588\ub2e4."}, {"text": "\ubbf8\ubcf4\uc720 \ubd88\uc548\uc815 \uc758\uc790 \uc694\uad6c\ub97c \uc7a5\ube44\u00b7\uc548\uc804 \ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud55c\ub2e4", "passed": true, "evidence": "\ubcf4\uc720 \uc7a5\ube44 floor\uc640 \ud754\ub4e4\ub9ac\ub294 \uc758\uc790\ub97c \ub300\uc870\ud558\uace0 \uc7a5\ube44 \ubc0f \uc911\uc694\ud55c \uc548\uc804 \ubb38\uc81c\ub97c \uac01\uac01 \ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud588\ub2e4."}, {"text": "\uc138 \ubb38\uc81c\ub97c \uc11c\ub85c \ub2e4\ub978 \uc624\ub958 \uc720\ud615\uc73c\ub85c \uc124\uba85\ud55c\ub2e4", "passed": true, "evidence": "\ub04a\uc5b4\uc9c4 \ucc38\uc870, \uadfc\uac70 \uc9c1\uc811\uc131 \uc624\ud45c\uae30, \uc7a5\ube44 \ubc0f \uc2e4\ud589 \uc548\uc804 \ubb38\uc81c\ub97c \ub3c5\ub9bd \ud56d\ubaa9\uc73c\ub85c \ubd84\ub9ac\ud588\ub2e4."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"Read": 0, "Write": 0, "Bash": 7, "Edit": 1, "Glob": 0, "Grep": 0}, "total_tool_calls": 8, "total_steps": 7, "errors_encountered": 0, "output_chars": 2022, "transcript_chars": 512}, "claims": [{"claim": "\ubc30\uc9c0\uc5d0 \uc9c1\uc811 \uac80\uc99d \ud45c\uae30\uac00 \uc5c6\ub2e4", "type": "factual", "verified": false, "evidence": "fixture\uc758 badge-row \ubcf8\ubb38\uc5d0\ub294 \uc2e4\uc81c\ub85c \u2705 Tier 1\uc774 \uc788\ub2e4. \uc774 \ucd94\uac00 \uacbd\uace0\ub294 \uc798\ubabb\ub410\ub2e4."}, {"claim": "\ud45c\uc900 CLI\ub294 \ucd5c\uc18c fixture \uba85\uc138\ub97c \uc9c1\uc811 \ucc98\ub9ac\ud560 \uc218 \uc5c6\ub2e4", "type": "process", "verified": true, "evidence": "fixture\uc5d0\ub294 validator\uac00 \uc694\uad6c\ud558\ub294 evidence_policy\uc640 source_of_truth\uac00 \uc5c6\uace0 \uac00\uc774\ub4dc \uacbd\ub85c \uaddc\uce59\ub3c4 \ub2e4\ub974\ub2e4."}], "user_notes_summary": {"uncertainties": ["\uc2dd\ubcc4 \uac00\ub2a5\ud55c \uc678\ubd80 \uc6d0\ubb38\uc774 \uc5c6\uc5b4 source unverified\ub85c \ub0a8\uae40"], "needs_review": ["\ucd94\uac00 EVIDENCE_MARKER_MISSING \uacbd\uace0\ub294 fixture \ubcf8\ubb38\uacfc \ubaa8\uc21c\ub428"], "workarounds": ["\ucd5c\uc18c fixture\uc5d0 CLI\ub97c \uc9c1\uc811 \uc801\uc6a9\ud558\uc9c0 \ubabb\ud574 \ub3d9\uc77c \uaddc\uce59\uc744 \uc218\ub3d9 \uc801\uc6a9"]}, "eval_feedback": {"suggestions": [{"reason": "\ub450 \uad6c\uc131 \ubaa8\ub450 \ud575\uc2ec \uae30\ub300\uc0ac\ud56d\uc744 \uc804\ubd80 \ud1b5\uacfc\ud574 \uc2a4\ud0ac \ud6a8\uacfc\ub97c \uad6c\ubd84\ud558\uc9c0 \ubabb\ud55c\ub2e4. \ub354 \ub35c \ub178\uace8\uc801\uc778 fixture\uac00 \ud544\uc694\ud558\ub2e4."}], "overall": "\ud575\uc2ec \uae30\ub300\uc0ac\ud56d\uc740 \uacac\uace0\ud558\uc9c0\ub9cc fixture\uac00 \uc26c\uc6b0\uba70, \uc2a4\ud0ac \uc2e4\ud589\uc758 \ucd94\uac00 \ubc30\uc9c0 \uacbd\uace0\uac00 \uc624\ud0d0\uc774\uc5c8\ub2e4."}}}, {"id": "eval-2-without_skill-run-1", "prompt": "(No prompt found)", "eval_id": 2, "outputs": [{"name": "report.md", "type": "text", "content": "# Invalid workout guide audit\n\n**Verdict: FAIL**\n\n| Check | Result | Evidence | Required correction |\n|---|---|---|---|\n| Internal references | **Fail** | The exercise links to `#ref-99`, but the HTML contains no element with `id=\"ref-99\"`. | Add the cited reference target and bibliography entry, or remove the unsupported citation. |\n| Evidence population | **Fail** | The copy says a basketball-player study directly recommends this exercise to climbers, while the spec declares it `direct`. Basketball players are not a climbing population, so this is an indirect transfer at best. | Change the evidence label to indirect/principle evidence and describe the population limitation. |\n| Equipment fit | **Fail** | The spec lists only `floor`; the exercise requires a wobbling chair. | Replace it with a floor-only jump/landing drill or provide appropriate stable equipment. |\n\nThe unstable-chair maximum-height jump also creates an avoidable fall risk. Even if a chair became available, it should not be used as an improvised plyometric box.\n"}], "grading": {"expectations": [{"text": "\uc874\uc7ac\ud558\uc9c0 \uc54a\ub294 #ref-99 \ub0b4\ubd80 \ub9c1\ud06c\ub97c \ud0d0\uc9c0\ud55c\ub2e4", "passed": true, "evidence": "report.md\uac00 href #ref-99\uc640 \ub300\uc751 id \ubd80\uc7ac\ub97c \uc815\ud655\ud788 \uc124\uba85\ud588\ub2e4."}, {"text": "\ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\uc758 \uc9c1\uc811 \uac80\uc99d \ud45c\uc2dc\ub97c principle\ub85c \ub0ae\ucd98\ub2e4", "passed": true, "evidence": "\ub18d\uad6c\uc120\uc218 \uc9d1\ub2e8\uc740 \ud074\ub77c\uc774\uba38 \uc9c1\uc811 \uadfc\uac70\uac00 \uc544\ub2c8\ubbc0\ub85c indirect/principle\ub85c \ubc14\uafb8\ub77c\uace0 \ud588\ub2e4."}, {"text": "\ubbf8\ubcf4\uc720 \ubd88\uc548\uc815 \uc758\uc790 \uc694\uad6c\ub97c \uc7a5\ube44\u00b7\uc548\uc804 \ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud55c\ub2e4", "passed": true, "evidence": "spec\uc758 floor-only \uc7a5\ube44\uc640 \ud754\ub4e4\ub9ac\ub294 \uc758\uc790\ub97c \ub300\uc870\ud558\uace0 \uc804\uccb4 verdict\ub97c FAIL\ub85c \ud310\uc815\ud588\ub2e4."}, {"text": "\uc138 \ubb38\uc81c\ub97c \uc11c\ub85c \ub2e4\ub978 \uc624\ub958 \uc720\ud615\uc73c\ub85c \uc124\uba85\ud55c\ub2e4", "passed": true, "evidence": "Internal references, Evidence population, Equipment fit\uc758 \uc138 \ud589\uc73c\ub85c \ubd84\ub9ac\ud588\ub2e4."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {}, "total_tool_calls": 0, "total_steps": 5, "errors_encountered": 0, "output_chars": 1045, "transcript_chars": 373}, "claims": [{"claim": "\uc138 \uc2ec\uc5b4\uc9c4 \uc2e4\ud328 \ubaa8\ub4dc\ub97c \ubaa8\ub450 \ucc3e\uc558\ub2e4", "type": "quality", "verified": true, "evidence": "\ubcf4\uace0\uc11c\uc758 \uc138 \ud45c \ud589\uc774 fixture\uc640 \uac01\uac01 \uc77c\uce58\ud55c\ub2e4."}], "user_notes_summary": {"uncertainties": [], "needs_review": [], "workarounds": []}, "eval_feedback": {"suggestions": [{"reason": "\uc138 \uc624\ub958\uac00 \ubaa8\ub450 \ub178\uace8\uc801\uc73c\ub85c \ubcf8\ubb38\uc5d0 \uc801\ud600 \uc788\uc5b4 \uae30\ubcf8 \ucd94\ub860\ub9cc\uc73c\ub85c \ud1b5\uacfc\ud55c\ub2e4. \ucd9c\ucc98 \uc9c1\uc811\uc131\uc774\ub098 \uc7a5\ube44 \uc694\uad6c\ub97c \uac04\uc811\uc801\uc73c\ub85c \ud45c\ud604\ud55c fixture\uac00 \ub354 \ucc28\ubcc4\uc801\uc774\ub2e4."}], "overall": "\ubaa8\ub4e0 \uae30\ub300\uc0ac\ud56d\uc744 \uc815\ud655\ud788 \ucda9\uc871\ud588\uc9c0\ub9cc \uc2a4\ud0ac \uc720\ubb34\ub97c \uad6c\ubd84\ud558\ub294 \ud3c9\uac00\ub294 \uc544\ub2c8\ub2e4."}}}, {"id": "eval-3-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": 3, "outputs": [{"name": "report.md", "type": "text", "content": "# \uc591\uce21 \ud558\uccb4 \ud30c\uc6cc \uc2ac\ub86f \ube14\ub77c\uc778\ub4dc \ud6c4\ubcf4 \ud3c9\uac00\n\n## \uacb0\ub860\n\n\ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\ub97c \uac00\ub9b0 \ucc44 \uac19\uc740 \uc2ac\ub86f\uc758 \uc138 \ud6c4\ubcf4\ub97c \ud3c9\uac00\ud55c \uacb0\uacfc, **\ud6c4\ubcf4 B\n`\uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8`\uac00 86\uc810\uc73c\ub85c 1\uc704**\ub2e4. \ub2e8, \ucc29\uc9c0 \uc900\ube44\ub3c4\uc640 \uc810\uc9c4\uc801 \uc9c4\ud589 \uc870\uac74\uc744\n\uba85\uc2dc\ud574\uc57c \ud558\ubbc0\ub85c \ud310\uc815\uc740 `conditional`\uc774\ub2e4.\n\n\uc810\uc218 \uc0b0\uc815 \uc804\uc5d0 \ud558\ub4dc \uc2e4\ud328\ub97c \uc801\uc6a9\ud558\uba74 \ud6c4\ubcf4 A\ub294 \ubd88\uc548\uc815\u00b7\ubbf8\ubcf4\uc720 \uc758\uc790 \ub54c\ubb38\uc5d0, \ud6c4\ubcf4\nC\ub294 \ubbf8\ubcf4\uc720 \uc548\uc815 \ubc15\uc2a4 \ub54c\ubb38\uc5d0 \ud604\uc7ac \uc7a5\ube44 \uc870\uac74\uc5d0\uc11c \ud0c8\ub77d\ud55c\ub2e4. \ucc44\ud0dd \uc0c1\ud0dc\ub97c \ub9c8\uc9c0\ub9c9\uc5d0\n\uacf5\uac1c\ud558\uba74 \ud604\uc7ac \uc6b4\ub3d9\uc740 \ud6c4\ubcf4 A(36\uc810)\uc774\uba70, \ucd5c\uace0 \ud6c4\ubcf4 B\uc640\uc758 \ucc28\uc774\ub294 **50\uc810**\uc774\ub2e4.\n\ucc28\uc774\uac00 5\uc810\uc744 \ucd08\uacfc\ud558\ubbc0\ub85c \uba85\ud655\ud55c \uc120\ud0dd \ud6c4\ud68c\uac00 \uc788\uc73c\uba70 **\ud6c4\ubcf4 B\ub85c \uad50\uccb4**\ud55c\ub2e4.\n\n## 1. \ud558\ub4dc \uc2e4\ud328 \uc120\ud310\uc815\n\n\ucc44\ud0dd \uc5ec\ubd80\ub294 \uc774 \ub2e8\uacc4\uc640 \uc810\uc218 \uacc4\uc0b0\uc774 \ub05d\ub0a0 \ub54c\uae4c\uc9c0 \ubcf4\uc9c0 \uc54a\uc558\ub2e4.\n\n| \uc775\uba85 \ud6c4\ubcf4 | \uc7a5\ube44 \uc870\uac74 | \uc548\uc804 \uc870\uac74 | \ud558\ub4dc \uc2e4\ud328 | \uacb0\uacfc |\n|---|---|---|---|---|\n| A | \ubcf4\uc720 \uc7a5\ube44\ub294 \ubc14\ub2e5\ubfd0\uc778\ub370 \ubd88\uc548\uc815 \uc758\uc790 \ud544\uc694 | \ud754\ub4e4\ub9ac\ub294 \ucc29\uc9c0\uba74\uc73c\ub85c \ub099\uc0c1 \uc704\ud5d8 | \uc7a5\ube44 \ubd88\uac00, \uc911\uc694\ud55c \uc548\uc804 \ubb38\uc81c | \ud0c8\ub77d |\n| B | \ubc14\ub2e5\ub9cc \uc0ac\uc6a9 | \uc810\uc9c4\uc801 \ucc29\uc9c0 \uc219\ub828 \ud544\uc694 | \uc5c6\uc74c | \ucc44\uc810 \uc9c4\ud589 |\n| C | \uc548\uc815 \ubc15\uc2a4\uac00 \ud544\uc694\ud558\ub098 \ubbf8\ubcf4\uc720 | \uc548\uc815 \ud50c\ub7ab\ud3fc \uc0ac\uc6a9 \uc790\uccb4\ub294 \uc801\uc808 | \ud544\uc218 \uc7a5\ube44 \ubd88\uac00, \ub3d9\uc77c \uc6b4\ub3d9\uc758 \uc548\uc804\ud55c \ub300\uccb4 \uc7a5\ube44 \uc5c6\uc74c | \ud0c8\ub77d |\n\n\ud6c4\ubcf4 C\ub97c \ubd88\uc548\uc815 \uc758\uc790\ub098 \uc784\uc758 \uac00\uad6c\ub85c \uc218\ud589\ud558\ub294 \uac83\uc740 \uc548\uc804\ud55c \ub300\uccb4\uac00 \uc544\ub2c8\ub2e4. \ubc14\ub2e5\n\uc810\ud504\ub85c \ubc14\uafb8\uba74 \uc774\ubbf8 \ub2e4\ub978 \uc6b4\ub3d9\uc778 \ud6c4\ubcf4 B\uac00 \ub418\ubbc0\ub85c, \ud604\uc7ac \uc81c\uc57d \uc544\ub798\uc5d0\uc11c\ub294 \uc7a5\ube44 \ud558\ub4dc\n\uc2e4\ud328\ub97c \uc720\uc9c0\ud55c\ub2e4.\n\n## 2. \ub3d9\uc77c \ub8e8\ube0c\ub9ad \ube14\ub77c\uc778\ub4dc \ucc44\uc810\n\n| \uc775\uba85 \ud6c4\ubcf4 | \uadfc\uac70 \uc815\ud655\uc131 /30 | \ubaa9\ud45c\u00b7\ud328\ud134 /25 | \uc138\uc158 \ud1b5\ud569 /20 | \uc7a5\ube44\u00b7\uc2dc\uac04 /15 | \uc0ac\uc6a9\uc131\u00b7\uc9c4\ud589 /10 | \ud569\uacc4 | \ud310\uc815 |\n|---|---:|---:|---:|---:|---:|---:|---|\n| A | 6 | 21 | 8 | 0 | 1 | **36** | `remove` |\n| B | 18 | 25 | 19 | 15 | 9 | **86** | `conditional` |\n| C | 26 | 25 | 18 | 0 | 8 | **77** | `remove` |\n\n### \ud6c4\ubcf4 A\n\n- \uc77c\ubc18 \ud53c\ud2b8\ub2c8\uc2a4 \ube14\ub85c\uadf8\ub77c\ub294 \uc124\uba85\ub9cc \uc788\uc5b4 \uc800\uc790\u00b7\ub300\uc0c1\u00b7\uc6a9\ub7c9\u00b7\uc9c1\uc811\uc131\uc744 \uac80\uc99d\ud560 \uc218 \uc5c6\ub2e4.\n- \uc591\uce21 \ud558\uccb4 \ud30c\uc6cc \ud328\ud134\uc5d0\ub294 \ub9de\uc9c0\ub9cc, \ubd88\uc548\uc815 \ucc29\uc9c0\uba74\uc774 \ubaa9\ud45c \uc774\ub4dd\ubcf4\ub2e4 \uc548\uc804 \uc704\ud5d8\uc744\n  \ud06c\uac8c \ub9cc\ub4e0\ub2e4.\n- \uc7a5\ube44 \ubbf8\ubcf4\uc720\uc640 \ub099\uc0c1 \uc704\ud5d8\uc774 \uac01\uac01 \ud558\ub4dc \uc2e4\ud328\ub2e4. \ud68c\uadc0\u00b7\uc911\ub2e8 \uae30\uc900\ub3c4 \uc5c6\ub2e4.\n\n### \ud6c4\ubcf4 B\n\n- \uc778\uc811 \ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \uc6d0\ub9ac\ub97c \uc801\uc6a9\ud558\ubbc0\ub85c \uadfc\uac70 \ubd84\ub958\ub294 `principle`\uc774\uba70, \ud074\ub77c\uc774\uba38\n  \uc9c1\uc811 \uac80\uc99d \uc810\uc218\ub97c \ubd80\uc5ec\ud558\uc9c0 \uc54a\uc558\ub2e4.\n- \ubc14\ub2e5\ub9cc\uc73c\ub85c \uc591\uce21 \ud558\uccb4 \uc2e0\uc804\uacfc \ucc29\uc9c0 \uc81c\uc5b4\ub97c \ud6c8\ub828\ud574 \uc2ac\ub86f\u00b7\uc7a5\ube44 \uc870\uac74\uc5d0 \uac00\uc7a5 \uc798 \ub9de\ub294\ub2e4.\n- \uccab \uc138\uc158\uc740 \ub0ae\uc740 \uc810\ud504 \ub192\uc774\uc640 \uc801\uc740 \ubc18\ubcf5\uc73c\ub85c \uc2dc\uc791\ud558\uace0, \ub9e4 \ubc18\ubcf5 \uc870\uc6a9\ud558\uace0 \uade0\ud615 \uc7a1\ud78c\n  \ucc29\uc9c0\ub97c \ud574\uc57c \ud55c\ub2e4. \ud1b5\uc99d, \uade0\ud615 \uc0c1\uc2e4, \ucc29\uc9c0 \uc18c\uc74c \uc99d\uac00 \uc2dc \uc911\ub2e8\ud558\ub294 \uc870\uac74\uc774 \ud544\uc694\ud558\ub2e4.\n- \uc774 \uc900\ube44\ub3c4 \uc870\uac74 \ub54c\ubb38\uc5d0 80\uc810 \uc774\uc0c1\uc774\uc9c0\ub9cc `retain`\uc774 \uc544\ub2cc `conditional`\uc774\ub2e4.\n\n### \ud6c4\ubcf4 C\n\n- \uba85\uc2dc\uc801\uc778 \ud074\ub77c\uc774\ubc0d \ucf54\uce58 \ucd94\ucc9c\uc774\ub77c\ub294 \uc785\ub825\uc740 \uc138 \ud6c4\ubcf4 \uc911 \uac00\uc7a5 \uac15\ud558\uc9c0\ub9cc, \ucd9c\ucc98\n  URL\u00b7\uc800\uc790\u00b7\uc6a9\ub7c9\uc774 \uc5c6\uc5b4 \ub9cc\uc810\uc740 \uc8fc\uc9c0 \uc54a\uc558\ub2e4.\n- \uc6b4\ub3d9 \ud328\ud134\uacfc \uc548\uc804\ud55c \ud50c\ub7ab\ud3fc \uc870\uac74\uc740 \uc801\uc808\ud558\ub2e4.\n- \uadf8\ub7ec\ub098 \ubcf4\uc720 \uc7a5\ube44\uac00 \ubc14\ub2e5\ubfd0\uc774\ubbc0\ub85c \uc9c0\uae08\uc740 \uc2e4\ud589 \ubd88\uac00\ub2e4. \uc548\uc815 \ubc15\uc2a4\ub97c \ud655\ubcf4\ud55c \ub4a4\uc5d0\ub294\n  \uc7ac\ud3c9\uac00\ud560 \uc218 \uc788\uc9c0\ub9cc, \ud604\uc7ac \ud6c4\ubcf4 \uc120\ud0dd\uc5d0\uc11c\ub294 \ud558\ub4dc \uc2e4\ud328\ub85c \ud0c8\ub77d\ud55c\ub2e4.\n\n## 3. \ucc44\ud0dd \uc0c1\ud0dc \uacf5\uac1c\uc640 \uc120\ud0dd \ud6c4\ud68c\n\n| \ud56d\ubaa9 | \uacb0\uacfc |\n|---|---|\n| \ud604\uc7ac \ucc44\ud0dd \uc6b4\ub3d9 | \ud6c4\ubcf4 A \u2014 \ubd88\uc548\uc815 \uc758\uc790 \ubc15\uc2a4 \uc810\ud504 |\n| \ud604\uc7ac \uc6b4\ub3d9 \uc810\uc218 | 36/100, \ud558\ub4dc \uc2e4\ud328 \uc788\uc74c |\n| \ucd5c\uace0 \ud6c4\ubcf4 | \ud6c4\ubcf4 B \u2014 \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8 |\n| \ucd5c\uace0 \ud6c4\ubcf4 \uc810\uc218 | 86/100, \ud558\ub4dc \uc2e4\ud328 \uc5c6\uc74c |\n| \uc810\uc218 \ucc28\uc774 | **+50\uc810** |\n| 5\uc810 \ucd08\uacfc \uaddc\uce59 | \ucda9\uc871 |\n| \ucd5c\uc885 \uad8c\uace0 | \ud604\uc7ac \uc6b4\ub3d9\uc744 \ud6c4\ubcf4 B\ub85c \uad50\uccb4 |\n\n\ud6c4\ubcf4 B\uc758 \uc6b0\uc2b9\uc740 \ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\uac00 \uc544\ub2c8\ub77c \ud558\ub4dc \uc2e4\ud328 \ubd80\uc7ac, \ubcf4\uc720 \uc7a5\ube44 \uc801\ud569\uc131,\n\ub3d9\uc77c \uc2ac\ub86f \uc801\ud569\uc131\uc5d0\uc11c \ub098\uc628 \uacb0\uacfc\ub2e4. \ud6c4\ubcf4 C\ub294 \uc6d0\uc790\ub8cc \uac80\uc99d\uacfc \uc548\uc815 \ubc15\uc2a4 \ud655\ubcf4\uac00\n\uc774\ub904\uc9c0\uba74 \ubcc4\ub3c4 \ud658\uacbd\uc5d0\uc11c \ub2e4\uc2dc \ube44\uad50\ud560 \uc218 \uc788\ub2e4.\n\n## \uac80\uc99d \ud55c\uacc4\n\nfixture\uc5d0\ub294 \uc2e4\uc81c \ucd9c\ucc98 URL, \uc138\ud2b8\u00b7\ubc18\ubcf5\u00b7\ud734\uc2dd, \uc804\uccb4 \uc138\uc158 \uc21c\uc11c\uac00 \uc5c6\ub2e4. \ub530\ub77c\uc11c \uc774\ubc88\n\uc810\uc218\ub294 \ud6c4\ubcf4 \ubaa9\ub85d\uc5d0 \uba85\uc2dc\ub41c \uadfc\uac70 \uc218\uc900\uacfc \uc7a5\ube44\u00b7\uc548\uc804 \uc815\ubcf4\ub9cc \ube44\uad50\ud55c \uac83\uc774\ub2e4. \ud2b9\ud788 \ud6c4\ubcf4\nB\uc758 `principle` \uadfc\uac70\uc640 \ud6c4\ubcf4 C\uc758 \ucf54\uce58 \ucd94\ucc9c\uc740 \uc6d0\ubb38\uc774 \uc81c\uacf5\ub418\uae30 \uc804\uae4c\uc9c0 \uc815\ud655\ud55c Tier\uc640\n\uc6a9\ub7c9\uc744 \ud655\uc815\ud560 \uc218 \uc5c6\ub2e4.\n"}], "grading": {"expectations": [{"text": "\uc138 \ud6c4\ubcf4\ub97c \uac19\uc740 100\uc810 \ub8e8\ube0c\ub9ad\uc73c\ub85c \ucc44\uc810\ud55c\ub2e4", "passed": true, "evidence": "\uc138 \ud6c4\ubcf4 \ubaa8\ub450 \uadfc\uac70 30, \ubaa9\ud45c 25, \ud1b5\ud569 20, \uc7a5\ube44 15, \uc0ac\uc6a9\uc131 10\uc758 \ub3d9\uc77c \ud45c\uc5d0\uc11c 100\uc810 \ub9cc\uc810\uc73c\ub85c \ucc44\uc810\ud588\ub2e4."}, {"text": "hard_failure\uac00 \uc788\ub294 \ud6c4\ubcf4\ub97c \uc810\uc218\ubcf4\ub2e4 \uba3c\uc800 \ud0c8\ub77d\uc2dc\ud0a8\ub2e4", "passed": true, "evidence": "\ubcf4\uace0\uc11c 1\uc808\uc5d0\uc11c \ucc44\ud0dd \uc0c1\ud0dc\ub97c \uac00\ub9b0 \ucc44 A\uc640 C\uc758 \uc7a5\ube44\u00b7\uc548\uc804 \ud558\ub4dc \uc2e4\ud328\ub97c \uba3c\uc800 \uc801\uc6a9\ud588\ub2e4."}, {"text": "\ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\uc640 \ubb34\uad00\ud558\uac8c \ucd5c\uace0 \ud6c4\ubcf4\ub97c \uc120\ud0dd\ud55c\ub2e4", "passed": true, "evidence": "\ube14\ub77c\uc778\ub4dc \ud6c4\ubcf4 B\ub97c 86\uc810 1\uc704\ub85c \uace0\ub978 \ub4a4 3\uc808\uc5d0\uc11c \ud604\uc7ac \uc6b4\ub3d9\uc774 A\uc600\uc74c\uc744 \uacf5\uac1c\ud588\ub2e4."}, {"text": "\ucd5c\uace0 \ud6c4\ubcf4\uac00 \ud604\uc7ac \uc6b4\ub3d9\ubcf4\ub2e4 5\uc810 \ub118\uac8c \ub192\uc744 \ub54c \uc120\ud0dd \ud6c4\ud68c\ub97c \ubcf4\uace0\ud55c\ub2e4", "passed": true, "evidence": "\ud604\uc7ac 36\uc810\uacfc \ucd5c\uace0 86\uc810\uc758 +50\uc810 \ucc28\uc774\ub97c \uacc4\uc0b0\ud558\uace0 5\uc810 \ucd08\uacfc \uc120\ud0dd \ud6c4\ud68c\ub97c \uba85\uc2dc\ud588\ub2e4."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"Read": 0, "Write": 0, "Bash": 2, "Edit": 1, "Glob": 0, "Grep": 0}, "total_tool_calls": 3, "total_steps": 7, "errors_encountered": 0}, "claims": [{"claim": "\ud6c4\ubcf4 B\uac00 \ud604\uc7ac \uc6b4\ub3d9\ubcf4\ub2e4 50\uc810 \ub192\ub2e4", "type": "factual", "verified": true, "evidence": "\ud45c\uc758 86\uc810\uacfc 36\uc810 \ucc28\uc774\ub294 50\uc810\uc774\ub2e4."}], "user_notes_summary": {"uncertainties": ["fixture\uc5d0 \uc2e4\uc81c \ucd9c\ucc98 URL\uacfc \uc138\uc158 \uc6a9\ub7c9\uc774 \uc5c6\uc5b4 Tier\uc640 \uc6a9\ub7c9\uc740 \ud655\uc815\ud558\uc9c0 \uc54a\uc74c"], "needs_review": [], "workarounds": []}, "eval_feedback": {"suggestions": [], "overall": "\ubaa8\ub4e0 \uae30\ub300\uc0ac\ud56d\uc744 \uad6c\uccb4\uc801 \uacc4\uc0b0\uacfc \uadfc\uac70\ub85c \ucda9\uc871\ud588\ub2e4."}}}, {"id": "eval-3-without_skill-run-1", "prompt": "(No prompt found)", "eval_id": 3, "outputs": [{"name": "report.md", "type": "text", "content": "# \ub3d9\uc77c \uc2ac\ub86f \ud6c4\ubcf4 \ube44\uad50 \u2014 bilateral lower power\n\n## \uacb0\ub860\n\n\ud604\uc7ac \uc120\ud0dd\ub41c **\ubd88\uc548\uc815 \uc758\uc790 \ubc15\uc2a4 \uc810\ud504\ub97c \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8\ub85c \uc989\uc2dc \uad50\uccb4**\ud558\ub294 \uac83\uc774 \uac00\uc7a5 \ud569\ub9ac\uc801\uc774\ub2e4.\n\n## \ud6c4\ubcf4 \ube44\uad50\n\n| \ud6c4\ubcf4 | \ud604\uc7ac \uc7a5\ube44\ub85c \uc2e4\ud589 \uac00\ub2a5 | \uadfc\uac70 \uc801\ud569\uc131 | \uc548\uc804\uc131 | \ud310\uc815 |\n|---|---|---|---|---|\n| \ubd88\uc548\uc815 \uc758\uc790 \ubc15\uc2a4 \uc810\ud504 | \uc544\ub2c8\uc624 \u2014 \ubd88\uc548\uc815 \uc758\uc790\uac00 \ud544\uc694 | \uc77c\ubc18 \ud53c\ud2b8\ub2c8\uc2a4 \ube14\ub85c\uadf8 | \ucd94\ub77d \uc704\ud5d8\uc774 \uba85\uc2dc\ub428 | \uc81c\uc678 |\n| \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8 | \uc608 \u2014 \ubc14\ub2e5\ub9cc \ud544\uc694 | \uc778\uc811\ud55c \ud50c\ub77c\uc774\uc624\uba54\ud2b8\ub9ad \uc6d0\ub9ac | \ucc29\uc9c0 \uac15\ub3c4\ub97c \uc810\uc9c4\uc801\uc73c\ub85c \ub192\uc5ec\uc57c \ud568 | **\ucc44\ud0dd** |\n| \uc548\uc815\ub41c \ubc15\uc2a4 \uc810\ud504 | \uc544\ub2c8\uc624 \u2014 \ubcf4\uc720\ud558\uc9c0 \uc54a\uc740 \uc548\uc815\ub41c \ubc15\uc2a4 \ud544\uc694 | \ud074\ub77c\uc774\ubc0d \ucf54\uce58\uc758 \uba85\uc2dc\uc801 \uad8c\uace0 | \uc548\uc815\ub41c \ud50c\ub7ab\ud3fc\uc774 \ud544\uc694 | \uc7a5\ube44 \ud655\ubcf4 \uc2dc \uc7ac\uac80\ud1a0 |\n\n\uc548\uc815\ub41c \ubc15\uc2a4 \uc810\ud504\ub294 \uadfc\uac70\ub9cc \ubcf4\uba74 \uac00\uc7a5 \uac15\ud558\uc9c0\ub9cc, \ud604\uc7ac \ubcf4\uc720 \uc7a5\ube44\ub85c \uc218\ud589\ud560 \uc218 \uc5c6\uc5b4 \uc774\ubc88 \ud504\ub85c\uadf8\ub7a8\uc758 \uc2e4\ud589 \uac00\ub2a5\ud55c \uc120\ud0dd\uc9c0\uac00 \uc544\ub2c8\ub2e4. \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8\ub294 \uadfc\uac70\uac00 \ud55c \ub2e8\uacc4 \uac04\uc811\uc801\uc774\uc9c0\ub9cc \uc7a5\ube44 \uc870\uac74\uc744 \ucda9\uc871\ud558\uace0, \ubd88\uc548\uc815\ud55c \uac00\uad6c \uc704\ub85c \ub6f0\ub294 \ucd94\ub77d \uc704\ud5d8\uc744 \uc81c\uac70\ud55c\ub2e4.\n\n## \ubcc0\uacbd \uad8c\uace0\n\n- \ubcc0\uacbd \uc5ec\ubd80: **\ubcc0\uacbd**\n- \uad50\uccb4 \uc804: \ubd88\uc548\uc815 \uc758\uc790 \ubc15\uc2a4 \uc810\ud504\n- \uad50\uccb4 \ud6c4: \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8\n- \uc801\uc6a9 \uc870\uac74: \ub0ae\uc740 \ub192\uc774\uc640 \uc801\uc740 \ubc18\ubcf5\uc73c\ub85c \uc2dc\uc791\ud558\uace0, \uc870\uc6a9\ud558\uace0 \uc548\uc815\uc801\uc778 \ucc29\uc9c0\uac00 \uc720\uc9c0\ub420 \ub54c\ub9cc \uac15\ub3c4\ub098 \ubc18\ubcf5\uc744 \uc62c\ub9b0\ub2e4.\n- \ucd94\ud6c4 \uc635\uc158: \uc548\uc815\ub41c \ubc15\uc2a4\ub97c \uc2e4\uc81c\ub85c \ud655\ubcf4\ud55c \ub4a4\uc5d0\ub294 \uc548\uc815\ub41c \ubc15\uc2a4 \uc810\ud504\ub97c \ub2e4\uc2dc \ube44\uad50\ud55c\ub2e4.\n\n\ud604\uc7ac \uc120\ud0dd\uc740 \uc7a5\ube44 \ubd88\uc77c\uce58\uc640 \uba85\uc2dc\ub41c \ucd94\ub77d \uc704\ud5d8\uc774 \ub3d9\uc2dc\uc5d0 \uc788\uc73c\ubbc0\ub85c \uc720\uc9c0\ud560 \uc774\uc720\uac00 \uc5c6\ub2e4.\n"}], "grading": {"expectations": [{"text": "\uc138 \ud6c4\ubcf4\ub97c \uac19\uc740 100\uc810 \ub8e8\ube0c\ub9ad\uc73c\ub85c \ucc44\uc810\ud55c\ub2e4", "passed": false, "evidence": "\uc138 \ud6c4\ubcf4\ub97c \uc815\uc131 \ube44\uad50\ud588\uc9c0\ub9cc 100\uc810 \ub8e8\ube0c\ub9ad, \ucc28\uc6d0\ubcc4 \ubc30\uc810 \ub610\ub294 \ucd1d\uc810\uc744 \uc0ac\uc6a9\ud558\uc9c0 \uc54a\uc558\ub2e4."}, {"text": "hard_failure\uac00 \uc788\ub294 \ud6c4\ubcf4\ub97c \uc810\uc218\ubcf4\ub2e4 \uba3c\uc800 \ud0c8\ub77d\uc2dc\ud0a8\ub2e4", "passed": true, "evidence": "\ubd88\uc548\uc815 \uc758\uc790 \ud6c4\ubcf4\ub97c \uc7a5\ube44 \ubd88\uc77c\uce58\uc640 \ucd94\ub77d \uc704\ud5d8\uc73c\ub85c, \uc548\uc815 \ubc15\uc2a4 \ud6c4\ubcf4\ub97c \uc7a5\ube44 \ubbf8\ubcf4\uc720\ub85c \uc81c\uc678\ud588\ub2e4."}, {"text": "\ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\uc640 \ubb34\uad00\ud558\uac8c \ucd5c\uace0 \ud6c4\ubcf4\ub97c \uc120\ud0dd\ud55c\ub2e4", "passed": true, "evidence": "\ud604\uc7ac \uc6b4\ub3d9\uc744 \uc720\uc9c0\ud558\uc9c0 \uc54a\uace0 \uc2e4\ud589 \uac00\ub2a5\uc131\uacfc \uadfc\uac70\u00b7\uc548\uc804\uc744 \ube44\uad50\ud574 \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8\ub97c \uace8\ub790\ub2e4."}, {"text": "\ucd5c\uace0 \ud6c4\ubcf4\uac00 \ud604\uc7ac \uc6b4\ub3d9\ubcf4\ub2e4 5\uc810 \ub118\uac8c \ub192\uc744 \ub54c \uc120\ud0dd \ud6c4\ud68c\ub97c \ubcf4\uace0\ud55c\ub2e4", "passed": false, "evidence": "\uc218\uce58 \uc810\uc218\ub97c \uacc4\uc0b0\ud558\uc9c0 \uc54a\uc558\uace0 5\uc810 \uaddc\uce59\uc774\ub098 \uc120\ud0dd \ud6c4\ud68c\ub3c4 \ubcf4\uace0\ud558\uc9c0 \uc54a\uc558\ub2e4."}], "summary": {"passed": 2, "failed": 2, "total": 4, "pass_rate": 0.5}, "execution_metrics": {"tool_calls": {}, "total_steps": 5, "errors_encountered": 0}, "claims": [{"claim": "\uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8\uac00 \ud604\uc7ac \uc870\uac74\uc758 \ucd5c\uc120\uc774\ub2e4", "type": "quality", "verified": true, "evidence": "\ubc14\ub2e5\ub9cc \ubcf4\uc720\ud55c \uc870\uac74\uc5d0\uc11c \uc720\uc77c\ud558\uac8c \uc2e4\ud589 \uac00\ub2a5\ud558\uba70 \uba85\uc2dc\ub41c \ucd94\ub77d \uc704\ud5d8\uc774 \uc5c6\ub2e4."}], "user_notes_summary": {"uncertainties": [], "needs_review": [], "workarounds": []}, "eval_feedback": {"suggestions": [], "overall": "\ucd5c\uc885 \uc120\ud0dd\uc740 \ud0c0\ub2f9\ud558\uc9c0\ub9cc \uc218\uce58 \ub8e8\ube0c\ub9ad\uacfc \uc120\ud0dd \ud6c4\ud68c \uaddc\uce59\uc744 \uac80\uc0ac\ud558\ub294 \ub450 \uae30\ub300\uc0ac\ud56d\uc744 \ucda9\uc871\ud558\uc9c0 \ubabb\ud588\ub2e4."}}}], "previous_feedback": {}, "previous_outputs": {}, "benchmark": {"metadata": {"skill_name": "workout-session-validator", "skill_path": "/Users/dwenn/orca/workspaces/climbilng_workout/tigerfish/skills/workout-session-validator", "executor_model": "current Codex session (exact model not reported)", "analyzer_model": "current Codex session (exact model not reported)", "timestamp": "2026-07-29T14:15:21Z", "evals_run": [1, 2, 3], "runs_per_configuration": 1}, "runs": [{"eval_id": 1, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": null, "tokens": null, "tool_calls": 8, "errors": 0}, "expectations": [{"text": "21\uac1c \uc6b4\ub3d9\uc744 \uc138\uc158\ubcc4\ub85c \ube60\uc9d0\uc5c6\uc774 \uc2dd\ubcc4\ud55c\ub2e4", "passed": true, "evidence": "\ubcf4\uace0\uc11c \ud45c\uac00 \ud478\uc26c 6, \ucf54\uc5b4 8, \ud30c\uc6cc 6, \uc190\uac00\ub77d 1\uac1c\ub97c \ubaa8\ub450 \uc2dd\ubcc4\ud558\uace0 \uc720\uc9c0 1\u00b7\uc218\uc815 9\u00b7\uad50\uccb4 11\ub85c \uc9d1\uacc4\ud588\ub2e4."}, {"text": "\uc815\uc801 \uac80\uc0ac\uae30\uc758 1\uac1c \uc624\ub958\uc640 22\uac1c \uacbd\uace0\ub97c \uad6c\uc870 \ubb38\uc81c\ub85c \uad6c\ubd84\ud55c\ub2e4", "passed": true, "evidence": "1\uc808\uc774 sets_reps_rest \uc624\ub958 1\uac1c\uc640 \uadfc\uac70 \ub9c8\ucee4\u00b7\ubb38\uc11c \ub4dc\ub9ac\ud504\ud2b8 \uacbd\uace0 22\uac1c\ub97c \ubcc4\ub3c4 \uad6c\uc870 \ucd95\uc73c\ub85c \uc124\uba85\ud588\ub2e4."}, {"text": "\uadfc\uac70 \uc9c1\uc811\uc131\uacfc \uc138\uc158 \uc870\ud569\uc744 \ubcc4\ub3c4 \ucd95\uc73c\ub85c \ud3c9\uac00\ud55c\ub2e4", "passed": true, "evidence": "2\uc808\uc758 direct/principle/mixed \ubc0f \ud558\ub4dc \uc2e4\ud328 \uac10\uc0ac\uc640 3\uc808\uc758 \ub124 \uc138\uc158 \ud1b5\ud569 \ud310\uc815\uc774 \ubd84\ub9ac\ub418\uc5b4 \uc788\ub2e4."}, {"text": "\uac00\uc774\ub4dc HTML\uc744 \uc218\uc815\ud558\uc9c0 \uc54a\uace0 Markdown \uac10\uc0ac \ubcf4\uace0\uc11c\ub97c \uc0dd\uc131\ud55c\ub2e4", "passed": true, "evidence": "report.md\uac00 \uc0dd\uc131\ub410\uace0 \ubcf4\uace0\uc11c\u00b7transcript\uac00 \uc6d0\ubcf8 \uac00\uc774\ub4dc \uc218\uc815 \uc5c6\uc74c\uc774\ub77c\uace0 \uae30\ub85d\ud588\ub2e4."}], "notes": ["\uc6f9\uc744 \uc7ac\ud0d0\uc0c9\ud558\uc9c0 \uc54a\uace0 \uc774\ubbf8 \uac10\uc0ac\ub41c source-audit.yaml\uc744 \uc0ac\uc6a9\ud568"]}, {"eval_id": 2, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": null, "tokens": null, "tool_calls": 8, "errors": 0}, "expectations": [{"text": "\uc874\uc7ac\ud558\uc9c0 \uc54a\ub294 #ref-99 \ub0b4\ubd80 \ub9c1\ud06c\ub97c \ud0d0\uc9c0\ud55c\ub2e4", "passed": true, "evidence": "report.md \uad6c\uc870 \uac80\uc0ac\uc5d0\uc11c href=\"#ref-99\"\uc5d0 \ub300\uc751\ud558\ub294 id=\"ref-99\"\uac00 \uc5c6\ub2e4\uace0 \uba85\uc2dc\ud588\ub2e4."}, {"text": "\ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\uc758 \uc9c1\uc811 \uac80\uc99d \ud45c\uc2dc\ub97c principle\ub85c \ub0ae\ucd98\ub2e4", "passed": true, "evidence": "\uc2e4\uc81c \uadfc\uac70 \ubd84\ub958\ub97c principle (source unverified)\ub85c \ub0ae\ucd94\uace0 \ub18d\uad6c\uc120\uc218 \uc9d1\ub2e8 \ud55c\uacc4\ub97c \uc124\uba85\ud588\ub2e4."}, {"text": "\ubbf8\ubcf4\uc720 \ubd88\uc548\uc815 \uc758\uc790 \uc694\uad6c\ub97c \uc7a5\ube44\u00b7\uc548\uc804 \ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud55c\ub2e4", "passed": true, "evidence": "\ubcf4\uc720 \uc7a5\ube44 floor\uc640 \ud754\ub4e4\ub9ac\ub294 \uc758\uc790\ub97c \ub300\uc870\ud558\uace0 \uc7a5\ube44 \ubc0f \uc911\uc694\ud55c \uc548\uc804 \ubb38\uc81c\ub97c \uac01\uac01 \ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud588\ub2e4."}, {"text": "\uc138 \ubb38\uc81c\ub97c \uc11c\ub85c \ub2e4\ub978 \uc624\ub958 \uc720\ud615\uc73c\ub85c \uc124\uba85\ud55c\ub2e4", "passed": true, "evidence": "\ub04a\uc5b4\uc9c4 \ucc38\uc870, \uadfc\uac70 \uc9c1\uc811\uc131 \uc624\ud45c\uae30, \uc7a5\ube44 \ubc0f \uc2e4\ud589 \uc548\uc804 \ubb38\uc81c\ub97c \ub3c5\ub9bd \ud56d\ubaa9\uc73c\ub85c \ubd84\ub9ac\ud588\ub2e4."}], "notes": ["\uc2dd\ubcc4 \uac00\ub2a5\ud55c \uc678\ubd80 \uc6d0\ubb38\uc774 \uc5c6\uc5b4 source unverified\ub85c \ub0a8\uae40", "\ucd94\uac00 EVIDENCE_MARKER_MISSING \uacbd\uace0\ub294 fixture \ubcf8\ubb38\uacfc \ubaa8\uc21c\ub428", "\ucd5c\uc18c fixture\uc5d0 CLI\ub97c \uc9c1\uc811 \uc801\uc6a9\ud558\uc9c0 \ubabb\ud574 \ub3d9\uc77c \uaddc\uce59\uc744 \uc218\ub3d9 \uc801\uc6a9"]}, {"eval_id": 3, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": null, "tokens": null, "tool_calls": 3, "errors": 0}, "expectations": [{"text": "\uc138 \ud6c4\ubcf4\ub97c \uac19\uc740 100\uc810 \ub8e8\ube0c\ub9ad\uc73c\ub85c \ucc44\uc810\ud55c\ub2e4", "passed": true, "evidence": "\uc138 \ud6c4\ubcf4 \ubaa8\ub450 \uadfc\uac70 30, \ubaa9\ud45c 25, \ud1b5\ud569 20, \uc7a5\ube44 15, \uc0ac\uc6a9\uc131 10\uc758 \ub3d9\uc77c \ud45c\uc5d0\uc11c 100\uc810 \ub9cc\uc810\uc73c\ub85c \ucc44\uc810\ud588\ub2e4."}, {"text": "hard_failure\uac00 \uc788\ub294 \ud6c4\ubcf4\ub97c \uc810\uc218\ubcf4\ub2e4 \uba3c\uc800 \ud0c8\ub77d\uc2dc\ud0a8\ub2e4", "passed": true, "evidence": "\ubcf4\uace0\uc11c 1\uc808\uc5d0\uc11c \ucc44\ud0dd \uc0c1\ud0dc\ub97c \uac00\ub9b0 \ucc44 A\uc640 C\uc758 \uc7a5\ube44\u00b7\uc548\uc804 \ud558\ub4dc \uc2e4\ud328\ub97c \uba3c\uc800 \uc801\uc6a9\ud588\ub2e4."}, {"text": "\ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\uc640 \ubb34\uad00\ud558\uac8c \ucd5c\uace0 \ud6c4\ubcf4\ub97c \uc120\ud0dd\ud55c\ub2e4", "passed": true, "evidence": "\ube14\ub77c\uc778\ub4dc \ud6c4\ubcf4 B\ub97c 86\uc810 1\uc704\ub85c \uace0\ub978 \ub4a4 3\uc808\uc5d0\uc11c \ud604\uc7ac \uc6b4\ub3d9\uc774 A\uc600\uc74c\uc744 \uacf5\uac1c\ud588\ub2e4."}, {"text": "\ucd5c\uace0 \ud6c4\ubcf4\uac00 \ud604\uc7ac \uc6b4\ub3d9\ubcf4\ub2e4 5\uc810 \ub118\uac8c \ub192\uc744 \ub54c \uc120\ud0dd \ud6c4\ud68c\ub97c \ubcf4\uace0\ud55c\ub2e4", "passed": true, "evidence": "\ud604\uc7ac 36\uc810\uacfc \ucd5c\uace0 86\uc810\uc758 +50\uc810 \ucc28\uc774\ub97c \uacc4\uc0b0\ud558\uace0 5\uc810 \ucd08\uacfc \uc120\ud0dd \ud6c4\ud68c\ub97c \uba85\uc2dc\ud588\ub2e4."}], "notes": ["fixture\uc5d0 \uc2e4\uc81c \ucd9c\ucc98 URL\uacfc \uc138\uc158 \uc6a9\ub7c9\uc774 \uc5c6\uc5b4 Tier\uc640 \uc6a9\ub7c9\uc740 \ud655\uc815\ud558\uc9c0 \uc54a\uc74c"]}, {"eval_id": 1, "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": null, "tokens": null, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "21\uac1c \uc6b4\ub3d9\uc744 \uc138\uc158\ubcc4\ub85c \ube60\uc9d0\uc5c6\uc774 \uc2dd\ubcc4\ud55c\ub2e4", "passed": true, "evidence": "Push 6, Core 8, Power 6, Finger extensor 1\uac1c \ud45c\ub97c \ubaa8\ub450 \uc81c\uacf5\ud588\ub2e4."}, {"text": "\uc815\uc801 \uac80\uc0ac\uae30\uc758 1\uac1c \uc624\ub958\uc640 22\uac1c \uacbd\uace0\ub97c \uad6c\uc870 \ubb38\uc81c\ub85c \uad6c\ubd84\ud55c\ub2e4", "passed": true, "evidence": "\uad6c\uc870 \uac80\uc0ac \uc808\uc5d0\uc11c \uc624\ub958 1\uac74\uacfc \uacbd\uace0 22\uac74\uc744 \uadfc\uac70\u00b7\ud504\ub85c\uadf8\ub7a8 \uac80\ud1a0\uc640 \ub2e4\ub978 \uce35\uc704\ub85c \ubd84\ub9ac\ud588\ub2e4."}, {"text": "\uadfc\uac70 \uc9c1\uc811\uc131\uacfc \uc138\uc158 \uc870\ud569\uc744 \ubcc4\ub3c4 \ucd95\uc73c\ub85c \ud3c9\uac00\ud55c\ub2e4", "passed": true, "evidence": "\uc6b4\ub3d9\ubcc4 \uadfc\uac70 \ud310\uc815\uacfc \uc138\uc158\ubcc4 \ud3c9\uade0\u00b7\uc911\ubcf5\u00b7\ud53c\ub85c \ud310\uc815\uc744 \ubcc4\ub3c4 \uc808\uacfc \ud45c\ub85c \uc81c\uc2dc\ud588\ub2e4."}, {"text": "\uac00\uc774\ub4dc HTML\uc744 \uc218\uc815\ud558\uc9c0 \uc54a\uace0 Markdown \uac10\uc0ac \ubcf4\uace0\uc11c\ub97c \uc0dd\uc131\ud55c\ub2e4", "passed": true, "evidence": "report.md\uac00 \uc0dd\uc131\ub410\uace0 \uc6d0\ubcf8 \uac00\uc774\ub4dc \ubbf8\uc218\uc815\uc744 \uba85\uc2dc\ud588\ub2e4."}], "notes": []}, {"eval_id": 2, "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": null, "tokens": null, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "\uc874\uc7ac\ud558\uc9c0 \uc54a\ub294 #ref-99 \ub0b4\ubd80 \ub9c1\ud06c\ub97c \ud0d0\uc9c0\ud55c\ub2e4", "passed": true, "evidence": "report.md\uac00 href #ref-99\uc640 \ub300\uc751 id \ubd80\uc7ac\ub97c \uc815\ud655\ud788 \uc124\uba85\ud588\ub2e4."}, {"text": "\ube44\ud074\ub77c\uc774\uba38 \uc5f0\uad6c\uc758 \uc9c1\uc811 \uac80\uc99d \ud45c\uc2dc\ub97c principle\ub85c \ub0ae\ucd98\ub2e4", "passed": true, "evidence": "\ub18d\uad6c\uc120\uc218 \uc9d1\ub2e8\uc740 \ud074\ub77c\uc774\uba38 \uc9c1\uc811 \uadfc\uac70\uac00 \uc544\ub2c8\ubbc0\ub85c indirect/principle\ub85c \ubc14\uafb8\ub77c\uace0 \ud588\ub2e4."}, {"text": "\ubbf8\ubcf4\uc720 \ubd88\uc548\uc815 \uc758\uc790 \uc694\uad6c\ub97c \uc7a5\ube44\u00b7\uc548\uc804 \ud558\ub4dc \uc2e4\ud328\ub85c \ud310\uc815\ud55c\ub2e4", "passed": true, "evidence": "spec\uc758 floor-only \uc7a5\ube44\uc640 \ud754\ub4e4\ub9ac\ub294 \uc758\uc790\ub97c \ub300\uc870\ud558\uace0 \uc804\uccb4 verdict\ub97c FAIL\ub85c \ud310\uc815\ud588\ub2e4."}, {"text": "\uc138 \ubb38\uc81c\ub97c \uc11c\ub85c \ub2e4\ub978 \uc624\ub958 \uc720\ud615\uc73c\ub85c \uc124\uba85\ud55c\ub2e4", "passed": true, "evidence": "Internal references, Evidence population, Equipment fit\uc758 \uc138 \ud589\uc73c\ub85c \ubd84\ub9ac\ud588\ub2e4."}], "notes": []}, {"eval_id": 3, "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.5, "passed": 2, "failed": 2, "total": 4, "time_seconds": null, "tokens": null, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "\uc138 \ud6c4\ubcf4\ub97c \uac19\uc740 100\uc810 \ub8e8\ube0c\ub9ad\uc73c\ub85c \ucc44\uc810\ud55c\ub2e4", "passed": false, "evidence": "\uc138 \ud6c4\ubcf4\ub97c \uc815\uc131 \ube44\uad50\ud588\uc9c0\ub9cc 100\uc810 \ub8e8\ube0c\ub9ad, \ucc28\uc6d0\ubcc4 \ubc30\uc810 \ub610\ub294 \ucd1d\uc810\uc744 \uc0ac\uc6a9\ud558\uc9c0 \uc54a\uc558\ub2e4."}, {"text": "hard_failure\uac00 \uc788\ub294 \ud6c4\ubcf4\ub97c \uc810\uc218\ubcf4\ub2e4 \uba3c\uc800 \ud0c8\ub77d\uc2dc\ud0a8\ub2e4", "passed": true, "evidence": "\ubd88\uc548\uc815 \uc758\uc790 \ud6c4\ubcf4\ub97c \uc7a5\ube44 \ubd88\uc77c\uce58\uc640 \ucd94\ub77d \uc704\ud5d8\uc73c\ub85c, \uc548\uc815 \ubc15\uc2a4 \ud6c4\ubcf4\ub97c \uc7a5\ube44 \ubbf8\ubcf4\uc720\ub85c \uc81c\uc678\ud588\ub2e4."}, {"text": "\ud604\uc7ac \ucc44\ud0dd \uc5ec\ubd80\uc640 \ubb34\uad00\ud558\uac8c \ucd5c\uace0 \ud6c4\ubcf4\ub97c \uc120\ud0dd\ud55c\ub2e4", "passed": true, "evidence": "\ud604\uc7ac \uc6b4\ub3d9\uc744 \uc720\uc9c0\ud558\uc9c0 \uc54a\uace0 \uc2e4\ud589 \uac00\ub2a5\uc131\uacfc \uadfc\uac70\u00b7\uc548\uc804\uc744 \ube44\uad50\ud574 \uc81c\uc790\ub9ac \uc810\ud504 \uc2a4\ucffc\ud2b8\ub97c \uace8\ub790\ub2e4."}, {"text": "\ucd5c\uace0 \ud6c4\ubcf4\uac00 \ud604\uc7ac \uc6b4\ub3d9\ubcf4\ub2e4 5\uc810 \ub118\uac8c \ub192\uc744 \ub54c \uc120\ud0dd \ud6c4\ud68c\ub97c \ubcf4\uace0\ud55c\ub2e4", "passed": false, "evidence": "\uc218\uce58 \uc810\uc218\ub97c \uacc4\uc0b0\ud558\uc9c0 \uc54a\uc558\uace0 5\uc810 \uaddc\uce59\uc774\ub098 \uc120\ud0dd \ud6c4\ud68c\ub3c4 \ubcf4\uace0\ud558\uc9c0 \uc54a\uc558\ub2e4."}], "notes": []}], "run_summary": {"with_skill": {"pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0}, "time_seconds": null, "tokens": null}, "without_skill": {"pass_rate": {"mean": 0.8333, "stddev": 0.2887, "min": 0.5, "max": 1.0}, "time_seconds": null, "tokens": null}, "delta": {"pass_rate": "+0.17", "time_seconds": null, "tokens": null}}, "notes": ["Eval 1\uacfc Eval 2\ub294 \ub450 \uad6c\uc131 \ubaa8\ub450 4/4\ub97c \ud1b5\uacfc\ud588\ub2e4. \uad6c\uc870\ud654\ub41c source-audit \ub370\uc774\ud130\uc640 \uba85\uc2dc\uc801\uc778 fixture \ub54c\ubb38\uc5d0 \uc2a4\ud0ac \uac00\uce58\ub97c \uad6c\ubd84\ud558\uc9c0 \ubabb\ud55c\ub2e4.", "Eval 2 \uc2a4\ud0ac \uc2e4\ud589\uc740 \ud575\uc2ec \uae30\ub300\uc0ac\ud56d\uc744 \ud1b5\uacfc\ud588\uc9c0\ub9cc \uc2e4\uc81c\ub85c \u2705\uac00 \uc788\ub294 \ubc30\uc9c0\ub97c \ub204\ub77d\uc73c\ub85c \uc798\ubabb \ubcf4\uace0\ud588\ub2e4. \uc774\ud6c4 validator\uc5d0 \ucd5c\uc18c fixture \uc9c0\uc6d0\uc744 \ucd94\uac00\ud558\uace0 \uc218\ub3d9 \uc624\ub958 \ucf54\ub4dc \ucd94\uc815\uc744 \uae08\uc9c0\ud588\ub2e4.", "Eval 3\uc740 \uc2a4\ud0ac \uc0ac\uc6a9 \uc2dc 100\uc810 \ub8e8\ube0c\ub9ad\uacfc 5\uc810 \uc120\ud0dd \ud6c4\ud68c \uaddc\uce59\uc744 \ubaa8\ub450 \uc801\uc6a9\ud574 4/4, \ubbf8\uc0ac\uc6a9 \uc2dc 2/4\uc600\ub2e4.", "\uc2e4\ud589 \uc54c\ub9bc\uc5d0 \ubcbd\uc2dc\uacc4 \uc2dc\uac04\uacfc \ud1a0\ud070 \uc218\uac00 \uc81c\uacf5\ub418\uc9c0 \uc54a\uc544 \ub450 \uc9c0\ud45c\ub294 null\ub85c \uae30\ub85d\ud588\ub2e4."]}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

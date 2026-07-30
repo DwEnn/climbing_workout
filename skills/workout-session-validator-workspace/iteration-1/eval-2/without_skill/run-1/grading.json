@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "존재하지 않는 #ref-99 내부 링크를 탐지한다",
+      "passed": true,
+      "evidence": "report.md가 href #ref-99와 대응 id 부재를 정확히 설명했다."
+    },
+    {
+      "text": "비클라이머 연구의 직접 검증 표시를 principle로 낮춘다",
+      "passed": true,
+      "evidence": "농구선수 집단은 클라이머 직접 근거가 아니므로 indirect/principle로 바꾸라고 했다."
+    },
+    {
+      "text": "미보유 불안정 의자 요구를 장비·안전 하드 실패로 판정한다",
+      "passed": true,
+      "evidence": "spec의 floor-only 장비와 흔들리는 의자를 대조하고 전체 verdict를 FAIL로 판정했다."
+    },
+    {
+      "text": "세 문제를 서로 다른 오류 유형으로 설명한다",
+      "passed": true,
+      "evidence": "Internal references, Evidence population, Equipment fit의 세 행으로 분리했다."
+    }
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {
+    "tool_calls": {},
+    "total_tool_calls": 0,
+    "total_steps": 5,
+    "errors_encountered": 0,
+    "output_chars": 1045,
+    "transcript_chars": 373
+  },
+  "claims": [
+    {
+      "claim": "세 심어진 실패 모드를 모두 찾았다",
+      "type": "quality",
+      "verified": true,
+      "evidence": "보고서의 세 표 행이 fixture와 각각 일치한다."
+    }
+  ],
+  "user_notes_summary": {"uncertainties": [], "needs_review": [], "workarounds": []},
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "세 오류가 모두 노골적으로 본문에 적혀 있어 기본 추론만으로 통과한다. 출처 직접성이나 장비 요구를 간접적으로 표현한 fixture가 더 차별적이다."
+      }
+    ],
+    "overall": "모든 기대사항을 정확히 충족했지만 스킬 유무를 구분하는 평가는 아니다."
+  }
+}

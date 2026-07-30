@@ -1,0 +1,488 @@
+version: 1
+audited_at: 2026-07-29
+scope:
+  sessions: 4
+  exercises: 21
+  method: >
+    Current exercises and two same-slot alternatives were scored on evidence
+    accuracy (30), goal and pattern fit (25), session integration (20),
+    equipment and time fit (15), and usability and progression (10).
+    Current adoption status was hidden while candidates were scored.
+  selection_regret_threshold: 5
+  hard_failure_scope: >
+    Evidence attribution failures block the current guide card from
+    publication. The exercise-selection disposition can still be revise when
+    the movement is valid and the claim can be corrected. Equipment and safety
+    failures apply directly to exercise selection.
+
+sources:
+  bechtel_press:
+    tier: 2
+    url: https://www.powercompanyclimbing.com/blog/2016/01/episode-2-resistance-training-with.html
+  lattice_antagonist:
+    tier: 2
+    url: https://latticetraining.com/blog/training-tips-for-climbers-the-importance-of-antagonist-training-during-performance-phase/
+  lattice_structure:
+    tier: 2
+    url: https://latticetraining.com/blog/how-to-structure-your-training/
+  climbing_antagonist:
+    tier: 4
+    url: https://www.climbing.com/skills/antagonist-workouts-for-climbers-improve-performance-and-prevent-injury/
+  climbing_finger_extensor:
+    tier: 4
+    url: https://www.climbing.com/skills/a-simple-exercise-to-strengthen-your-finger-extensors/
+  hooper_press:
+    tier: 2
+    url: https://www.hoopersbeta.com/library/deadlift-and-benchpress-for-climbers-collaboration-with-lattice-and-emil
+  mcclure_schedule:
+    tier: 3
+    url: https://theclimbingdoctor.com/optimal-training-and-injury-prevention-techniques-for-climbers-with-a-full-time-schedule/
+  vagy_antagonist:
+    tier: 3
+    url: https://theclimbingdoctor.com/rock-climbing-injury-tips-antagonist-strength-exercises/
+  vagy_triceps:
+    tier: 3
+    url: https://theclimbingdoctor.com/how-to-train-antagonist-muscle-strength-for-climbing/
+  wong_ng:
+    tier: 1
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2742463/
+  bechtel_grip:
+    tier: 2
+    url: https://www.climbstrong.com/resource-posts/developing-general-grip-strength
+  finger_trial:
+    tier: 1
+    url: https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2023.1243354/full
+  hwang_deadbug:
+    tier: 3
+    url: https://theclimbingdoctor.com/low-back-injuries-in-boulderers-preventative-measures-for-chronic-low-back-pain/
+  climbingdoctor_core:
+    tier: 3
+    url: https://theclimbingdoctor.com/360-core-power-unlock-full-body-strength-for-climbing/
+  powercompany_hardcore:
+    tier: 2
+    url: https://www.powercompanyclimbing.com/blog/2011/06/hardcore.html
+  gripped_lhang:
+    tier: 4
+    url: https://gripped.com/indoor-climbing/eight-mid-summer-hangboard-workouts-for-climbers/
+  horst_core:
+    tier: 2
+    url: https://trainingforclimbing.com/video-complete-core-training-epic-tv-ep-4/
+  trainingbeta_core:
+    tier: 4
+    url: https://www.trainingbeta.com/complete-core-training-eric-horst/
+  horst_wipers:
+    tier: 2
+    url: https://trainingforclimbing.com/my-favorite-core-exercise-windshield-wipers/
+  hanes_plyometrics:
+    tier: 2
+    url: https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/
+  horst_power_pullup:
+    tier: 2
+    url: https://trainingforclimbing.com/power-training-chest-bump-pull-up/
+  ankle_rct:
+    tier: A
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6922560/
+  white_graff_landing:
+    tier: 3
+    url: https://theclimbingdoctor.com/the-gym-boulders-guide-to-preventing-lower-body-injuries-while-jumping-landing-falling/
+  hedges_ankle:
+    tier: 3
+    url: https://theclimbingdoctor.com/ankle-sprain-assessment-and-rehab/
+  mgh_ankle:
+    tier: A
+    url: https://www.massgeneral.org/assets/MGH/pdf/orthopaedics/sports-medicine/physical-therapy/rehabilitation-protocol-for-ankle-sprain.pdf
+  ace_high_knee:
+    tier: A
+    url: https://www.acefitness.org/resources/everyone/blog/5065/youth-fitness-fitness-training-phase-3/
+
+session_findings:
+  push:
+    score_mean: 78.3
+    verdict: revise
+    key_issue: >
+      OHP is well supported, but three hard press slots overlap. Alternate
+      push-up and ring dip instead of doing both after OHP.
+  core:
+    score_mean: 74.8
+    verdict: redesign
+    key_issue: >
+      The page attributes exercises to Hörst that are not in his published
+      five-exercise core routine and combines 24 sets with excessive hanging
+      and pulling fatigue.
+  power:
+    score_mean: 76.5
+    verdict: redesign
+    key_issue: >
+      Several author credentials are wrong, a non-climber ankle trial is
+      presented too directly, and six exercises make a low-quality power
+      session after accumulated fatigue.
+  finger_extensor:
+    score_mean: 60.0
+    verdict: replace_protocol
+    key_issue: >
+      The movement is reasonable, but the daily 4-6-set low-load dosage and
+      injury-prevention promise are not supported by the cited sources.
+
+alternative_scorecards:
+  push.ex1:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 22, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 84, hard_failures: []}
+    - {evidence_accuracy: 24, goal_and_pattern_fit: 22, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 7, total: 82, hard_failures: []}
+  push.ex2:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 8, total: 85, hard_failures: []}
+    - {evidence_accuracy: 22, goal_and_pattern_fit: 22, session_integration: 14, equipment_and_time_fit: 13, usability_and_progression: 7, total: 78, hard_failures: []}
+  push.ex3:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 85, hard_failures: []}
+    - {evidence_accuracy: 18, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 15, usability_and_progression: 8, total: 78, hard_failures: []}
+  push.ex4:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 12, usability_and_progression: 7, total: 84, hard_failures: []}
+    - {evidence_accuracy: 20, goal_and_pattern_fit: 22, session_integration: 14, equipment_and_time_fit: 15, usability_and_progression: 8, total: 79, hard_failures: []}
+  push.ex5:
+    - {evidence_accuracy: 27, goal_and_pattern_fit: 24, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 88, hard_failures: []}
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 7, total: 83, hard_failures: []}
+  push.ex6:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 12, usability_and_progression: 7, total: 84, hard_failures: []}
+    - {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 7, total: 82, hard_failures: []}
+  core.ex1:
+    - {evidence_accuracy: 22, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 13, usability_and_progression: 7, total: 79, hard_failures: []}
+    - {evidence_accuracy: 19, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 14, usability_and_progression: 7, total: 77, hard_failures: []}
+  core.ex2:
+    - {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 8, total: 87, hard_failures: []}
+    - {evidence_accuracy: 18, goal_and_pattern_fit: 21, session_integration: 14, equipment_and_time_fit: 13, usability_and_progression: 7, total: 73, hard_failures: []}
+  core.ex3:
+    - {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 8, total: 86, hard_failures: []}
+    - {evidence_accuracy: 18, goal_and_pattern_fit: 22, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 8, total: 78, hard_failures: []}
+  core.ex4:
+    - {evidence_accuracy: 21, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 7, total: 81, hard_failures: []}
+    - {evidence_accuracy: 19, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 7, total: 79, hard_failures: []}
+  core.ex5:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 22, session_integration: 14, equipment_and_time_fit: 13, usability_and_progression: 8, total: 82, hard_failures: []}
+    - {evidence_accuracy: 16, goal_and_pattern_fit: 20, session_integration: 15, equipment_and_time_fit: 14, usability_and_progression: 7, total: 72, hard_failures: []}
+  core.ex6:
+    - {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 7, total: 83, hard_failures: []}
+    - {evidence_accuracy: 14, goal_and_pattern_fit: 21, session_integration: 16, equipment_and_time_fit: 14, usability_and_progression: 7, total: 72, hard_failures: []}
+  core.ex7:
+    - {evidence_accuracy: 23, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 7, total: 82, hard_failures: []}
+    - {evidence_accuracy: 19, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 14, usability_and_progression: 7, total: 80, hard_failures: []}
+  core.ex8:
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 12, equipment_and_time_fit: 15, usability_and_progression: 9, total: 84, hard_failures: []}
+    - {evidence_accuracy: 25, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 13, usability_and_progression: 8, total: 83, hard_failures: []}
+  power.ex1:
+    - {evidence_accuracy: 27, goal_and_pattern_fit: 24, session_integration: 15, equipment_and_time_fit: 12, usability_and_progression: 8, total: 86, hard_failures: []}
+    - {evidence_accuracy: 21, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 13, usability_and_progression: 7, total: 78, hard_failures: []}
+  power.ex2:
+    - {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 7, total: 82, hard_failures: []}
+    - {evidence_accuracy: 22, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 12, usability_and_progression: 7, total: 78, hard_failures: []}
+  power.ex3:
+    - {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 8, total: 85, hard_failures: []}
+    - {evidence_accuracy: 19, goal_and_pattern_fit: 23, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 8, total: 80, hard_failures: []}
+  power.ex4:
+    - {evidence_accuracy: 22, goal_and_pattern_fit: 22, session_integration: 14, equipment_and_time_fit: 14, usability_and_progression: 7, total: 79, hard_failures: []}
+    - {evidence_accuracy: 18, goal_and_pattern_fit: 20, session_integration: 14, equipment_and_time_fit: 14, usability_and_progression: 7, total: 73, hard_failures: []}
+  power.ex5:
+    - {evidence_accuracy: 21, goal_and_pattern_fit: 24, session_integration: 17, equipment_and_time_fit: 13, usability_and_progression: 7, total: 82, hard_failures: []}
+    - {evidence_accuracy: 23, goal_and_pattern_fit: 20, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 7, total: 78, hard_failures: []}
+  power.ex6:
+    - {evidence_accuracy: 15, goal_and_pattern_fit: 19, session_integration: 16, equipment_and_time_fit: 15, usability_and_progression: 7, total: 72, hard_failures: []}
+    - {evidence_accuracy: 17, goal_and_pattern_fit: 20, session_integration: 15, equipment_and_time_fit: 15, usability_and_progression: 7, total: 74, hard_failures: []}
+  finger_extensor.ex1:
+    - {evidence_accuracy: 29, goal_and_pattern_fit: 24, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 7, total: 89, hard_failures: []}
+    - {evidence_accuracy: 23, goal_and_pattern_fit: 22, session_integration: 15, equipment_and_time_fit: 14, usability_and_progression: 7, total: 81, hard_failures: []}
+
+exercises:
+  - key: push.ex1
+    current: 견갑골 푸쉬업
+    slot: scapular_activation
+    verified_evidence: principle
+    verified_tiers: [3]
+    score: {evidence_accuracy: 18, goal_and_pattern_fit: 22, session_integration: 18, equipment_and_time_fit: 14, usability_and_progression: 7, total: 79}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: Vagy does not directly prescribe this movement; use McClure's push-up plus source and soften the chicken-wing claim.
+    source_keys: [vagy_antagonist, mcclure_schedule]
+    alternatives:
+      - {name: Serratus punch, score: 84, source_key: mcclure_schedule}
+      - {name: Band reach, score: 82, source_key: vagy_antagonist}
+
+  - key: push.ex2
+    current: KB 오버헤드 프레스
+    slot: vertical_press
+    verified_evidence: mixed
+    verified_tiers: [2]
+    score: {evidence_accuracy: 26, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 13, usability_and_progression: 9, total: 87}
+    disposition: retain
+    hard_failures: []
+    issue: Bechtel directly recommends OHP, while the anti-rotation transfer and exact 3-set prescription are principle-based.
+    source_keys: [bechtel_press]
+    alternatives:
+      - {name: Pike push-up, score: 85, source_key: mcclure_schedule}
+      - {name: Band shoulder press, score: 78, source_key: lattice_antagonist}
+
+  - key: push.ex3
+    current: 링/다이아몬드 푸쉬업
+    slot: horizontal_press
+    verified_evidence: mixed
+    verified_tiers: [2, 4, A]
+    score: {evidence_accuracy: 20, goal_and_pattern_fit: 23, session_integration: 11, equipment_and_time_fit: 15, usability_and_progression: 8, total: 77}
+    disposition: replace
+    hard_failures: []
+    issue: Floor push-ups are directly supported, but ring and diamond variants are principle applications and duplicate the dip slot.
+    source_keys: [lattice_structure, lattice_antagonist, climbing_antagonist]
+    alternatives:
+      - {name: Floor push-up, score: 85, source_key: climbing_antagonist}
+      - {name: Single-arm KB floor press, score: 78, source_key: hooper_press}
+
+  - key: push.ex4
+    current: 링 딥스
+    slot: high_intensity_press
+    verified_evidence: mixed
+    verified_tiers: [2, 3]
+    score: {evidence_accuracy: 18, goal_and_pattern_fit: 23, session_integration: 8, equipment_and_time_fit: 15, usability_and_progression: 7, total: 71}
+    disposition: replace
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: Hooper's preference is subjective, Climbing Magazine does not list dips, and the card omits the shoulder-instability depth condition.
+    source_keys: [hooper_press, lattice_antagonist, vagy_antagonist]
+    alternatives:
+      - {name: Band eccentric triceps extension, score: 84, source_key: vagy_antagonist}
+      - {name: Close-grip floor push-up, score: 79, source_key: mcclure_schedule}
+
+  - key: push.ex5
+    current: 페이스 풀/밴드 풀어파트
+    slot: scapular_retraction_external_rotation
+    verified_evidence: principle
+    verified_tiers: [1, 3, 4]
+    score: {evidence_accuracy: 18, goal_and_pattern_fit: 24, session_integration: 18, equipment_and_time_fit: 15, usability_and_progression: 8, total: 83}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The cited sources do not prescribe face pulls; Wong and Ng is observational. A row-to-cactus citation can directly support the slot.
+    source_keys: [wong_ng, climbing_antagonist]
+    alternatives:
+      - {name: Standing row-to-cactus, score: 88, source_key: climbing_antagonist}
+      - {name: Bent-over letter T, score: 83, source_key: vagy_antagonist}
+
+  - key: push.ex6
+    current: 손목 신전근 훈련
+    slot: wrist_extensor_prehab
+    verified_evidence: mixed
+    verified_tiers: [2, 3, 4, A]
+    score: {evidence_accuracy: 17, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 10, usability_and_progression: 7, total: 73}
+    disposition: replace
+    hard_failures: []
+    issue: The exercise is directly recommended, but grip gains and injury prevention are overstated and the resistance setup is underspecified.
+    source_keys: [climbing_antagonist, vagy_antagonist, lattice_antagonist, bechtel_grip]
+    alternatives:
+      - {name: Wrist extensor-up, score: 84, source_key: climbing_antagonist}
+      - {name: Light reverse wrist curl, score: 82, source_key: bechtel_grip}
+
+  - key: core.ex1
+    current: 데드버그
+    slot: motor_control_anti_rotation
+    verified_evidence: direct
+    verified_tiers: [3]
+    score: {evidence_accuracy: 23, goal_and_pattern_fit: 23, session_integration: 15, equipment_and_time_fit: 12, usability_and_progression: 8, total: 81}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The direct article is by Mike Hwang, not Jared Vagy, and its dose is 4x12 per side four days per week.
+    source_keys: [hwang_deadbug]
+    alternatives:
+      - {name: Bird dog, score: 79, source_key: hwang_deadbug}
+      - {name: Pallof press, score: 77, source_key: climbingdoctor_core}
+
+  - key: core.ex2
+    current: L-Sit
+    slot: static_compression
+    verified_evidence: principle
+    verified_tiers: [2]
+    score: {evidence_accuracy: 10, goal_and_pattern_fit: 21, session_integration: 12, equipment_and_time_fit: 11, usability_and_progression: 7, total: 61}
+    disposition: replace
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: Hörst's published five-exercise core routine does not include an L-Sit; the current direct attribution is unverified.
+    source_keys: [horst_core]
+    alternatives:
+      - {name: Ring rollout, score: 87, source_key: horst_core}
+      - {name: Tuck L-hang, score: 73, source_key: gripped_lhang}
+
+  - key: core.ex3
+    current: 할로우 바디 홀드
+    slot: anti_extension
+    verified_evidence: mixed
+    verified_tiers: [3]
+    score: {evidence_accuracy: 19, goal_and_pattern_fit: 23, session_integration: 14, equipment_and_time_fit: 14, usability_and_progression: 8, total: 78}
+    screening_disposition: replace
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The current Hörst/Lattice attribution is wrong; a Climbing Doctor core source can support the movement directly.
+    source_keys: [climbingdoctor_core]
+    alternatives:
+      - {name: Ring rollout, score: 86, source_key: horst_core}
+      - {name: Body saw plank, score: 78, source_key: climbingdoctor_core}
+
+  - key: core.ex4
+    current: 행잉 니레이즈/레그레이즈
+    slot: hanging_hip_flexion
+    verified_evidence: direct
+    verified_tiers: [2, 4]
+    score: {evidence_accuracy: 20, goal_and_pattern_fit: 23, session_integration: 13, equipment_and_time_fit: 14, usability_and_progression: 8, total: 78}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The movement is supportable, but not through the current Lattice/Metolius attribution; it also adds hanging fatigue before front lever.
+    source_keys: [powercompany_hardcore]
+    alternatives:
+      - {name: Supine reverse crunch, score: 81, source_key: climbingdoctor_core}
+      - {name: Seated compression lift, score: 79, source_key: climbingdoctor_core}
+
+  - key: core.ex5
+    current: 행잉 윈드쉴드 와이퍼
+    slot: dynamic_rotation
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 23, goal_and_pattern_fit: 22, session_integration: 11, equipment_and_time_fit: 13, usability_and_progression: 8, total: 77}
+    disposition: revise
+    hard_failures: []
+    issue: Hörst directly recommends it, but the source uses 6-12 reps, 2-3 sets and about 3 minutes rest rather than 60 seconds.
+    source_keys: [horst_wipers]
+    alternatives:
+      - {name: Bent-knee windshield wiper, score: 82, source_key: horst_wipers}
+      - {name: Slow cross-body mountain climber, score: 72, source_key: climbingdoctor_core}
+
+  - key: core.ex6
+    current: 사이드 플랭크 프로그레션
+    slot: anti_lateral_flexion
+    verified_evidence: mixed
+    verified_tiers: [3]
+    score: {evidence_accuracy: 19, goal_and_pattern_fit: 22, session_integration: 13, equipment_and_time_fit: 12, usability_and_progression: 7, total: 73}
+    disposition: replace
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: No public Lattice dataset supports the claimed correlation; remove Tier 1.5 and cite a direct clinical climbing source.
+    source_keys: [climbingdoctor_core]
+    alternatives:
+      - {name: Banded side plank, score: 83, source_key: climbingdoctor_core}
+      - {name: Suitcase carry in place, score: 72, source_key: bechtel_press}
+
+  - key: core.ex7
+    current: 글루트 브릿지
+    slot: posterior_chain
+    verified_evidence: principle
+    verified_tiers: [3]
+    score: {evidence_accuracy: 17, goal_and_pattern_fit: 22, session_integration: 17, equipment_and_time_fit: 14, usability_and_progression: 7, total: 77}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The claimed Vagy prescription was not found; treat the bridge as a regression of directly discussed hip-extension work.
+    source_keys: [mcclure_schedule]
+    alternatives:
+      - {name: Single-leg hip thrust, score: 82, source_key: mcclure_schedule}
+      - {name: KB Romanian deadlift, score: 80, source_key: bechtel_press}
+
+  - key: core.ex8
+    current: 프론트 레버 프로그레션
+    slot: integrated_pull_core
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 22, goal_and_pattern_fit: 22, session_integration: 8, equipment_and_time_fit: 14, usability_and_progression: 7, total: 73}
+    screening_disposition: replace
+    disposition: revise
+    hard_failures: []
+    issue: Hörst supports it, but placing it last after several hanging drills and using 60-90 seconds rest undermines quality.
+    source_keys: [horst_core]
+    alternatives:
+      - {name: Tuck front lever first in session, score: 84, source_key: horst_core}
+      - {name: Ring rollout, score: 83, source_key: horst_core}
+
+  - key: power.ex1
+    current: 파워 풀업
+    slot: explosive_pull
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 24, goal_and_pattern_fit: 23, session_integration: 15, equipment_and_time_fit: 12, usability_and_progression: 8, total: 82}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The six-exercise article is by Lucie Hanes, not Eric Hörst; Hörst has a separate chest-bump pull-up article.
+    source_keys: [hanes_plyometrics, horst_power_pullup]
+    alternatives:
+      - {name: Chest-bump pull-up, score: 86, source_key: horst_power_pullup}
+      - {name: Band-assisted power pull-up, score: 78, source_key: horst_power_pullup}
+
+  - key: power.ex2
+    current: 파워 푸쉬업
+    slot: explosive_push
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 25, goal_and_pattern_fit: 23, session_integration: 16, equipment_and_time_fit: 12, usability_and_progression: 8, total: 84}
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The exercise is directly recommended, but the page misattributes the article to Hörst and overstates the exact session design.
+    source_keys: [hanes_plyometrics]
+    alternatives:
+      - {name: Incline power push-up, score: 82, source_key: hanes_plyometrics}
+      - {name: Kneeling clap push-up, score: 78, source_key: hanes_plyometrics}
+
+  - key: power.ex3
+    current: 박스 점프
+    slot: bilateral_lower_power
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 18, goal_and_pattern_fit: 22, session_integration: 13, equipment_and_time_fit: 12, usability_and_progression: 9, total: 74}
+    disposition: replace
+    hard_failures: [unavailable_required_equipment_without_safe_substitute]
+    issue: No box is listed in owned equipment; benches or stairs are not an acceptable improvised landing target.
+    source_keys: [hanes_plyometrics]
+    alternatives:
+      - {name: Squat jump with stick landing, score: 85, source_key: hanes_plyometrics}
+      - {name: Broad jump with stick landing, score: 80, source_key: white_graff_landing}
+
+  - key: power.ex4
+    current: 점프 런지
+    slot: unilateral_lower_power
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 20, goal_and_pattern_fit: 22, session_integration: 10, equipment_and_time_fit: 15, usability_and_progression: 10, total: 77}
+    disposition: revise
+    hard_failures: []
+    issue: It is directly listed, but the current all-in-one session creates excessive lower-body plyometric volume.
+    source_keys: [hanes_plyometrics]
+    alternatives:
+      - {name: Split-squat jump, score: 79, source_key: hanes_plyometrics}
+      - {name: Step-up knee drive, score: 73, source_key: white_graff_landing}
+
+  - key: power.ex5
+    current: 싱글레그 래터럴·사선 홉-앤-스틱
+    slot: lateral_landing_control
+    verified_evidence: principle
+    verified_tiers: [A, 3]
+    score: {evidence_accuracy: 20, goal_and_pattern_fit: 23, session_integration: 12, equipment_and_time_fit: 12, usability_and_progression: 7, total: 74}
+    disposition: replace
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The ankle trial used male collegiate basketball players, not climbers; the composite progression is a principle application.
+    source_keys: [ankle_rct, white_graff_landing, hedges_ankle, mgh_ankle]
+    alternatives:
+      - {name: Low single-leg hop-and-stick, score: 82, source_key: ankle_rct}
+      - {name: Star-excursion reach, score: 78, source_key: mgh_ankle}
+
+  - key: power.ex6
+    current: 마운틴 클라이머
+    slot: fast_knee_drive_core
+    verified_evidence: direct
+    verified_tiers: [2]
+    score: {evidence_accuracy: 15, goal_and_pattern_fit: 18, session_integration: 13, equipment_and_time_fit: 15, usability_and_progression: 7, total: 68}
+    screening_disposition: replace
+    disposition: remove
+    hard_failures: []
+    issue: It is listed in the source, but functions as conditioning after 15 power sets and does not preserve maximal power quality.
+    source_keys: [hanes_plyometrics]
+    alternatives:
+      - {name: High-knee run in place, score: 72, source_key: ace_high_knee}
+      - {name: Band-resisted high-knee drive, score: 74, source_key: ace_high_knee}
+
+  - key: finger_extensor.ex1
+    current: 고무밴드 손가락 스프레드
+    slot: finger_extensor_prehab
+    verified_evidence: mixed
+    verified_tiers: [1, 2, 3, 4]
+    score: {evidence_accuracy: 8, goal_and_pattern_fit: 22, session_integration: 8, equipment_and_time_fit: 15, usability_and_progression: 7, total: 60}
+    screening_disposition: replace
+    disposition: revise
+    hard_failures: [unsupported_or_misattributed_direct_claim]
+    issue: The movement is directly recommended, but daily 4-6 low-load sets and injury-prevention promises conflict with the cited doses and exceed the evidence.
+    source_keys: [finger_trial, vagy_antagonist, bechtel_grip, climbing_finger_extensor]
+    alternatives:
+      - {name: High-resistance isometric finger extension, score: 89, source_key: finger_trial}
+      - {name: Carabiner-band 10-second expansion, score: 81, source_key: vagy_antagonist}

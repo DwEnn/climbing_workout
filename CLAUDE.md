@@ -46,8 +46,9 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 
 ### 면책 고지
 
-각 페이지 상단(Hero 영역)에 아래 취지의 면책 고지를 포함:
-> 개별 운동의 클라이밍 특화 효과에 대한 RCT는 현재 존재하지 않는다. 아래 운동 추천은 전문가들의 코칭 경험, 운동생리학 원리, 제한적 학술 근거를 종합한 것이다.
+공통 면책 고지는 `index.html`에 둔다. 개별 운동 카드에서는 직접 근거와
+원칙 적용을 구분하고, 통증·부상·복귀 판단이 필요한 경우 전문가 평가를
+우선하도록 안내한다. 근거가 없는 포괄적 효과나 부상 예방 보장은 사용하지 않는다.
 
 ---
 
@@ -74,56 +75,53 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 
 | 운동 | 검증 | 핵심 출처 | 비고 |
 |------|------|----------|------|
-| KB 오버헤드 프레스 (단팔) | ✅ | Bechtel [PCC Ep.2] | |
-| 링 딥스 | ✅ | Hooper's Beta, improve-climbing.com, Vagy | ⚠️ 어깨 전방 불안정성 시 90° 깊이 제한 |
-| 링 푸쉬업 / 다이아몬드 푸쉬업 | ✅ | UKClimbing, Lattice (Procter), Smith, Hörst | |
-| 파이크 푸쉬업 | ✅ | Climbing Doctor × Hörst 가이드 | |
-| 페이스 풀 / 밴드 풀어파트 | ✅ | Vagy, Bechtel | 아처 푸쉬업 대체. 견갑골 후인+외회전 결합 패턴. Y-T-W와 시너지 |
-| 외회전근 훈련 (Y-T-W / 링 Y-T) | ✅ | Wong & Ng (2009), Vagy, Smith | |
-| 견갑골 푸쉬업 | ✅ | Vagy | |
-| 터키시 겟업 | ✅ | Bechtel [S&S], Climbing Mag (Sciolino), PCC (Corsaro) | 웜업/움직임 스크린 용도. 메인 근력 운동보다 활성화 목적 |
-| 손목 신전근 훈련 | ✅ | Vagy, Climbing Magazine, Bechtel | |
-| 손가락 신전근 (고무밴드 스프레드) | ✅ | Vagy (탑 5 대항근) | 손목 신전근과 병행 |
+| 푸쉬업 플러스 | ✅ | McClure / The Climbing Doctor | 견갑 전인 활성화 |
+| KB 오버헤드 프레스 | ✅ + 🔶 | Bechtel + 일반 프로그래밍 원칙 | 8kg 단일 케틀벨에 맞춘 단팔 진행 |
+| 플로어 푸쉬업 프로그레션 | ✅ + 🔶 | Climbing Magazine + 용량 조정 | 링 없이 안정된 바닥부터 진행 |
+| 밴드 편심 삼두 신전 | ✅ + 🔶 | Vagy + 장비·용량 조정 | 3~4초 편심 |
+| 스탠딩 로우-투-캑터스 | ✅ | Climbing Magazine | 후인·외회전 결합 |
+| 손목 익스텐서-업 | ✅ | Climbing Magazine | 저부하 고반복 |
 
 ### 코어 세션
 
-**설계 원칙: 4패턴 균형** (Bechtel 분류 기반)
-코어 훈련은 항신전(anti-extension), 항회전(anti-rotation), 항측굴(anti-lateral flexion), 고관절 굴곡의 네 카테고리를 균형 있게 포함해야 한다. 여기에 후면 체인(둔근)과 프론트 레버(당김+코어 통합)를 추가.
+**설계 원칙: 주 1회, 30~40분 코어 전용 통합 세션.**
+데드버그 2세트로 준비한 뒤 턱 프론트 레버를 첫 주운동으로 수행한다.
+링 롤아웃과 사용자가 선택한 행잉 니/레그레이즈를 거쳐 밴드
+안티로테이션 할로우와 밴드 사이드 플랭크로 마무리한다.
 
 | 운동 | 패턴 | 검증 | 핵심 출처 |
 |------|------|------|----------|
-| 할로우 바디 홀드 | 항신전 | ✅ | Hörst, Lattice |
-| 데드버그 | 항회전/운동 제어 | ✅ | Vagy (볼더러 요통 예방 프로토콜 직접 처방) |
-| 행잉 니/레그레이즈 | 고관절 굴곡 | ✅ | Lattice, Gripped, Metolius |
-| 앱 롤아웃 (링) | 항신전 | ✅ | Hörst 코어 5대 (TRX/링 버전) |
-| 팔로프 프레스 | 항회전 | ✅ | Bechtel + Vagy 직접 추천 |
-| 사이드 플랭크 프로그레션 | 항측굴 | ✅ (Tier 1.5) | Lattice 벤치마크 항목 (등급 상관관계 확인) |
-| 글루트 브릿지/힙 쓰러스트 | 후면 체인 (둔근) | ✅ | Vagy 직접 추천. 수퍼맨 대체 — 더 높은 둔근 활성화, 요추 과신전 위험 없음 |
-| 프론트 레버 프로그레션 | 당김+코어 통합 | ✅ | Hörst 코어 5대, Lattice (Randall/Torr), Gripped |
+| 데드버그 | 운동 제어 | ✅ + 🔶 | Mike Hwang / The Climbing Doctor + 세션 용량 조정 |
+| 링 롤아웃 | 항신전 | ✅ | Hörst / TrainingBeta |
+| 밴드 안티로테이션 할로우 홀드 | 항회전 | ✅ | The Climbing Doctor |
+| 행잉 니/레그레이즈 | 고관절 굴곡 | ✅ | Power Company Climbing |
+| 밴드 사이드 플랭크 | 항측굴 | ✅ | The Climbing Doctor |
+| 턱 프론트 레버 프로그레션 | 당김+코어 통합 | ✅ | Hörst / Gripped / Power Company |
 
-> **수퍼맨 제거 사유:** Hörst 코어 5대에 포함되어 있었으나, 둔근 활성화가 낮고 요추 과신전 위험이 있음. 후면 체인 목적으로 글루트 브릿지가 더 효과적인 대안. Vagy가 클라이밍에서 강한 둔근의 중요성(하이스텝, 컴프레션, 골반 안정)을 직접 강조.
->
-> **프론트 레버 유지 사유:** 근육 활성화 기준 ~70% 당김 + ~30% 코어이나, 오버행 바디 텐션과 가장 직접적으로 대응되는 운동. 코어 세션에 유지하되, 당김 볼륨 과부하에 주의 (→ 병행 시 주의사항 참고).
+> **중복 제어:** 동적 행잉 코어는 행잉 니/레그레이즈 하나만 사용한다.
+> 윈드쉴드 와이퍼는 활성 세션에서 제거해 그립·어깨 매달림 피로를 제한한다.
 
 ### 파워 세션 (플라이오메트릭)
 
-**설계 원칙: Hörst 1차 출처(주력 5개) + 발목 안정성 모듈 1개(Tier 3 + Tier A) 보강.**
-주력 파워 5개(파워 풀업·푸쉬업·박스 점프·점프 런지·마운틴 클라이머)는 Eric Hörst의 "6 Plyometric Exercises to Boost Climbing Power" [P-1]에서 클라이머에게 직접 추천됨 → ✅ 직접 검증(Tier 2). Hörst의 6번째 스케이터는 착지 정렬보다 최대 거리를 강조해, 발목 제어 목적에 맞춰 **래터럴 홉-앤-스틱으로 대체**함. 발목 모듈 1개(래터럴 홉-앤-스틱)는 클라이밍 의료 전문가(Tier 3)와 hop-stabilization RCT·일반 운동과학(Tier A)으로 검증. 총 6개 운동. Hörst가 명시하지 않은 세트 간 휴식·Lv.1~4 프로그레션·안전 단계는 🔶 일반 플라이오 원리(Tier A, NSCA)로 보강.
-
-> **발목 모듈은 1개만 유지 결정:** 후보는 ① 래터럴 홉-앤-스틱(흡수·제동), ② 싱글레그 4방향 포고(반사탄력·강성). **동적 움직임 제어**와 **검증 레벨** 두 축 모두 ①이 우위 — hop-stabilization RCT [P-6]가 측정한 개선 지표(착지 시 관절 굴곡↑·관상면 붕괴↓·지면반력↓)가 곧 착지 제어이고, 클라이밍 의료 전문가(Hedges [P-8]·Vagy [P-4])가 좌우 홉+한발 진행을 직접 추천. 포고의 반사탄력은 클라이밍 퍼포먼스 직접 출처가 없어 제외. 드롭-앤-스틱 착지는 ①의 워밍업/Lv.1로 흡수.
+**설계 원칙: 최대 파워 품질을 위한 4운동 세션.**
+낮은 싱글레그 홉으로 착지 제어를 확인한 뒤 파워 풀업과 파워 푸쉬업을
+수행한다. 하체 파워는 스쿼트 점프와 점프 런지 중 하나만 선택한다.
+박스가 필요한 박스 점프는 장비 게이트에서 탈락했고, 마운틴 클라이머는
+최대 파워 세션 통합 게이트를 통과하지 못해 별도 컨디셔닝 옵션으로 이동했다.
 
 | 운동 | 패턴 | 검증 | 핵심 출처 |
 |------|------|------|----------|
-| 파워 풀업 | 폭발적 당김 | ✅ | Hörst [P-1] |
-| 파워 푸쉬업 | 폭발적 밀기 (당김 대항) | ✅ | Hörst [P-1] |
-| 박스 점프 | 양측성 하체 파워 | ✅ | Hörst [P-1] |
-| 점프 런지 | 단측성 하체 파워 | ✅ | Hörst [P-1] |
-| 싱글레그 래터럴·사선 홉-앤-스틱 | 측면 파워 + 착지 제동·발목 제어 | ✅ Tier 3 (착지/부상예방) + 🔶 Tier A (hop-stabilization) | Hedges/Climbing Doctor [P-8], Vagy [P-4], hop-stabilization RCT [P-6], MGB 준비도 [P-7] · (측면 파워 계보 Hörst [P-1]) |
-| 마운틴 클라이머 | 폭발적 무릎 드라이브 + 코어 | ✅ | Hörst [P-1] |
+| 파워 풀업 | 폭발적 당김 | ✅ | Hanes [P-1], Hörst 별도 글 |
+| 파워 푸쉬업 | 폭발적 밀기 | ✅ | Hanes [P-1] |
+| 스쿼트 점프 + 스틱 랜딩 | 양측성 하체 파워 | ✅ + 🔶 | White-Graff 착지 단계 + ACE 스쿼트 점프 |
+| 점프 런지 | 단측성 하체 파워 | ✅ + 🔶 | Hanes [P-1] + 접촉 수 조정 |
+| 낮은 싱글레그 홉-앤-스틱 | 착지 제동·발목 제어 | ✅ + 🔶 | White-Graff/Hedges + hop-stabilization RCT |
 
 > **타이밍 주의 (다른 세션과 반대):** 푸쉬·코어는 클라이밍 직후에 붙이지만, 파워 훈련은 **신선할 때만** 제대로 된다. Hörst: "피로한 상태에서는 파워를 제대로 훈련할 수 없다." → 워밍업 후 본격 등반 전, 또는 등반 볼륨이 가벼운 날에 배치. 주 1~2회.
 >
-> **장비 주의:** 보유 장비에 박스 없음 → 안정된 플랫폼/벤치 대체 또는 제자리 점프 스쿼트로 대체. 파워 풀업은 당김 계열이라 주간 당김 볼륨(클라이밍 + 프론트 레버)에 합산됨에 유의.
+> **장비 주의:** 보유 장비에 박스가 없으므로 가구나 불안정한 벤치를
+> 대체 박스로 사용하지 않는다. 파워 풀업은 당김 계열이라 주간 당김
+> 볼륨(클라이밍 + 프론트 레버)에 합산한다.
 >
 > **발목 모듈(EX05 래터럴 홉-앤-스틱) 근거 구분:** Hörst 플라이오 글에는 발목 특화 내용이 없고, hop-stabilization의 클라이밍 퍼포먼스 전이는 🔶 Tier A로 표기. hop-stabilization RCT [P-6]는 peer-reviewed지만 **대상이 농구선수(클라이머 아님)**라 전이는 원칙 기반 추론. 반면 **착지 메커닉스·측면 홉·발목 반응 훈련**은 볼더링 발목 염좌(클라이머 하체 부상 1위) 예방으로 Vagy [P-4]·Hooper's Beta [P-5]·Hedges/Climbing Doctor [P-8](Tier 3)가 직접 추천 → 이 부분은 ✅. 한 카드에 ✅/🔶를 함께 달되 어느 부분이 어느 근거인지 명시. 주 가치는 파워가 아니라 부상예방·풋워크 지지 (고관절 가동성이 더 높은 우선순위).
 >
@@ -152,7 +150,7 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
      https://theclimbingdoctor.com/how-to-train-antagonist-muscle-strength-for-climbing/
 [8]  Vagy, J. The Climbing Doctor — Antagonist Strength Exercises.
      https://theclimbingdoctor.com/rock-climbing-injury-tips-antagonist-strength-exercises/
-[9]  Schulte, C. (2019). Climbing Magazine — Antagonist Workouts for Climbers.
+[9]  Slavsky, B. (2019). Climbing Magazine — Antagonist Workouts for Climbers.
      https://www.climbing.com/skills/antagonist-workouts-for-climbers-improve-performance-and-prevent-injury/
 [10] Vagy, J. Climb Injury-Free. (서적)
 [11] Bechtel, S. & Manganiello, C. Unstoppable Force. (서적)
@@ -169,9 +167,9 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
      https://www.improve-climbing.com/antagonist-training-climbing/
 [15] UKClimbing — The Importance of Antagonistic Training for Climbers.
      https://www.ukclimbing.com/articles/skills/the_importance_of_antagonistic_training_for_climbers-7364
-[16] Vagy & Hörst — Optimal Training and Injury Prevention.
+[16] McClure, G. — Optimal Training and Injury Prevention.
      https://theclimbingdoctor.com/optimal-training-and-injury-prevention-techniques-for-climbers-with-a-full-time-schedule/
-[17] Hörst, E. Training for Climbing — 6 Plyometric Exercises.
+[17] Hanes, L. (2024). Training for Climbing — 6 Plyometric Exercises.
      https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/
 [18] Sciolino, C. "Train Like A Guide." Climbing Magazine. — TGU 5회 × 3세트 처방.
      https://www.climbing.com/skills/freaky-fit/
@@ -201,13 +199,13 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 ### 파워 세션 추가
 
 ```
-[P-1] Hörst, E. "6 Plyometric Exercises to Boost Climbing Power." Training for Climbing.
+[P-1] Hanes, L. (2024). "6 Plyometric Exercises to Boost Climbing Power." Training for Climbing.
       https://trainingforclimbing.com/6-plyometric-exercises-to-boost-climbing-power/
       — 6개 운동 전부를 직접 추천 + 수행법/클라이밍 적용/시연 영상 제공 (1차 출처).
 [P-2] Hörst, E. Training for Climbing 3판. (서적) — 파워/파워 지구력 훈련 챕터.
 [P-3] Haff, G.G. & Triplett, N.T. (eds.) Essentials of Strength Training and Conditioning
       (4th ed.). NSCA / Human Kinetics. — 플라이오메트릭 원리 (Tier A: SSC, 근력 기반, 회복).
-[P-4] Vagy, J. "The Gym Boulder's Guide to Preventing Lower Body Injuries While
+[P-4] White-Graff, A.J. "The Gym Boulder's Guide to Preventing Lower Body Injuries While
       Jumping/Landing/Falling." The Climbing Doctor. (Tier 3) — 착지 메커닉스, 발목 부상 예방.
       https://theclimbingdoctor.com/the-gym-boulders-guide-to-preventing-lower-body-injuries-while-jumping-landing-falling/
 [P-5] Hooper, J. "How to Fix Ankle Pain for Climbers." Hooper's Beta. (Tier 3) — 염좌 후
@@ -265,15 +263,17 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 
 ## 주간 스케줄 및 볼륨 관리
 
-**핵심 원칙:** 보충 세션은 클라이밍 후에 붙여서 통합. 별도 훈련일을 만들지 않는다 (Lattice: "중강도면 충분하며, 클라이밍 후에 붙이면 휴식일에 추가 훈련 불필요"). Bechtel: 비등반 훈련은 전체 훈련 시간의 25% 이하.
+**핵심 원칙:** 푸쉬 등 짧은 보충 세션은 클라이밍 후에 통합하되, 코어는
+사용자의 최신 선택에 따라 주 1회 30~40분 단독 세션으로 수행한다.
+Bechtel의 비등반 훈련 25% 이하 원칙을 고려해 나머지 보충 볼륨은 제한한다.
 
 | 요일 | 내용 | 상세 |
 |------|------|------|
-| 월 | 클라이밍 + 코어 (15~20분) | 프론트 레버도 여기서 |
+| 월 | 코어 단독 (30~40분) | 통합 6운동 세션 |
 | 화 | **휴식** | |
 | 수 | 클라이밍 + 푸쉬 (15~20분) | |
 | 목 | **휴식** 또는 가벼운 모빌리티 | 고관절 CARs, 스트레칭 |
-| 금 | 클라이밍 + 코어 (15~20분) | |
+| 금 | 클라이밍 | 코어 추가 없음 |
 | 토 | 클라이밍 또는 푸쉬 단독 | |
 | 일 | **휴식** | |
 
@@ -282,8 +282,7 @@ V6+ 볼더러를 위한 보조 훈련 가이드 웹페이지를 제작한다.
 ### 병행 시 주의사항
 
 - 코어의 프론트 레버는 광배근을 강하게 동원하는 **당김 계열** (~70%). 클라이밍 3~4회 + 프론트 레버 2회 = 당김 5~6회. 푸쉬 볼륨을 확실히 챙길 것
-- 글루트 브릿지/힙 쓰러스트가 후면 체인을 담당. 하이스텝·컴프레션·골반 안정에 직결
-- 팔로프 프레스 + 사이드 플랭크가 항회전·항측굴 패턴을 커버. 오버행에서 한 손 뻗을 때 몸이 회전/옆으로 무너지지 않게 잡아주는 능력
+- 밴드 안티로테이션 할로우 + 사이드 플랭크가 항회전·항측굴 패턴을 커버. 오버행에서 한 손 뻗을 때 몸이 회전/옆으로 무너지지 않게 잡아주는 능력
 
 ### 빠진 영역 (향후 추가 고려)
 

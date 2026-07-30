@@ -1,0 +1,60 @@
+{
+  "expectations": [
+    {
+      "text": "존재하지 않는 #ref-99 내부 링크를 탐지한다",
+      "passed": true,
+      "evidence": "report.md 구조 검사에서 href=\"#ref-99\"에 대응하는 id=\"ref-99\"가 없다고 명시했다."
+    },
+    {
+      "text": "비클라이머 연구의 직접 검증 표시를 principle로 낮춘다",
+      "passed": true,
+      "evidence": "실제 근거 분류를 principle (source unverified)로 낮추고 농구선수 집단 한계를 설명했다."
+    },
+    {
+      "text": "미보유 불안정 의자 요구를 장비·안전 하드 실패로 판정한다",
+      "passed": true,
+      "evidence": "보유 장비 floor와 흔들리는 의자를 대조하고 장비 및 중요한 안전 문제를 각각 하드 실패로 판정했다."
+    },
+    {
+      "text": "세 문제를 서로 다른 오류 유형으로 설명한다",
+      "passed": true,
+      "evidence": "끊어진 참조, 근거 직접성 오표기, 장비 및 실행 안전 문제를 독립 항목으로 분리했다."
+    }
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {
+    "tool_calls": {"Read": 0, "Write": 0, "Bash": 7, "Edit": 1, "Glob": 0, "Grep": 0},
+    "total_tool_calls": 8,
+    "total_steps": 7,
+    "errors_encountered": 0,
+    "output_chars": 2022,
+    "transcript_chars": 512
+  },
+  "claims": [
+    {
+      "claim": "배지에 직접 검증 표기가 없다",
+      "type": "factual",
+      "verified": false,
+      "evidence": "fixture의 badge-row 본문에는 실제로 ✅ Tier 1이 있다. 이 추가 경고는 잘못됐다."
+    },
+    {
+      "claim": "표준 CLI는 최소 fixture 명세를 직접 처리할 수 없다",
+      "type": "process",
+      "verified": true,
+      "evidence": "fixture에는 validator가 요구하는 evidence_policy와 source_of_truth가 없고 가이드 경로 규칙도 다르다."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": ["식별 가능한 외부 원문이 없어 source unverified로 남김"],
+    "needs_review": ["추가 EVIDENCE_MARKER_MISSING 경고는 fixture 본문과 모순됨"],
+    "workarounds": ["최소 fixture에 CLI를 직접 적용하지 못해 동일 규칙을 수동 적용"]
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "두 구성 모두 핵심 기대사항을 전부 통과해 스킬 효과를 구분하지 못한다. 더 덜 노골적인 fixture가 필요하다."
+      }
+    ],
+    "overall": "핵심 기대사항은 견고하지만 fixture가 쉬우며, 스킬 실행의 추가 배지 경고가 오탐이었다."
+  }
+}

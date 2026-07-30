@@ -1,0 +1,27 @@
+{
+  "summary": {
+    "sessions": 4,
+    "exercises": 18,
+    "reference_links": 115,
+    "audit_exercises": 21,
+    "replacement_slots": 11,
+    "verified_replacements": 7,
+    "revised_currents": 3,
+    "removed_slots": 1,
+    "final_audit_exercises": 18,
+    "final_at_or_above_80": 17,
+    "final_below_80": 1,
+    "final_score_mean": 84.8,
+    "final_removed_after_rescore": 2,
+    "video_audit_exercises": 18,
+    "public_videos": 18,
+    "exact_video_matches": 18,
+    "retained_videos": 8,
+    "added_videos": 3,
+    "replaced_videos": 7,
+    "errors": 0,
+    "warnings": 0,
+    "status": "pass"
+  },
+  "findings": []
+}

@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "21개 운동을 세션별로 빠짐없이 식별한다",
+      "passed": true,
+      "evidence": "보고서 표가 푸쉬 6, 코어 8, 파워 6, 손가락 1개를 모두 식별하고 유지 1·수정 9·교체 11로 집계했다."
+    },
+    {
+      "text": "정적 검사기의 1개 오류와 22개 경고를 구조 문제로 구분한다",
+      "passed": true,
+      "evidence": "1절이 sets_reps_rest 오류 1개와 근거 마커·문서 드리프트 경고 22개를 별도 구조 축으로 설명했다."
+    },
+    {
+      "text": "근거 직접성과 세션 조합을 별도 축으로 평가한다",
+      "passed": true,
+      "evidence": "2절의 direct/principle/mixed 및 하드 실패 감사와 3절의 네 세션 통합 판정이 분리되어 있다."
+    },
+    {
+      "text": "가이드 HTML을 수정하지 않고 Markdown 감사 보고서를 생성한다",
+      "passed": true,
+      "evidence": "report.md가 생성됐고 보고서·transcript가 원본 가이드 수정 없음이라고 기록했다."
+    }
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {
+    "tool_calls": {"Read": 0, "Write": 0, "Bash": 6, "Edit": 2, "Glob": 0, "Grep": 0},
+    "total_tool_calls": 8,
+    "total_steps": 7,
+    "errors_encountered": 0,
+    "output_chars": 8610,
+    "transcript_chars": 762
+  },
+  "claims": [
+    {
+      "claim": "21개 판정은 유지 1, 수정 9, 교체 11이다",
+      "type": "factual",
+      "verified": true,
+      "evidence": "source-audit.yaml의 disposition 집계와 일치한다."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": ["웹을 재탐색하지 않고 이미 감사된 source-audit.yaml을 사용함"],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "end-to-end 기대사항을 모두 충족했다."
+  }
+}
