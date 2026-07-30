@@ -1,2 +1,12 @@
 __pycache__/
 *.py[cod]
+
+.DS_Store
+
+# 출처 검증용 원문 스냅샷 (로컬 전용)
+# 검증 시 참조한 The Climbing Doctor 등의 페이지 다운로드본.
+# 워드프레스 마크업이 대부분이라 이력에 남기지 않는다.
+# 보존이 필요하면 본문 추출본으로 만들어 별도 커밋할 것.
+ant1.html
+ant2.html
+opt.html

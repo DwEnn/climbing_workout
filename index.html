@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V6+ 볼더러를 위한 보조 훈련 가이드</title>
+<title>V6+ 볼더러를 위한 훈련 가이드 — 주력 · 보조</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -16,6 +16,7 @@
     --push: #e94560;
     --core: #ff6b35;
     --power: #6366f1;
+    --fingerboard: #22c55e;
     --green: #4ecdc4;
     --blue: #118ab2;
   }
@@ -56,7 +57,7 @@
     background:
       radial-gradient(ellipse at 25% 30%, rgba(233, 69, 96, 0.06) 0%, transparent 50%),
       radial-gradient(ellipse at 75% 70%, rgba(255, 107, 53, 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(78, 205, 196, 0.03) 0%, transparent 50%);
+      radial-gradient(ellipse at 50% 50%, rgba(34, 197, 94, 0.04) 0%, transparent 50%);
     animation: heroPulse 8s ease-in-out infinite alternate;
     z-index: -1;
   }
@@ -111,22 +112,69 @@
 
   .disclaimer strong { color: var(--text); }
 
-  /* ── CARDS ── */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+  /* ── TIER GROUPS ── */
+  .tier {
     max-width: 1100px;
     width: 100%;
-    margin-bottom: 3rem;
+    margin-bottom: 2.6rem;
   }
 
+  .tier-head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .tier-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .tier-rule { flex: 1; height: 1px; background: var(--border); }
+
+  .tier-note {
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* ── CARDS ── */
+  .cards { display: grid; gap: 1.5rem; }
+  .cards--primary { grid-template-columns: 1fr; }
+  .cards--support { grid-template-columns: repeat(4, 1fr); }
+
+  .cards--primary .card { padding: 2.2rem 2.2rem 2.4rem; }
+  .cards--primary .card-icon { font-size: 2.6rem; }
+  .cards--primary .card-title { font-size: 1.7rem; }
+  .cards--primary .card-desc { max-width: 58ch; }
+
+  .cards--support .card {
+    padding: 1.8rem 1.4rem 2.8rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .cards--support .card-icon { font-size: 1.9rem; margin-bottom: 0.7rem; }
+  .cards--support .card-title { font-size: 1.15rem; }
+  .cards--support .card-desc { font-size: 0.85rem; margin-bottom: 1rem; }
+  /* 설명문 길이가 달라도 태그 행은 카드 하단에 정렬 */
+  .cards--support .card-meta { gap: 0.4rem; margin-top: auto; }
+  .cards--support .card-tag { font-size: 0.66rem; padding: 0.2rem 0.5rem; }
+  .cards--support .card-arrow { bottom: 1.1rem; right: 1.2rem; }
+
   @media (max-width: 900px) {
-    .cards { grid-template-columns: 1fr 1fr; max-width: 820px; }
+    .tier { max-width: 820px; }
+    .cards--support { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 640px) {
-    .cards { grid-template-columns: 1fr; }
+    .cards--support { grid-template-columns: 1fr; }
+    /* nowrap 보조 설명 — 320px대에서 우측 패딩을 침범하므로 좁은 화면에서는 생략 */
+    .tier-note { display: none; }
   }
 
   .card {
@@ -154,6 +202,7 @@
   .card--core::before { background: var(--core); }
   .card--power::before { background: var(--power); }
   .card--finger::before { background: var(--green); }
+  .card--fingerboard::before { background: var(--fingerboard); }
 
   .card:hover {
     transform: translateY(-4px);
@@ -181,6 +230,11 @@
     border-color: rgba(78, 205, 196, 0.3);
   }
 
+  .card--fingerboard:hover {
+    box-shadow: 0 8px 40px rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+
   .card:hover::before { height: 4px; }
 
   .card-icon {
@@ -199,6 +253,7 @@
   .card--core .card-title { color: var(--core); }
   .card--power .card-title { color: var(--power); }
   .card--finger .card-title { color: var(--green); }
+  .card--fingerboard .card-title { color: var(--fingerboard); }
 
   .card-desc {
     font-size: 0.92rem;
@@ -239,6 +294,7 @@
   .card--core:hover .card-arrow { color: var(--core); }
   .card--power:hover .card-arrow { color: var(--power); }
   .card--finger:hover .card-arrow { color: var(--green); }
+  .card--fingerboard:hover .card-arrow { color: var(--fingerboard); }
 
   /* ── EQUIP ── */
   .equip {
@@ -315,15 +371,43 @@
 
 <div class="hero">
   <div class="hero-badge">V6+ Boulderer Training Guide</div>
-  <h1>보조 훈련 가이드</h1>
-  <p class="hero-sub">검증된 출처 기반 &middot; 푸쉬 &middot; 코어 &middot; 파워 세션</p>
+  <h1>훈련 가이드</h1>
+  <p class="hero-sub">검증된 출처 기반 &middot; 행보드 &middot; 푸쉬 &middot; 코어 &middot; 파워</p>
   <div class="disclaimer">
     <strong>면책 고지:</strong> 개별 운동의 클라이밍 특화 효과에 대한 RCT(무작위 대조 시험)는 현재 존재하지 않는다.
     아래 운동 추천은 전문가들의 코칭 경험, 운동생리학 원리, 제한적 학술 근거를 종합한 것이다.
   </div>
 </div>
 
-<div class="cards">
+<div class="tier">
+  <div class="tier-head">
+    <span class="tier-title">주력 훈련</span>
+    <span class="tier-rule"></span>
+    <span class="tier-note">등반 수행력을 직접 결정하는 능력</span>
+  </div>
+  <div class="cards cards--primary">
+    <a href="guides/fingerboard-training-guide.html" class="card card--fingerboard">
+      <div class="card-icon">&#129295;</div>
+      <div class="card-title">행보드 세션</div>
+      <div class="card-desc">손가락 굴곡근 최대근력 &mdash; Abrahangs + Max Hangs<br>저강도 등척성을 자주, 맥스행을 가끔 강하게 섞는다</div>
+      <div class="card-meta">
+        <span class="card-tag">2개 운동</span>
+        <span class="card-tag">Abrahangs 10분</span>
+        <span class="card-tag">2주 사이클</span>
+        <span class="card-tag">단일 논문 기반</span>
+      </div>
+      <span class="card-arrow">&rarr;</span>
+    </a>
+  </div>
+</div>
+
+<div class="tier">
+  <div class="tier-head">
+    <span class="tier-title">보조 훈련</span>
+    <span class="tier-rule"></span>
+    <span class="tier-note">등반으로는 훈련되지 않는 부위를 채운다</span>
+  </div>
+  <div class="cards cards--support">
   <a href="guides/push-training-guide.html" class="card card--push">
     <div class="card-icon">&#128170;</div>
     <div class="card-title">푸쉬 세션</div>
@@ -368,6 +452,7 @@
     </div>
     <span class="card-arrow">&rarr;</span>
   </a>
+  </div>
 </div>
 
 <div class="equip">
@@ -384,7 +469,7 @@
 </div>
 
 <div class="schedule">
-  <div class="schedule-title">주간 스케줄 예시</div>
+  <div class="schedule-title">보조 세션 배치 예시</div>
   <p>
     <strong>월</strong> 코어 단독 &middot;
     <strong>화</strong> 휴식 &middot;
@@ -394,10 +479,15 @@
     <strong>토</strong> 등반 또는 푸쉬 &middot;
     <strong>일</strong> 휴식
   </p>
+  <p style="margin-top: 0.7rem; font-size: 0.82rem;">
+    보조 세션은 등반 직후에 붙이는 게 기본이라 요일이 유연하다.
+    <strong>주력 훈련(행보드)은 회복 간격이 프로토콜의 일부</strong>라 배치 규칙이 다르며, 자체 2주 사이클을 따른다 &mdash;
+    <a href="guides/fingerboard-training-guide.html">행보드 세션</a> 참고.
+  </p>
 </div>
 
 <footer class="footer">
-  <p>V6+ 볼더러를 위한 보조 훈련 가이드 — 검증된 출처 기반</p>
+  <p>V6+ 볼더러를 위한 훈련 가이드 — 검증된 출처 기반</p>
   <p style="margin-top: 0.5rem; opacity: 0.5;">마지막 업데이트 2026-07</p>
 </footer>
 
